@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace nyris.sdk
+namespace Nyris.Sdk
 {
     public class Class1
     {
