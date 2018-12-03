@@ -1,59 +1,127 @@
 using System;
 using System.Threading.Tasks;
 using Nyris.Sdk.Network.Model;
+using Nyris.Sdk.Network.Service;
+using Nyris.Sdk.Utils;
 
 namespace Nyris.Sdk.Network.API.ImageMatching
 {
     internal sealed class ImageMatchingApi : IImageMatchingApi
     {
-        public ImageMatchingApi()
-        {
+        private string _outputFormat;
+        private string _language;
+        private IImageMatchingService _imageMatchingService;
+        private ApiHeader _apiHeader;
+        private int _limit;
+        
+        private readonly ExactOptions _exactOptions;
+        private readonly SimilarityOptions _similarityOptions;
+        private readonly OcrOptions _ocrOptions;
+        private readonly RegroupOptions _regroupOptions;
+        private readonly RecommendationOptions _recommendationOptions;
+        private readonly CategoryPredictionOptions _categoryPredictionOptions;
             
+        public ImageMatchingApi(string outputFormat,
+            string language,
+            IImageMatchingService imageMatchingService,
+            ApiHeader apiHeader)
+        {
+            _outputFormat = outputFormat;
+            _language = language;
+            _imageMatchingService = imageMatchingService;
+            _apiHeader = apiHeader;
+            _limit = Constants.DEFAULT_LIMIT;
+            
+            _exactOptions = new ExactOptions();
+            _similarityOptions = new SimilarityOptions();
+            _ocrOptions = new OcrOptions();
+            _regroupOptions = new RegroupOptions();
+            _recommendationOptions = new RecommendationOptions();
+            _categoryPredictionOptions = new CategoryPredictionOptions();
         }
 
         public IImageMatchingApi OutputFormat(string outputFormat)
         {
-            throw new System.NotImplementedException();
+            _outputFormat = outputFormat;
+            return this;
         }
 
         public IImageMatchingApi Language(string language)
         {
-            throw new System.NotImplementedException();
+            _language = language;
+            return this;
         }
 
         public IImageMatchingApi Exact(Action<ExactOptions> options = null)
         {
-            throw new NotImplementedException();
+            if (options == null)
+            {
+                options = opt => { opt.Enabled = true;};
+            }
+
+            options(_exactOptions);
+            return this;
         }
 
         public IImageMatchingApi Similarity(Action<SimilarityOptions> options = null)
         {
-            throw new NotImplementedException();
+            if (options == null)
+            {
+                options = opt => { opt.Enabled = true; };
+            }
+
+            options(_similarityOptions);
+            return this;
         }
 
         public IImageMatchingApi Ocr(Action<OcrOptions> options = null)
         {
-            throw new NotImplementedException();
+            if (options == null)
+            {
+                options = opt => { opt.Enabled = true; };
+            }
+            
+            options(_ocrOptions);
+            return this;
         }
 
         public IImageMatchingApi Limit(int limit)
         {
-            throw new NotImplementedException();
+            _limit = limit;
+            return this;
         }
 
         public IImageMatchingApi Regroup(Action<RegroupOptions> options = null)
         {
-            throw new NotImplementedException();
+            if (options == null)
+            {
+                options = opt => { opt.Enabled = false; };
+            }
+            
+            options(_regroupOptions);
+            return this;
         }
 
         public IImageMatchingApi Recommendation(Action<RecommendationOptions> options = null)
         {
-            throw new NotImplementedException();
+            if (options == null)
+            {
+                options = opt => { opt.Enabled = false; };
+            }
+            
+            options(_recommendationOptions);
+            return this;
         }
 
         public IImageMatchingApi CategoryPrediction(Action<CategoryPredictionOptions> options = null)
         {
-            throw new NotImplementedException();
+            if (options == null)
+            {
+                options = opt => { opt.Enabled = false; };
+            }
+
+            options(_categoryPredictionOptions);
+            return this;
         }
 
         public Task<OfferResponseBody> Match(byte[] image)

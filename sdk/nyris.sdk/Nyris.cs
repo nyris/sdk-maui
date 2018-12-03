@@ -4,7 +4,7 @@ using Nyris.Sdk.Network.API.ImageMatching;
 
 namespace Nyris.Sdk
 {
-    internal class Nyris : INyris
+    public class Nyris : INyris
     {
         private readonly IApiHelper _apiHelper;
 
@@ -16,9 +16,15 @@ namespace Nyris.Sdk
 
         public IImageMatchingApi ImageMatchingAPi => _apiHelper.ImageMatchingAPi;
 
-        public Nyris(string apiKey, bool isDebug)
+        private Nyris(string apiKey, bool isDebug)
         {
             _apiHelper = new ApiHelper(apiKey, isDebug);
+        }
+        
+        
+        public static INyris CreateInstance(string apiKey, bool isDebug = false)
+        {
+            return new Nyris(apiKey, isDebug);
         }
     }
 }
