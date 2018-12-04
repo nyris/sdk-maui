@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using Nyris.Sdk.Network.API;
 using Nyris.Sdk.Network.API.ImageMatching;
@@ -23,7 +24,14 @@ namespace Nyris.Sdk.Network
             var platformVersion = "";
 
             var apiHeader = new ApiHeader(apiKey, sdkId, sdkVersion, gitCommitHash, platformVersion);
-            var httpClient = new HttpClient(new HttpLoggingHandler()){ BaseAddress = Constants.DEFAULT_HOST_URL}; 
+            var httpClient = new HttpClient(new HttpLoggingHandler())
+            {
+                BaseAddress = Constants.DEFAULT_HOST_URL,
+                Timeout = TimeSpan.FromSeconds(Constants.DEFAULT_NETWORK_CONNECTION_TIMEOUT),
+                DefaultRequestHeaders = {{"X-Api-Key" , apiKey}}
+            }; 
+            httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd(apiHeader.UserAgent);
+            
             var imageMatchingService = RestService.For<IImageMatchingService>(httpClient);
             ImageMatchingAPi = new ImageMatchingApi(outputFormat,
                 language,

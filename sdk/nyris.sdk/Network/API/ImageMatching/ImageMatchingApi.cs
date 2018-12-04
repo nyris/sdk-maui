@@ -1,8 +1,11 @@
 using System;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Nyris.Sdk.Network.Model;
 using Nyris.Sdk.Network.Service;
 using Nyris.Sdk.Utils;
+using Refit;
 
 namespace Nyris.Sdk.Network.API.ImageMatching
 {
@@ -13,14 +16,14 @@ namespace Nyris.Sdk.Network.API.ImageMatching
         private IImageMatchingService _imageMatchingService;
         private ApiHeader _apiHeader;
         private int _limit;
-        
+
         private readonly ExactOptions _exactOptions;
         private readonly SimilarityOptions _similarityOptions;
         private readonly OcrOptions _ocrOptions;
         private readonly RegroupOptions _regroupOptions;
         private readonly RecommendationOptions _recommendationOptions;
         private readonly CategoryPredictionOptions _categoryPredictionOptions;
-            
+
         public ImageMatchingApi(string outputFormat,
             string language,
             IImageMatchingService imageMatchingService,
@@ -31,7 +34,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
             _imageMatchingService = imageMatchingService;
             _apiHeader = apiHeader;
             _limit = Constants.DEFAULT_LIMIT;
-            
+
             _exactOptions = new ExactOptions();
             _similarityOptions = new SimilarityOptions();
             _ocrOptions = new OcrOptions();
@@ -56,7 +59,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
         {
             if (options == null)
             {
-                options = opt => { opt.Enabled = true;};
+                options = opt => { opt.Enabled = true; };
             }
 
             options(_exactOptions);
@@ -80,7 +83,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
             {
                 options = opt => { opt.Enabled = true; };
             }
-            
+
             options(_ocrOptions);
             return this;
         }
@@ -97,7 +100,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
             {
                 options = opt => { opt.Enabled = false; };
             }
-            
+
             options(_regroupOptions);
             return this;
         }
@@ -108,7 +111,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
             {
                 options = opt => { opt.Enabled = false; };
             }
-            
+
             options(_recommendationOptions);
             return this;
         }
@@ -126,7 +129,13 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         public Task<OfferResponseBody> Match(byte[] image)
         {
-            throw new NotImplementedException();
+            ByteArrayContent byteContent = new ByteArrayContent(image);
+            return _imageMatchingService.Match(_outputFormat,
+                _language,
+                "",
+                "image/jpg",
+                image.Length.ToString(),
+                byteContent);
         }
 
         public Task<OfferResponseBody> Match(float[] image)

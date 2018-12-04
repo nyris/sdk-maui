@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using  Nyris.Sdk;
 
@@ -8,9 +9,9 @@ namespace nyris.console
     {
         public static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
             var nyris = Nyris.Sdk.Nyris.CreateInstance("", true);
-            var image = new byte[]{0,0,0,0,0};
+            
+            var image = File.ReadAllBytes (@"");
             
             await nyris.ImageMatchingAPi
                 .Similarity(opt => { opt.Enabled = false; })
