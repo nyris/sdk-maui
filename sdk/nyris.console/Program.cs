@@ -19,8 +19,11 @@ namespace nyris.console
             var image = File.ReadAllBytes (@"");
 
             nyris.ImageMatchingAPi
-                .Similarity(opt => { opt.Enabled = false; })
-                .Ocr(opt => { opt.Enabled = false; })
+                .CategoryPrediction(opt =>
+                {
+                    opt.Enabled = true;
+                    opt.Limit = 5;
+                })
                 .Match(image)
                 .Subscribe(x =>
                 {

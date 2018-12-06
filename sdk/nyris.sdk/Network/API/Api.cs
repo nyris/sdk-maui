@@ -4,15 +4,14 @@ namespace Nyris.Sdk.Network.API
 {
     public class Api
     {
-        private readonly ApiHeader _apiHeader;
-        private Dictionary<string, string> _defaultHeader;
-        
-        public Api(ApiHeader apiHeader)
+        protected readonly ApiHeader _apiHeader;
+
+        protected Api(ApiHeader apiHeader)
         {
             _apiHeader = apiHeader;
         }
 
-        public string BuildXOptions()
+        protected virtual string BuildXOptions()
         {
             return string.Empty;
         }

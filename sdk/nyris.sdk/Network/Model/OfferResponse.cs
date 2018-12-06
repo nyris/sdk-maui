@@ -9,6 +9,6 @@ namespace Nyris.Sdk.Network.Model
         public List<Offer> Offers { get; set; }
         
         [JsonProperty(PropertyName = "predicted_category")] 
-        public List<Dictionary<string, float>> PredictedCategories { get; set; }
+        public Dictionary<string, float> PredictedCategories { get; set; }
     }
 }
