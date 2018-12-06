@@ -127,7 +127,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
             return this;
         }
 
-        public Task<OfferResponseBody> Match(byte[] image)
+        public IObservable<OfferResponse> Match(byte[] image)
         {
             ByteArrayContent byteContent = new ByteArrayContent(image);
             return _imageMatchingService.Match(_outputFormat,
@@ -138,7 +138,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
                 byteContent);
         }
 
-        public Task<OfferResponseBody> Match(float[] image)
+        public Task<OfferResponse> Match(float[] image)
         {
             throw new NotImplementedException();
         }

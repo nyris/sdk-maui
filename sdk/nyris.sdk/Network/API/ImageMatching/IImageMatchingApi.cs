@@ -24,9 +24,9 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         IImageMatchingApi CategoryPrediction(Action<CategoryPredictionOptions> options = null);
 
-        Task<OfferResponseBody> Match(byte[] image);
+        IObservable<OfferResponse> Match(byte[] image);
         
-        Task<OfferResponseBody> Match(float[] image);
+        Task<OfferResponse> Match(float[] image);
         
         Task<T> Match<T>(byte[] image);
         
