@@ -168,9 +168,14 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         public IObservable<OfferResponse> Match(byte[] image)
         {
+            return Match<OfferResponse>(image);
+        }
+
+        public IObservable<T> Match<T>(byte[] image)
+        {
             var byteContent = new ByteArrayContent(image);
             var xOptions = BuildXOptions();
-            return _imageMatchingService.Match(accept: _apiHeader.OutputFormat,
+            return _imageMatchingService.Match<T>(accept: _apiHeader.OutputFormat,
                 userAgent: _apiHeader.UserAgent,
                 apiKey: _apiHeader.ApiKey,
                 acceptLanguage: _apiHeader.Language,
@@ -178,21 +183,6 @@ namespace Nyris.Sdk.Network.API.ImageMatching
                 contentType: "image/jpg",
                 contentLength: image.Length.ToString(),
                 image: byteContent);
-        }
-
-        public Task<OfferResponse> Match(float[] image)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> Match<T>(byte[] image)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> Match<T>(float[] image)
-        {
-            throw new NotImplementedException();
         }
 
         private void Reset()

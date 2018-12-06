@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Threading.Tasks;
-using System.Web.UI.WebControls;
-using  Nyris.Sdk;
 using Nyris.Sdk.Utils;
 
 namespace nyris.console
@@ -24,6 +19,7 @@ namespace nyris.console
                     opt.Enabled = true;
                     opt.Limit = 5;
                 })
+                .Limit(5)
                 .Match(image)
                 .Subscribe(x =>
                 {

@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Nyris.Sdk.Network.Model;
 
@@ -26,10 +27,6 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         IObservable<OfferResponse> Match(byte[] image);
         
-        Task<OfferResponse> Match(float[] image);
-        
-        Task<T> Match<T>(byte[] image);
-        
-        Task<T> Match<T>(float[] image);
+        IObservable<T> Match<T>(byte[] image);
     }
 }

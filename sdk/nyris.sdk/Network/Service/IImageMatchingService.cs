@@ -11,7 +11,7 @@ namespace Nyris.Sdk.Network.Service
     public interface IImageMatchingService
     {
         [Post("/find/v1")]
-        IObservable<OfferResponse> Match([Header("Accept")] string accept,
+        IObservable<T> Match<T>([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,
             [Header("X-Api-Key")] string apiKey,
             [Header("Accept-Language")] string acceptLanguage,
