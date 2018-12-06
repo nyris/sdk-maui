@@ -10,33 +10,36 @@ namespace Nyris.Sdk.Network
 {
     public class ApiHelper : IApiHelper
     {
-        public string ApiKey { get; set; }
+        private readonly ApiHeader _apiHeader;
+        private string _apiKey;
+
+        public string ApiKey
+        {
+            get => _apiKey;
+            set
+            {
+                _apiKey = value;
+                _apiHeader.ApiKey = value;
+            }
+        }
+
         public IImageMatchingApi ImageMatchingAPi { get; }
 
-        public ApiHelper(string apiKey, bool isDebug)
+        public ApiHelper(string apiKey, Platform platform, bool isDebug)
         {
-            ApiKey = apiKey;
-            var outputFormat = Constants.DEFAULT_OUTPUT_FORMAT;
-            var language = Constants.DEFAULT_LANGUAGE;
             var sdkId = Constants.SDK_ID;
-            var sdkVersion = "";
-            var gitCommitHash = "";
-            var platformVersion = "";
+            var sdkVersion = Constants.SDK_VERSION;
+            _apiKey = apiKey;
+            _apiHeader = new ApiHeader(apiKey, sdkId, sdkVersion, platform.ToString());
 
-            var apiHeader = new ApiHeader(apiKey, sdkId, sdkVersion, gitCommitHash, platformVersion);
-            var httpClient = new HttpClient(new HttpLoggingHandler())
-            {
-                BaseAddress = Constants.DEFAULT_HOST_URL,
-                Timeout = TimeSpan.FromSeconds(Constants.DEFAULT_NETWORK_CONNECTION_TIMEOUT),
-                DefaultRequestHeaders = {{"X-Api-Key" , apiKey}}
-            }; 
-            httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd(apiHeader.UserAgent);
-            
+            var httpClient = isDebug
+                ? new HttpClient(new HttpLoggingAndRetryHandler(sdkId, Constants.DEFAULT_HTTP_RETRY_COUNT, isDebug))
+                : new HttpClient();
+            httpClient.BaseAddress = new Uri(Constants.DEFAULT_HOST_URL);
+            httpClient.Timeout = TimeSpan.FromSeconds(Constants.DEFAULT_NETWORK_CONNECTION_TIMEOUT);
+
             var imageMatchingService = RestService.For<IImageMatchingService>(httpClient);
-            ImageMatchingAPi = new ImageMatchingApi(outputFormat,
-                language,
-                imageMatchingService,
-                apiHeader);
+            ImageMatchingAPi = new ImageMatchingApi(imageMatchingService, _apiHeader);
         }
     }
 }

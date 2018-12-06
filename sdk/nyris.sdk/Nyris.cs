@@ -1,6 +1,7 @@
 using Nyris.Sdk.Network;
 using Nyris.Sdk.Network.API;
 using Nyris.Sdk.Network.API.ImageMatching;
+using Nyris.Sdk.Utils;
 
 namespace Nyris.Sdk
 {
@@ -16,15 +17,14 @@ namespace Nyris.Sdk
 
         public IImageMatchingApi ImageMatchingAPi => _apiHelper.ImageMatchingAPi;
 
-        private Nyris(string apiKey, bool isDebug)
+        private Nyris(string apiKey, Platform platform, bool isDebug)
         {
-            _apiHelper = new ApiHelper(apiKey, isDebug);
+            _apiHelper = new ApiHelper(apiKey, platform, isDebug);
         }
-        
-        
-        public static INyris CreateInstance(string apiKey, bool isDebug = false)
+
+        public static INyris CreateInstance(string apiKey, Platform platform, bool isDebug = false)
         {
-            return new Nyris(apiKey, isDebug);
+            return new Nyris(apiKey, platform, isDebug);
         }
     }
 }

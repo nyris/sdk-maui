@@ -12,6 +12,8 @@ namespace Nyris.Sdk.Network.Service
     {
         [Post("/find/v1")]
         IObservable<OfferResponse> Match([Header("Accept")] string accept,
+            [Header("User-Agent")] string userAgent,
+            [Header("X-Api-Key")] string apiKey,
             [Header("Accept-Language")] string acceptLanguage,
             [Header("X-Options")] string xOptions,
             [Header("Content-Type")] string contentType,

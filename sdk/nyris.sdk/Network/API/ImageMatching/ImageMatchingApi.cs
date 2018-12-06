@@ -11,9 +11,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 {
     internal sealed class ImageMatchingApi : IImageMatchingApi
     {
-        private string _outputFormat;
-        private string _language;
-        private IImageMatchingService _imageMatchingService;
+        private readonly IImageMatchingService _imageMatchingService;
         private ApiHeader _apiHeader;
         private int _limit;
 
@@ -24,13 +22,10 @@ namespace Nyris.Sdk.Network.API.ImageMatching
         private readonly RecommendationOptions _recommendationOptions;
         private readonly CategoryPredictionOptions _categoryPredictionOptions;
 
-        public ImageMatchingApi(string outputFormat,
-            string language,
+        public ImageMatchingApi(
             IImageMatchingService imageMatchingService,
             ApiHeader apiHeader)
         {
-            _outputFormat = outputFormat;
-            _language = language;
             _imageMatchingService = imageMatchingService;
             _apiHeader = apiHeader;
             _limit = Constants.DEFAULT_LIMIT;
@@ -45,13 +40,13 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         public IImageMatchingApi OutputFormat(string outputFormat)
         {
-            _outputFormat = outputFormat;
+            _apiHeader.OutputFormat = outputFormat;
             return this;
         }
 
         public IImageMatchingApi Language(string language)
         {
-            _language = language;
+            _apiHeader.Language = language;
             return this;
         }
 
@@ -129,13 +124,15 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         public IObservable<OfferResponse> Match(byte[] image)
         {
-            ByteArrayContent byteContent = new ByteArrayContent(image);
-            return _imageMatchingService.Match(_outputFormat,
-                _language,
-                "",
-                "image/jpg",
-                image.Length.ToString(),
-                byteContent);
+            var byteContent = new ByteArrayContent(image);
+            return _imageMatchingService.Match(accept: _apiHeader.OutputFormat,
+                userAgent: _apiHeader.UserAgent,
+                apiKey: _apiHeader.ApiKey,
+                acceptLanguage: _apiHeader.Language,
+                xOptions: "",
+                contentType: "image/jpg",
+                contentLength: image.Length.ToString(),
+                image: byteContent);
         }
 
         public Task<OfferResponse> Match(float[] image)
