@@ -10,10 +10,12 @@ namespace nyris.console
     {
         public static void Main(string[] args)
         {
-            var nyris = NyrisApi.CreateInstance("", Platform.Other, true);
-
-            var image = File.ReadAllBytes(@"");
-
+            var solutionPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+            var imagePath = Path.Combine(solutionPath, "sample.jpg");
+            var image = File.ReadAllBytes(imagePath);
+            var apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            
+            var nyris = NyrisApi.CreateInstance(apiKey, Platform.Other, true);
             /*nyris.ImageMatchingAPi
                 .CategoryPrediction(opt =>
                 {
