@@ -1,6 +1,6 @@
 using System;
 
-namespace Nyris.Sdk.Utils
+namespace Io.Nyris.Sdk.Utils
 {
     public static class Constants
     {

@@ -1,12 +1,12 @@
 using System;
 using System.Net.Http;
-using Nyris.Sdk.Network.API;
-using Nyris.Sdk.Network.API.ImageMatching;
-using Nyris.Sdk.Network.Service;
-using Nyris.Sdk.Utils;
+using Io.Nyris.Sdk.Network.API;
+using Io.Nyris.Sdk.Network.API.ImageMatching;
+using Io.Nyris.Sdk.Network.Service;
+using Io.Nyris.Sdk.Utils;
 using Refit;
 
-namespace Nyris.Sdk.Network
+namespace Io.Nyris.Sdk.Network
 {
     public class ApiHelper : IApiHelper
     {

@@ -1,9 +1,7 @@
 using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Nyris.Sdk.Network.Model;
+using Io.Nyris.Sdk.Network.Model;
 
-namespace Nyris.Sdk.Network.API.ImageMatching
+namespace Io.Nyris.Sdk.Network.API.ImageMatching
 {
     public interface IImageMatchingApi
     {

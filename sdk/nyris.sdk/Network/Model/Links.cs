@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Nyris.Sdk.Network.Model
+namespace Io.Nyris.Sdk.Network.Model
 {
     public class Links
     {

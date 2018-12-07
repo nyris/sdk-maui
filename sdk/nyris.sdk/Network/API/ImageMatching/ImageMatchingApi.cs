@@ -1,13 +1,10 @@
 using System;
-using System.IO;
 using System.Net.Http;
-using System.Threading.Tasks;
-using Nyris.Sdk.Network.Model;
-using Nyris.Sdk.Network.Service;
-using Nyris.Sdk.Utils;
-using Refit;
+using Io.Nyris.Sdk.Network.Model;
+using Io.Nyris.Sdk.Network.Service;
+using Io.Nyris.Sdk.Utils;
 
-namespace Nyris.Sdk.Network.API.ImageMatching
+namespace Io.Nyris.Sdk.Network.API.ImageMatching
 {
     internal sealed class ImageMatchingApi : Api, IImageMatchingApi
     {

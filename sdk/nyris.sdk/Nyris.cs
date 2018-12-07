@@ -1,9 +1,8 @@
-using Nyris.Sdk.Network;
-using Nyris.Sdk.Network.API;
-using Nyris.Sdk.Network.API.ImageMatching;
-using Nyris.Sdk.Utils;
+using Io.Nyris.Sdk.Network;
+using Io.Nyris.Sdk.Network.API.ImageMatching;
+using Io.Nyris.Sdk.Utils;
 
-namespace Nyris.Sdk
+namespace Io.Nyris.Sdk
 {
     public class Nyris : INyris
     {

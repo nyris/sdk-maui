@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using Nyris.Sdk.Utils;
+using Io.Nyris.Sdk;
+using Io.Nyris.Sdk.Utils;
 
 namespace nyris.console
 {
@@ -9,9 +10,9 @@ namespace nyris.console
     {
         public static void Main(string[] args)
         {
-            var nyris = Nyris.Sdk.Nyris.CreateInstance("",Platform.Other, true);
-            
-            var image = File.ReadAllBytes (@"");
+            var nyris = Nyris.CreateInstance("", Platform.Other, true);
+
+            var image = File.ReadAllBytes(@"");
 
             nyris.ImageMatchingAPi
                 .CategoryPrediction(opt =>
@@ -22,12 +23,13 @@ namespace nyris.console
                 .Limit(5)
                 .Match(image)
                 .Subscribe(x =>
-                {
-                    Debug.WriteLine(x);
-                }, throwable =>
-                {
-                    Debug.WriteLine(throwable.Message);
-                });
+                    {
+                        Debug.WriteLine(x);
+                    },
+                    throwable =>
+                    {
+                        Debug.WriteLine(throwable.Message);
+                    });
 
             Console.ReadKey();
         }

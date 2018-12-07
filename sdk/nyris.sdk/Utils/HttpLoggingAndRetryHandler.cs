@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Nyris.Sdk.Utils
+namespace Io.Nyris.Sdk.Utils
 {
     public class HttpLoggingAndRetryHandler : DelegatingHandler
     {

@@ -1,6 +1,6 @@
-using Nyris.Sdk.Utils;
+using Io.Nyris.Sdk.Utils;
 
-namespace Nyris.Sdk.Network.API.ImageMatching
+namespace Io.Nyris.Sdk.Network.API.ImageMatching
 {
     public sealed class RegroupOptions : Options
     {

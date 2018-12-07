@@ -1,4 +1,4 @@
-namespace Nyris.Sdk.Network.API.ImageMatching
+namespace Io.Nyris.Sdk.Network.API.ImageMatching
 {
     public sealed class ExactOptions : Options
     {

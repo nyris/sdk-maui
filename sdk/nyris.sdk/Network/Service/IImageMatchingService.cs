@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
-using System.Threading.Tasks;
-using Nyris.Sdk.Network.Model;
 using Refit;
 
-namespace Nyris.Sdk.Network.Service
+namespace Io.Nyris.Sdk.Network.Service
 {
     public interface IImageMatchingService
     {

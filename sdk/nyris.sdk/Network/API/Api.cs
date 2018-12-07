@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace Nyris.Sdk.Network.API
+namespace Io.Nyris.Sdk.Network.API
 {
     public class Api
     {

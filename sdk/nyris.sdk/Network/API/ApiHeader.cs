@@ -1,7 +1,7 @@
 using System;
-using Nyris.Sdk.Utils;
+using Io.Nyris.Sdk.Utils;
 
-namespace Nyris.Sdk.Network.API
+namespace Io.Nyris.Sdk.Network.API
 {
     public class ApiHeader
     {

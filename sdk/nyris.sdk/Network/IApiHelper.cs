@@ -1,8 +1,6 @@
-using Nyris.Sdk.Network.API;
-using Nyris.Sdk.Network.API.ImageMatching;
-using Nyris.Sdk.Network.Service;
+using Io.Nyris.Sdk.Network.API.ImageMatching;
 
-namespace Nyris.Sdk.Network
+namespace Io.Nyris.Sdk.Network
 {
     public interface IApiHelper
     {
