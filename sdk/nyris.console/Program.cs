@@ -10,13 +10,14 @@ namespace nyris.console
     {
         public static void Main(string[] args)
         {
-            var solutionPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+            var solutionPath = Directory.GetParent(Directory.GetCurrentDirectory())
+                                   .Parent?.Parent?.Parent?.FullName ?? "";
             var imagePath = Path.Combine(solutionPath, "sample.jpg");
             var image = File.ReadAllBytes(imagePath);
-            var apiKey = Environment.GetEnvironmentVariable("API_KEY");
-            
+            var apiKey = Environment.GetEnvironmentVariable("API_KEY") ?? "";
+
             var nyris = NyrisApi.CreateInstance(apiKey, Platform.Other, true);
-            /*nyris.ImageMatchingAPi
+            nyris.ImageMatchingAPi
                 .CategoryPrediction(opt =>
                 {
                     opt.Enabled = true;
@@ -25,11 +26,12 @@ namespace nyris.console
                 .Limit(5)
                 .Match(image)
                 .Subscribe(x => Debug.WriteLine(x),
-                    throwable => Debug.WriteLine(throwable.Message));*/
+                    throwable => Debug.WriteLine(throwable.Message)
+                );
 
             nyris.ObjectProposalApi
                 .ExtractObjects(image)
-                .Subscribe(x => Debug.WriteLine(x), 
+                .Subscribe(x => Debug.WriteLine(x),
                     throwable => Debug.WriteLine(throwable.Message));
             Console.ReadKey();
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using JetBrains.Annotations;
 using Nyris.Sdk.Network.API;
 using Nyris.Sdk.Network.API.ImageMatching;
 using Nyris.Sdk.Network.API.ObjectProposal;
@@ -14,7 +15,7 @@ namespace Nyris.Sdk.Network
         private readonly ApiHeader _apiHeader;
         private string _apiKey;
 
-        public ApiHelper(string apiKey, Platform platform, bool isDebug)
+        public ApiHelper([NotNull]  string apiKey, Platform platform, bool isDebug)
         {   
             _apiKey = apiKey;
             _apiHeader = new ApiHeader(apiKey, platform.ToString());

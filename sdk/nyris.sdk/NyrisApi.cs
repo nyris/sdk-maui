@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Nyris.Sdk.Network;
 using Nyris.Sdk.Network.API.ImageMatching;
 using Nyris.Sdk.Network.API.ObjectProposal;
@@ -15,13 +16,14 @@ namespace Nyris.Sdk
         private NyrisApi(string apiKey, Platform platform, bool isDebug) =>
             _apiHelper = new ApiHelper(apiKey, platform, isDebug);
 
+        [NotNull]
         public string ApiKey
         {
             get => _apiHelper.ApiKey;
             set => _apiHelper.ApiKey = value;
         }
         
-        public static INyris CreateInstance(string apiKey, Platform platform, bool isDebug = false) =>
+        public static INyris CreateInstance([NotNull] string apiKey, Platform platform, bool isDebug = false) =>
             new NyrisApi(apiKey, platform, isDebug);
     }
 }

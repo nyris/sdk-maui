@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using Nyris.Sdk.Network.Model;
 
 namespace Nyris.Sdk.Network.API.ImageMatching
@@ -23,8 +24,8 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         IImageMatchingApi CategoryPrediction(Action<CategoryPredictionOptions> options = null);
 
-        IObservable<OfferResponse> Match(byte[] image);
+        IObservable<OfferResponse> Match([NotNull] byte[] image);
         
-        IObservable<T> Match<T>(byte[] image);
+        IObservable<T> Match<T>([NotNull] byte[] image);
     }
 }
