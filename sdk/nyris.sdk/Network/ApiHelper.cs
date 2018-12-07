@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using Io.Nyris.Sdk.Network.API;
 using Io.Nyris.Sdk.Network.API.ImageMatching;
+using Io.Nyris.Sdk.Network.API.ObjectProposal;
 using Io.Nyris.Sdk.Network.Service;
 using Io.Nyris.Sdk.Utils;
 using Refit;
@@ -24,6 +25,7 @@ namespace Io.Nyris.Sdk.Network
         }
 
         public IImageMatchingApi ImageMatchingAPi { get; }
+        public IObjectProposalApi ObjectProposalApi { get; }
 
         public ApiHelper(string apiKey, Platform platform, bool isDebug)
         {
@@ -40,6 +42,9 @@ namespace Io.Nyris.Sdk.Network
 
             var imageMatchingService = RestService.For<IImageMatchingService>(httpClient);
             ImageMatchingAPi = new ImageMatchingApi(imageMatchingService, _apiHeader);
+            
+            var objectProposalService = RestService.For<IObjectProposalService>(httpClient);
+            ObjectProposalApi = new ObjectProposalApi(objectProposalService, _apiHeader);
         }
     }
 }

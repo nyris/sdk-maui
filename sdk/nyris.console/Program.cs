@@ -14,7 +14,7 @@ namespace nyris.console
 
             var image = File.ReadAllBytes(@"");
 
-            nyris.ImageMatchingAPi
+            /*nyris.ImageMatchingAPi
                 .CategoryPrediction(opt =>
                 {
                     opt.Enabled = true;
@@ -22,15 +22,13 @@ namespace nyris.console
                 })
                 .Limit(5)
                 .Match(image)
-                .Subscribe(x =>
-                    {
-                        Debug.WriteLine(x);
-                    },
-                    throwable =>
-                    {
-                        Debug.WriteLine(throwable.Message);
-                    });
+                .Subscribe(x => Debug.WriteLine(x),
+                    throwable => Debug.WriteLine(throwable.Message));*/
 
+            nyris.ObjectProposalApi
+                .ExtractObjects(image)
+                .Subscribe(x => Debug.WriteLine(x), 
+                    throwable => Debug.WriteLine(throwable.Message));
             Console.ReadKey();
         }
     }

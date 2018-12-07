@@ -1,10 +1,11 @@
 using Io.Nyris.Sdk.Network;
 using Io.Nyris.Sdk.Network.API.ImageMatching;
+using Io.Nyris.Sdk.Network.API.ObjectProposal;
 using Io.Nyris.Sdk.Utils;
 
-namespace Io.Nyris.Sdk
+namespace Nyris.Sdk
 {
-    public class Nyris : INyris
+    public class NyrisApi : INyris
     {
         private readonly IApiHelper _apiHelper;
 
@@ -15,15 +16,12 @@ namespace Io.Nyris.Sdk
         }
 
         public IImageMatchingApi ImageMatchingAPi => _apiHelper.ImageMatchingAPi;
+        public IObjectProposalApi ObjectProposalApi => _apiHelper.ObjectProposalApi;
 
-        private Nyris(string apiKey, Platform platform, bool isDebug)
-        {
+        private NyrisApi(string apiKey, Platform platform, bool isDebug) =>
             _apiHelper = new ApiHelper(apiKey, platform, isDebug);
-        }
 
-        public static INyris CreateInstance(string apiKey, Platform platform, bool isDebug = false)
-        {
-            return new Nyris(apiKey, platform, isDebug);
-        }
+        public static INyris CreateInstance(string apiKey, Platform platform, bool isDebug = false) =>
+            new NyrisApi(apiKey, platform, isDebug);
     }
 }

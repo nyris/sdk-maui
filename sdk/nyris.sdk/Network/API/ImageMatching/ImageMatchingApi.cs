@@ -163,10 +163,7 @@ namespace Io.Nyris.Sdk.Network.API.ImageMatching
             return xOptions;
         }
 
-        public IObservable<OfferResponse> Match(byte[] image)
-        {
-            return Match<OfferResponse>(image);
-        }
+        public IObservable<OfferResponse> Match(byte[] image) => Match<OfferResponse>(image);
 
         public IObservable<T> Match<T>(byte[] image)
         {

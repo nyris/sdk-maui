@@ -1,4 +1,5 @@
 using Io.Nyris.Sdk.Network.API.ImageMatching;
+using Io.Nyris.Sdk.Network.API.ObjectProposal;
 
 namespace Io.Nyris.Sdk.Network
 {
@@ -7,5 +8,7 @@ namespace Io.Nyris.Sdk.Network
         string ApiKey { get; set; }
         
         IImageMatchingApi ImageMatchingAPi { get; }
+        
+        IObjectProposalApi ObjectProposalApi { get; }
     }
 }
