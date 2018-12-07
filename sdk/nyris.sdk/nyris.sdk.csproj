@@ -2,7 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Nyris.Sdk</RootNamespace>
+    <RootNamespace>Io.Nyris.Sdk</RootNamespace>
+    <AssemblyName>io.nyris.sdk</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Refit" Version="4.5.6" />
+  </ItemGroup>
 </Project>
