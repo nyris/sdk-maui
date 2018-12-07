@@ -1,4 +1,4 @@
-namespace Io.Nyris.Sdk.Utils
+namespace Nyris.Sdk.Utils
 {
     public enum Platform
     {

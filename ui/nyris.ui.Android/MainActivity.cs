@@ -2,8 +2,8 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Io.Nyris.Sdk;
-using Io.Nyris.Sdk.Utils;
+using Nyris.Sdk;
+using Nyris.Sdk.Utils;
 
 namespace nyris.ui.Droid
 {
@@ -20,7 +20,7 @@ namespace nyris.ui.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
 
-            var nyris = Nyris.CreateInstance("", Platform.Android, true);
+            var nyris = NyrisApi.CreateInstance("", Platform.Android, true);
 
             nyris.ImageMatchingAPi
                 .Similarity(opt => { opt.Enabled = false; })

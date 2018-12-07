@@ -1,18 +1,18 @@
-using Io.Nyris.Sdk.Utils;
+using Nyris.Sdk.Utils;
 
-namespace Io.Nyris.Sdk.Network.API.ImageMatching
+namespace Nyris.Sdk.Network.API.ImageMatching
 {
     public sealed class SimilarityOptions : Options
     {
-        public int Threshold { get; set; }
-        
-        public int Limit { get; set; }
-
         public SimilarityOptions()
         {
             Reset();
         }
-        
+
+        public int Threshold { get; set; }
+
+        public int Limit { get; set; }
+
         public override void Reset()
         {
             Enabled = true;

@@ -6,26 +6,22 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Io.Nyris.Sdk.Utils
+namespace Nyris.Sdk.Utils
 {
     public class HttpLoggingAndRetryHandler : DelegatingHandler
     {
-        readonly string[] _types = new[] {"html", "text", "xml", "json", "txt", "x-www-form-urlencoded"};
-        private readonly string _id;
-        private readonly int _numberRetry;
+        private readonly string[] _types = new[] {"html", "text", "xml", "json", "txt", "x-www-form-urlencoded"};
+        private readonly string _id = Constants.SDK_ID;
+        private readonly int _numberRetry = Constants.DEFAULT_HTTP_RETRY_COUNT;
         private readonly bool _isDebug;
 
-        public HttpLoggingAndRetryHandler(string id, int numberRetry, bool isDebug) : base(new HttpClientHandler())
-        {
-            _id = id;
-            _numberRetry = numberRetry;
+        public HttpLoggingAndRetryHandler(bool isDebug = false) : base(new HttpClientHandler()) =>
             _isDebug = isDebug;
-        }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            PrintHeader(request);
+            LogHeader(request);
 
             var start = DateTime.Now;
             var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
@@ -39,7 +35,7 @@ namespace Io.Nyris.Sdk.Utils
 
             var end = DateTime.Now;
 
-            PrinterFooter(end, start, request, response);
+            LogFooter(end, start, request, response);
 
             return response;
         }
@@ -53,7 +49,7 @@ namespace Io.Nyris.Sdk.Utils
             return _types.Any(t => header.Contains(t));
         }
 
-        private async void PrintHeader(HttpRequestMessage request)
+        private async void LogHeader(HttpRequestMessage request)
         {
             if (!_isDebug)
             {
@@ -91,7 +87,7 @@ namespace Io.Nyris.Sdk.Utils
             Debug.WriteLine($"{msg} {string.Join("", result.Take(255))}...");
         }
 
-        private async void PrinterFooter(DateTime end, DateTime start, HttpRequestMessage request,
+        private async void LogFooter(DateTime end, DateTime start, HttpRequestMessage request,
             HttpResponseMessage response)
         {
             var msg = $"[{_id} - Request]";

@@ -1,4 +1,4 @@
-namespace Io.Nyris.Sdk.Network.API
+namespace Nyris.Sdk.Network.API
 {
     public abstract class Options
     {

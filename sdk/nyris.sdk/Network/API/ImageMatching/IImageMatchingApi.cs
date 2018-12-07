@@ -1,7 +1,7 @@
 using System;
-using Io.Nyris.Sdk.Network.Model;
+using Nyris.Sdk.Network.Model;
 
-namespace Io.Nyris.Sdk.Network.API.ImageMatching
+namespace Nyris.Sdk.Network.API.ImageMatching
 {
     public interface IImageMatchingApi
     {

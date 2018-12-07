@@ -1,7 +1,7 @@
-using Io.Nyris.Sdk.Network.API.ImageMatching;
-using Io.Nyris.Sdk.Network.API.ObjectProposal;
+using Nyris.Sdk.Network.API.ImageMatching;
+using Nyris.Sdk.Network.API.ObjectProposal;
 
-namespace Io.Nyris.Sdk.Network
+namespace Nyris.Sdk.Network
 {
     public interface IApiHelper
     {

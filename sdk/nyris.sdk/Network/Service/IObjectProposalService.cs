@@ -1,9 +1,8 @@
-
 using System;
 using System.Net.Http;
 using Refit;
 
-namespace Io.Nyris.Sdk.Network.Service
+namespace Nyris.Sdk.Network.Service
 {
     public interface IObjectProposalService
     {
