@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Io.Nyris.Sdk.Network.Model
+namespace Nyris.Sdk.Network.Model
 {
     public sealed class OfferResponse
     {

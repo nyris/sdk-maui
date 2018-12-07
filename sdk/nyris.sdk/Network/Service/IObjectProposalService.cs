@@ -4,14 +4,12 @@ using Refit;
 
 namespace Nyris.Sdk.Network.Service
 {
-    public interface IImageMatchingService
+    public interface IObjectProposalService
     {
-        [Post("/find/v1")]
-        IObservable<T> Match<T>([Header("Accept")] string accept,
+        [Post("/find/v1/regions")]
+        IObservable<T> ExtractObjects<T>([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,
             [Header("X-Api-Key")] string apiKey,
-            [Header("Accept-Language")] string acceptLanguage,
-            [Header("X-Options")] string xOptions,
             [Header("Content-Type")] string contentType,
             [Header("Content-Length")] string contentLength,
             ByteArrayContent image);

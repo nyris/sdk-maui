@@ -1,10 +1,10 @@
 using System;
 using System.Net.Http;
-using Io.Nyris.Sdk.Network.Model;
-using Io.Nyris.Sdk.Network.Service;
-using Io.Nyris.Sdk.Utils;
+using Nyris.Sdk.Network.Model;
+using Nyris.Sdk.Network.Service;
+using Nyris.Sdk.Utils;
 
-namespace Io.Nyris.Sdk.Network.API.ImageMatching
+namespace Nyris.Sdk.Network.API.ImageMatching
 {
     internal sealed class ImageMatchingApi : Api, IImageMatchingApi
     {
@@ -163,10 +163,7 @@ namespace Io.Nyris.Sdk.Network.API.ImageMatching
             return xOptions;
         }
 
-        public IObservable<OfferResponse> Match(byte[] image)
-        {
-            return Match<OfferResponse>(image);
-        }
+        public IObservable<OfferResponse> Match(byte[] image) => Match<OfferResponse>(image);
 
         public IObservable<T> Match<T>(byte[] image)
         {

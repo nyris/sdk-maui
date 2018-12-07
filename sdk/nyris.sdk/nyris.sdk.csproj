@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Io.Nyris.Sdk</RootNamespace>
-    <AssemblyName>io.nyris.sdk</AssemblyName>
+    <RootNamespace>Nyris.Sdk</RootNamespace>
+    <AssemblyName>Nyris.Sdk</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

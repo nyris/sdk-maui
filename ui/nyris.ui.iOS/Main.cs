@@ -1,6 +1,6 @@
 ﻿using System;
-using Io.Nyris.Sdk;
-using Io.Nyris.Sdk.Utils;
+using Nyris.Sdk;
+using Nyris.Sdk.Utils;
 using UIKit;
 
 namespace nyris.ui.iOS
@@ -13,7 +13,7 @@ namespace nyris.ui.iOS
             // if you want to use a different Application Delegate class from "AppDelegate"
             // you can specify it here.
             
-            var nyris = Nyris.CreateInstance("", Platform.iOS, true);
+            var nyris = NyrisApi.CreateInstance("", Platform.iOS, true);
 
             nyris.ImageMatchingAPi
                 .Similarity(opt => { opt.Enabled = false; })

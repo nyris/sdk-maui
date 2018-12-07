@@ -1,19 +1,19 @@
-using Io.Nyris.Sdk.Utils;
+using Nyris.Sdk.Utils;
 
-namespace Io.Nyris.Sdk.Network.API.ImageMatching
+namespace Nyris.Sdk.Network.API.ImageMatching
 {
     public class CategoryPredictionOptions : Options
     {
-        public int Threshold { get; set; }
-        
-        public int Limit { get; set; }
-
         public CategoryPredictionOptions()
         {
             Reset();
         }
+     
+        public int Threshold { get; set; }
         
-        public override void Reset()
+        public int Limit { get; set; }
+        
+        public sealed override void Reset()
         {
             Enabled = false;
             Threshold = Constants.DEFAULT_INTEGER;
