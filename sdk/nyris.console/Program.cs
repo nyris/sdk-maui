@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using Nyris.Sdk;
+using Nyris.Sdk.Network.Model;
 using Nyris.Sdk.Utils;
 
 namespace nyris.console
 {
     static class MainClass
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var solutionPath = Directory.GetParent(Directory.GetCurrentDirectory())
                                    .Parent?.Parent?.Parent?.FullName ?? "";
@@ -29,10 +32,9 @@ namespace nyris.console
                     throwable => Debug.WriteLine(throwable.Message)
                 );
 
-            nyris.ObjectProposalApi
-                .ExtractObjects(image)
-                .Subscribe(x => Debug.WriteLine(x),
-                    throwable => Debug.WriteLine(throwable.Message));
+            var extractedObjects = await nyris.ObjectProposalApi.ExtractObjectsAsync<string>(image);
+            Debug.WriteLine(extractedObjects);
+            
             Console.ReadKey();
         }
     }

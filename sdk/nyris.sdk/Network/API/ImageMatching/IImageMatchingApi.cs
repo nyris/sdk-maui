@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Nyris.Sdk.Network.Model;
 
@@ -26,6 +27,10 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         IObservable<OfferResponse> Match([NotNull] byte[] image);
         
+        Task<OfferResponse> MatchAsync([NotNull] byte[] image);
+        
         IObservable<T> Match<T>([NotNull] byte[] image);
+        
+        Task<T> MatchAsync<T>([NotNull] byte[] image);
     }
 }
