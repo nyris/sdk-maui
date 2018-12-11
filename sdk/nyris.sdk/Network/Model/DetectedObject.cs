@@ -4,10 +4,10 @@ namespace Nyris.Sdk.Network.Model
 {
     public class DetectedObject
     {
-        [JsonProperty(PropertyName = "confidence")] 
+        [JsonProperty(PropertyName = "confidence")]
         public float Confidence { get; set; }
-        
-        [JsonProperty(PropertyName = "region")] 
+
+        [JsonProperty(PropertyName = "region")]
         public Region Region { get; set; }
     }
 }

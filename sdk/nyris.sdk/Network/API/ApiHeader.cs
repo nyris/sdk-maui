@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Nyris.Sdk.Utils;
 
 namespace Nyris.Sdk.Network.API
@@ -9,7 +10,7 @@ namespace Nyris.Sdk.Network.API
         private readonly string _platform;
         private string _userAgent;
 
-        public ApiHeader(string apiKey, string platform)
+        public ApiHeader([NotNull] string apiKey, string platform)
         {
             ApiKey = apiKey;
             _platform = platform;

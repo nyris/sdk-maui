@@ -1,21 +1,21 @@
 using Nyris.Sdk.Utils;
 
-namespace Nyris.Sdk.Network.API.ImageMatching
+namespace Nyris.Sdk.Network.API.XOptions
 {
-    public class CategoryPredictionOptions : Options
+    public sealed class SimilarityOptions : Options
     {
-        public CategoryPredictionOptions()
+        public SimilarityOptions()
         {
             Reset();
         }
-     
+
         public int Threshold { get; set; }
-        
+
         public int Limit { get; set; }
-        
-        public sealed override void Reset()
+
+        public override void Reset()
         {
-            Enabled = false;
+            Enabled = true;
             Threshold = Constants.DEFAULT_INTEGER;
             Limit = Constants.DEFAULT_INTEGER;
         }

@@ -1,8 +1,10 @@
 using System;
 using System.Net.Http;
+using JetBrains.Annotations;
 using Nyris.Sdk.Network.API;
 using Nyris.Sdk.Network.API.ImageMatching;
 using Nyris.Sdk.Network.API.ObjectProposal;
+using Nyris.Sdk.Network.API.TextSearch;
 using Nyris.Sdk.Network.Service;
 using Nyris.Sdk.Utils;
 using Refit;
@@ -14,8 +16,8 @@ namespace Nyris.Sdk.Network
         private readonly ApiHeader _apiHeader;
         private string _apiKey;
 
-        public ApiHelper(string apiKey, Platform platform, bool isDebug)
-        {   
+        public ApiHelper([NotNull] string apiKey, Platform platform, bool isDebug)
+        {
             _apiKey = apiKey;
             _apiHeader = new ApiHeader(apiKey, platform.ToString());
 
@@ -27,11 +29,14 @@ namespace Nyris.Sdk.Network
 
             var imageMatchingService = RestService.For<IImageMatchingService>(httpClient);
             ImageMatchingAPi = new ImageMatchingApi(imageMatchingService, _apiHeader);
-            
+
             var objectProposalService = RestService.For<IObjectProposalService>(httpClient);
             ObjectProposalApi = new ObjectProposalApi(objectProposalService, _apiHeader);
+
+            var offerTextSearchService = RestService.For<IOfferTextSearchService>(httpClient);
+            OfferTextSearchApi = new OfferTextSearchApi(offerTextSearchService, _apiHeader);
         }
-        
+
         public string ApiKey
         {
             get => _apiKey;
@@ -43,7 +48,9 @@ namespace Nyris.Sdk.Network
         }
 
         public IImageMatchingApi ImageMatchingAPi { get; }
-        
+
         public IObjectProposalApi ObjectProposalApi { get; }
+
+        public IOfferTextSearchApi OfferTextSearchApi { get; }
     }
 }

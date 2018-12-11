@@ -1,6 +1,6 @@
-﻿nyris.ui/bin/
-nyris.ui/obj/
-nyris.ui.Android/bin/
-nyris.ui.Android/obj/
-nyris.ui.iOS/bin/
-nyris.ui.iOS/obj/
+/nyris.ui/bin/*
+/nyris.ui/obj/*
+/nyris.ui.Android/bin/*
+/nyris.ui.Android/obj/*
+/nyris.ui.iOS/bin/*
+/nyris.ui.iOS/obj/*
