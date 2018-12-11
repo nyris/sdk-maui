@@ -8,7 +8,7 @@ using Nyris.Sdk.Network.Service;
 
 namespace Nyris.Sdk.Network.API.TextSearch
 {
-    public class OfferTextSearchApi : Api, IOfferTextSearchApi
+    internal class OfferTextSearchApi : Api, IOfferTextSearchApi
     {
         private readonly IOfferTextSearchService _offerTextSearchService;
         private int _limit = Options.DEFAULT_LIMIT;

@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using Nyris.Sdk.Network.API;
 using Nyris.Sdk.Network.API.ImageMatching;
 using Nyris.Sdk.Network.API.ObjectProposal;
+using Nyris.Sdk.Network.API.Recommendation;
 using Nyris.Sdk.Network.API.TextSearch;
 using Nyris.Sdk.Network.Service;
 using Nyris.Sdk.Utils;
@@ -21,11 +22,11 @@ namespace Nyris.Sdk.Network
             _apiKey = apiKey;
             _apiHeader = new ApiHeader(apiKey, platform.ToString());
 
-            var httpClient = isDebug
-                ? new HttpClient(new HttpLoggingAndRetryHandler(isDebug))
-                : new HttpClient();
-            httpClient.BaseAddress = new Uri(Constants.DEFAULT_HOST_URL);
-            httpClient.Timeout = TimeSpan.FromSeconds(Constants.DEFAULT_NETWORK_CONNECTION_TIMEOUT);
+            var httpClient = new HttpClient(new HttpLoggingAndRetryHandler(isDebug))
+            {
+                BaseAddress = new Uri(Constants.DEFAULT_HOST_URL),
+                Timeout = TimeSpan.FromSeconds(Constants.DEFAULT_NETWORK_CONNECTION_TIMEOUT)
+            };
 
             var imageMatchingService = RestService.For<IImageMatchingService>(httpClient);
             ImageMatchingAPi = new ImageMatchingApi(imageMatchingService, _apiHeader);
@@ -35,6 +36,9 @@ namespace Nyris.Sdk.Network
 
             var offerTextSearchService = RestService.For<IOfferTextSearchService>(httpClient);
             OfferTextSearchApi = new OfferTextSearchApi(offerTextSearchService, _apiHeader);
+            
+            var recommendationService = RestService.For<IRecommendationService>(httpClient);
+            RecommendationApi = new RecommendationApi(recommendationService, _apiHeader);
         }
 
         public string ApiKey
@@ -52,5 +56,7 @@ namespace Nyris.Sdk.Network
         public IObjectProposalApi ObjectProposalApi { get; }
 
         public IOfferTextSearchApi OfferTextSearchApi { get; }
+        
+        public IRecommendationApi RecommendationApi { get; }
     }
 }
