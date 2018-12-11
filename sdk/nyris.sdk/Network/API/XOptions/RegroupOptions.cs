@@ -1,6 +1,6 @@
 using Nyris.Sdk.Utils;
 
-namespace Nyris.Sdk.Network.API.ImageMatching
+namespace Nyris.Sdk.Network.API.XOptions
 {
     public sealed class RegroupOptions : Options
     {
@@ -8,9 +8,9 @@ namespace Nyris.Sdk.Network.API.ImageMatching
         {
             Reset();
         }
-     
+
         public int Threshold { get; set; }
-        
+
         public override void Reset()
         {
             Enabled = false;

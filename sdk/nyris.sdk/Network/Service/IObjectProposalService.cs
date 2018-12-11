@@ -5,7 +5,7 @@ using Refit;
 
 namespace Nyris.Sdk.Network.Service
 {
-    public interface IObjectProposalService
+    internal interface IObjectProposalService
     {
         [Post("/find/v1/regions")]
         IObservable<T> ExtractObjects<T>([Header("Accept")] string accept,
@@ -14,7 +14,7 @@ namespace Nyris.Sdk.Network.Service
             [Header("Content-Type")] string contentType,
             [Header("Content-Length")] string contentLength,
             ByteArrayContent image);
-        
+
         [Post("/find/v1/regions")]
         Task<T> ExtractObjectsAsync<T>([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,

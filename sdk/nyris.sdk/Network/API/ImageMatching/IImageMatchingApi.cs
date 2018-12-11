@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Nyris.Sdk.Network.API.XOptions;
 using Nyris.Sdk.Network.Model;
 
 namespace Nyris.Sdk.Network.API.ImageMatching
@@ -26,11 +27,11 @@ namespace Nyris.Sdk.Network.API.ImageMatching
         IImageMatchingApi CategoryPrediction(Action<CategoryPredictionOptions> options = null);
 
         IObservable<OfferResponse> Match([NotNull] byte[] image);
-        
+
         Task<OfferResponse> MatchAsync([NotNull] byte[] image);
-        
+
         IObservable<T> Match<T>([NotNull] byte[] image);
-        
+
         Task<T> MatchAsync<T>([NotNull] byte[] image);
     }
 }

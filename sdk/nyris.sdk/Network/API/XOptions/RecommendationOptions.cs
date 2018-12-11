@@ -1,4 +1,4 @@
-namespace Nyris.Sdk.Network.API.ImageMatching
+namespace Nyris.Sdk.Network.API.XOptions
 {
     public sealed class RecommendationOptions : Options
     {

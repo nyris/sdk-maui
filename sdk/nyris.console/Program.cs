@@ -35,6 +35,12 @@ namespace nyris.console
             var extractedObjects = await nyris.ObjectProposalApi.ExtractObjectsAsync<string>(image);
             Debug.WriteLine(extractedObjects);
             
+            nyris.OfferTextSearchApi
+                .Limit(5)
+                .SearchOffers("Keyboard")
+                .Subscribe(x => Debug.WriteLine(x),
+                    throwable => Debug.WriteLine(throwable.Message)
+                );
             Console.ReadKey();
         }
     }

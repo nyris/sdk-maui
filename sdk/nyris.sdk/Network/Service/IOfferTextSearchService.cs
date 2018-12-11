@@ -5,24 +5,22 @@ using Refit;
 
 namespace Nyris.Sdk.Network.Service
 {
-    internal interface IImageMatchingService
+    internal interface IOfferTextSearchService
     {
-        [Post("/find/v1")]
-        IObservable<T> Match<T>([Header("Accept")] string accept,
+        [Post("/find/v1/text")]
+        IObservable<T> SearchOffers<T>([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,
             [Header("X-Api-Key")] string apiKey,
             [Header("Accept-Language")] string acceptLanguage,
             [Header("X-Options")] string xOptions,
-            [Header("Content-Type")] string contentType,
-            [Body] ByteArrayContent image);
+            [Body] StringContent stringContent);
 
-        [Post("/find/v1")]
-        Task<T> MatchAsync<T>([Header("Accept")] string accept,
+        [Post("/find/v1/text")]
+        Task<T> SearchOffersAsync<T>([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,
             [Header("X-Api-Key")] string apiKey,
             [Header("Accept-Language")] string acceptLanguage,
             [Header("X-Options")] string xOptions,
-            [Header("Content-Type")] string contentType,
-            [Body] ByteArrayContent image);
+            [Body] StringContent stringContent);
     }
 }

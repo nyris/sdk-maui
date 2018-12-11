@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Nyris.Sdk.Network.API.XOptions;
 using Nyris.Sdk.Network.Model;
 using Nyris.Sdk.Network.Service;
 using Nyris.Sdk.Utils;
@@ -19,7 +20,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
         private readonly RecommendationOptions _recommendationOptions;
         private readonly CategoryPredictionOptions _categoryPredictionOptions;
 
-        public ImageMatchingApi(
+        internal ImageMatchingApi(
             IImageMatchingService imageMatchingService,
             ApiHeader apiHeader) : base(apiHeader)
         {
@@ -117,6 +118,36 @@ namespace Nyris.Sdk.Network.API.ImageMatching
             return this;
         }
 
+        public IObservable<OfferResponse> Match(byte[] image) => Match<OfferResponse>(image);
+
+        public Task<OfferResponse> MatchAsync(byte[] image) => MatchAsync<OfferResponse>(image);
+
+        public IObservable<T> Match<T>(byte[] image)
+        {
+            var byteContent = new ByteArrayContent(image);
+            var xOptions = BuildXOptions();
+            return _imageMatchingService.Match<T>(accept: _apiHeader.OutputFormat,
+                userAgent: _apiHeader.UserAgent,
+                apiKey: _apiHeader.ApiKey,
+                acceptLanguage: _apiHeader.Language,
+                xOptions: xOptions,
+                contentType: "image/jpg",
+                image: byteContent);
+        }
+
+        public Task<T> MatchAsync<T>(byte[] image)
+        {
+            var byteContent = new ByteArrayContent(image);
+            var xOptions = BuildXOptions();
+            return _imageMatchingService.MatchAsync<T>(accept: _apiHeader.OutputFormat,
+                userAgent: _apiHeader.UserAgent,
+                apiKey: _apiHeader.ApiKey,
+                acceptLanguage: _apiHeader.Language,
+                xOptions: xOptions,
+                contentType: "image/jpg",
+                image: byteContent);
+        }
+
         protected override string BuildXOptions()
         {
             var xOptions = "";
@@ -162,38 +193,6 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
             Reset();
             return xOptions;
-        }
-
-        public IObservable<OfferResponse> Match(byte[] image) => Match<OfferResponse>(image);
-        
-        public Task<OfferResponse> MatchAsync(byte[] image) => MatchAsync<OfferResponse>(image);
-
-        public IObservable<T> Match<T>(byte[] image)
-        {
-            var byteContent = new ByteArrayContent(image);
-            var xOptions = BuildXOptions();
-            return _imageMatchingService.Match<T>(accept: _apiHeader.OutputFormat,
-                userAgent: _apiHeader.UserAgent,
-                apiKey: _apiHeader.ApiKey,
-                acceptLanguage: _apiHeader.Language,
-                xOptions: xOptions,
-                contentType: "image/jpg",
-                contentLength: image.Length.ToString(),
-                image: byteContent);
-        }
-
-        public Task<T> MatchAsync<T>(byte[] image)
-        {
-            var byteContent = new ByteArrayContent(image);
-            var xOptions = BuildXOptions();
-            return _imageMatchingService.MatchAsync<T>(accept: _apiHeader.OutputFormat,
-                userAgent: _apiHeader.UserAgent,
-                apiKey: _apiHeader.ApiKey,
-                acceptLanguage: _apiHeader.Language,
-                xOptions: xOptions,
-                contentType: "image/jpg",
-                contentLength: image.Length.ToString(),
-                image: byteContent);
         }
 
         private void Reset()

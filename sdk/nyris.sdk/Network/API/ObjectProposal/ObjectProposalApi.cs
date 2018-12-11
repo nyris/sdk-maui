@@ -7,16 +7,18 @@ using Nyris.Sdk.Network.Service;
 
 namespace Nyris.Sdk.Network.API.ObjectProposal
 {
-    public class ObjectProposalApi : Api, IObjectProposalApi
+    internal class ObjectProposalApi : Api, IObjectProposalApi
     {
         private readonly IObjectProposalService _objectProposalService;
-        
-        public ObjectProposalApi(IObjectProposalService objectProposalService, 
+
+        internal ObjectProposalApi(IObjectProposalService objectProposalService,
             ApiHeader apiHeader) : base(apiHeader) => _objectProposalService = objectProposalService;
 
-        public IObservable<List<DetectedObject>> ExtractObjects(byte[] image) => ExtractObjects<List<DetectedObject>>(image);
-        
-        public Task<List<DetectedObject>> ExtractObjectsAsync(byte[] image) => ExtractObjectsAsync<List<DetectedObject>>(image);
+        public IObservable<List<DetectedObject>> ExtractObjects(byte[] image) =>
+            ExtractObjects<List<DetectedObject>>(image);
+
+        public Task<List<DetectedObject>> ExtractObjectsAsync(byte[] image) =>
+            ExtractObjectsAsync<List<DetectedObject>>(image);
 
         public IObservable<T> ExtractObjects<T>(byte[] image)
         {
