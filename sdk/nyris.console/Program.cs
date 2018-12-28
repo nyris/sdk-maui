@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Nyris.Sdk;
 using Nyris.Sdk.Network.Model;
@@ -19,7 +20,8 @@ namespace nyris.console
             var image = File.ReadAllBytes(imagePath);
             var apiKey = Environment.GetEnvironmentVariable("API_KEY") ?? "";
 
-            var nyris = NyrisApi.CreateInstance(apiKey, Platform.Other, true);
+            var compositeDisposable = new CompositeDisposable();
+            var nyris = NyrisApi.CreateInstance(apiKey, Platform.Generic, true);
             nyris.ImageMatchingAPi
                 .CategoryPrediction(opt =>
                 {
@@ -32,7 +34,8 @@ namespace nyris.console
                     throwable => Debug.WriteLine(throwable.Message)
                 );
 
-            var extractedObjects = await nyris.ObjectProposalApi.ExtractObjectsAsync<string>(image);
+            
+            /*var extractedObjects = await nyris.ObjectProposalApi.ExtractObjectsAsync<string>(image);
             Debug.WriteLine(extractedObjects);
             
             nyris.OfferTextSearchApi
@@ -41,7 +44,12 @@ namespace nyris.console
                 .Subscribe(x => Debug.WriteLine(x),
                     throwable => Debug.WriteLine(throwable.Message)
                 );
+            compositeDisposable.Add(nyris.RecommendationApi
+                .GetOffersBySku<string>("sku-test").Subscribe(x => { Debug.WriteLine(x); },
+                    throwable => { Debug.WriteLine(throwable.Message); }));*/
+
             Console.ReadKey();
+            compositeDisposable.Dispose();
         }
     }
 }

@@ -1,5 +1,6 @@
 using Nyris.Sdk.Network.API.ImageMatching;
 using Nyris.Sdk.Network.API.ObjectProposal;
+using Nyris.Sdk.Network.API.Recommendation;
 using Nyris.Sdk.Network.API.TextSearch;
 
 namespace Nyris.Sdk.Network
@@ -13,5 +14,7 @@ namespace Nyris.Sdk.Network
         IObjectProposalApi ObjectProposalApi { get; }
 
         IOfferTextSearchApi OfferTextSearchApi { get; }
+        
+        IRecommendationApi RecommendationApi { get; }
     }
 }

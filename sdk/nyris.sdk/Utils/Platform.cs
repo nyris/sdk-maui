@@ -2,9 +2,9 @@ namespace Nyris.Sdk.Utils
 {
     public enum Platform
     {
-        iOS,
-        Android,
+        Generic,
         UWP,
-        Other
+        Android,
+        iOS
     }
 }
