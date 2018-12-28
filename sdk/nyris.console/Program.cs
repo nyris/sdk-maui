@@ -21,8 +21,8 @@ namespace nyris.console
             var apiKey = Environment.GetEnvironmentVariable("API_KEY") ?? "";
 
             var compositeDisposable = new CompositeDisposable();
-            var nyris = NyrisApi.CreateInstance(apiKey, Platform.Other, true);
-            /*nyris.ImageMatchingAPi
+            var nyris = NyrisApi.CreateInstance(apiKey, Platform.Generic, true);
+            nyris.ImageMatchingAPi
                 .CategoryPrediction(opt =>
                 {
                     opt.Enabled = true;
@@ -34,7 +34,8 @@ namespace nyris.console
                     throwable => Debug.WriteLine(throwable.Message)
                 );
 
-            var extractedObjects = await nyris.ObjectProposalApi.ExtractObjectsAsync<string>(image);
+            
+            /*var extractedObjects = await nyris.ObjectProposalApi.ExtractObjectsAsync<string>(image);
             Debug.WriteLine(extractedObjects);
             
             nyris.OfferTextSearchApi
@@ -42,10 +43,10 @@ namespace nyris.console
                 .SearchOffers("Keyboard")
                 .Subscribe(x => Debug.WriteLine(x),
                     throwable => Debug.WriteLine(throwable.Message)
-                );*/
+                );
             compositeDisposable.Add(nyris.RecommendationApi
                 .GetOffersBySku<string>("sku-test").Subscribe(x => { Debug.WriteLine(x); },
-                    throwable => { Debug.WriteLine(throwable.Message); }));
+                    throwable => { Debug.WriteLine(throwable.Message); }));*/
 
             Console.ReadKey();
             compositeDisposable.Dispose();
