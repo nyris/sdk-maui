@@ -3,6 +3,7 @@ using System.Net.Http;
 using JetBrains.Annotations;
 using Nyris.Sdk.Network.API;
 using Nyris.Sdk.Network.API.ImageMatching;
+using Nyris.Sdk.Network.API.ManualSearch;
 using Nyris.Sdk.Network.API.ObjectProposal;
 using Nyris.Sdk.Network.API.Recommendation;
 using Nyris.Sdk.Network.API.TextSearch;
@@ -39,6 +40,9 @@ namespace Nyris.Sdk.Network
             
             var recommendationService = RestService.For<IRecommendationService>(httpClient);
             RecommendationApi = new RecommendationApi(recommendationService, _apiHeader);
+            
+            var markForManualSearchService = RestService.For<IMarkForManualSearchService>(httpClient);
+            MarkForManualSearchApi = new MarkForManualSearchApi(markForManualSearchService, _apiHeader);
         }
 
         public string ApiKey
@@ -58,5 +62,7 @@ namespace Nyris.Sdk.Network
         public IOfferTextSearchApi OfferTextSearchApi { get; }
         
         public IRecommendationApi RecommendationApi { get; }
+        
+        public IMarkForManualSearchApi MarkForManualSearchApi { get; }
     }
 }

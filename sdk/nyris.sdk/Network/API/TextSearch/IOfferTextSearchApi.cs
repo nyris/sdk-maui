@@ -18,10 +18,10 @@ namespace Nyris.Sdk.Network.API.TextSearch
 
         IObservable<OfferResponse> SearchOffers([NotNull] string keyword);
 
-        IObservable<T> SearchOffers<T>([NotNull] string keyword);
+        IObservable<T> SearchOffers<T>([NotNull] string keyword) where T : INyrisResponse;
 
         Task<OfferResponse> SearchOffersAsync([NotNull] string keyword);
 
-        Task<T> SearchOffersAsync<T>([NotNull] string keyword);
+        Task<T> SearchOffersAsync<T>([NotNull] string keyword) where T : INyrisResponse;
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Nyris.Sdk.Network.API.XOptions;
 using Nyris.Sdk.Network.Model;
@@ -120,32 +121,37 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         public IObservable<OfferResponse> Match(byte[] image) => Match<OfferResponse>(image);
 
-        public Task<OfferResponse> MatchAsync(byte[] image) => MatchAsync<OfferResponse>(image);
-
-        public IObservable<T> Match<T>(byte[] image)
+        public IObservable<T> Match<T>(byte[] image) where T : INyrisResponse
         {
             var byteContent = new ByteArrayContent(image);
             var xOptions = BuildXOptions();
-            return _imageMatchingService.Match<T>(accept: _apiHeader.OutputFormat,
+            var obs1 = _imageMatchingService.Match(accept: _apiHeader.OutputFormat,
                 userAgent: _apiHeader.UserAgent,
                 apiKey: _apiHeader.ApiKey,
                 acceptLanguage: _apiHeader.Language,
                 xOptions: xOptions,
                 contentType: "image/jpg",
                 image: byteContent);
+            
+            var obs2 = Observable.Return(string.Empty);
+            return obs1.CombineLatest(obs2, (apiResponse, dummy) => CastToNyrisResponse<T>(apiResponse));
         }
 
-        public Task<T> MatchAsync<T>(byte[] image)
+        public Task<OfferResponse> MatchAsync(byte[] image) => MatchAsync<OfferResponse>(image);
+
+        public async Task<T> MatchAsync<T>(byte[] image) where T : INyrisResponse
         {
             var byteContent = new ByteArrayContent(image);
             var xOptions = BuildXOptions();
-            return _imageMatchingService.MatchAsync<T>(accept: _apiHeader.OutputFormat,
+            var apiResponse = await _imageMatchingService.MatchAsync(accept: _apiHeader.OutputFormat,
                 userAgent: _apiHeader.UserAgent,
                 apiKey: _apiHeader.ApiKey,
                 acceptLanguage: _apiHeader.Language,
                 xOptions: xOptions,
                 contentType: "image/jpg",
                 image: byteContent);
+            
+            return CastToNyrisResponse<T>(apiResponse);
         }
 
         protected override string BuildXOptions()

@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Nyris.Sdk.Network.API.XOptions;
@@ -57,16 +58,19 @@ namespace Nyris.Sdk.Network.API.TextSearch
             return SearchOffers<OfferResponse>(keyword);
         }
 
-        public IObservable<T> SearchOffers<T>(string keyword)
+        public IObservable<T> SearchOffers<T>(string keyword) where T : INyrisResponse
         {
             var xOptions = BuildXOptions();
             var stringContent = new StringContent(keyword, Encoding.UTF8, "text/plain");
-            return _offerTextSearchService.SearchOffers<T>(accept: _apiHeader.OutputFormat,
+            var obs1 = _offerTextSearchService.SearchOffers(accept: _apiHeader.OutputFormat,
                 userAgent: _apiHeader.UserAgent,
                 apiKey: _apiHeader.ApiKey,
                 acceptLanguage: _apiHeader.Language,
                 xOptions: xOptions,
                 stringContent: stringContent);
+            
+            var obs2 = Observable.Return(string.Empty);
+            return obs1.CombineLatest(obs2, (apiResponse, dummy) => CastToNyrisResponse<T>(apiResponse));
         }
 
         public Task<OfferResponse> SearchOffersAsync(string keyword)
@@ -74,16 +78,18 @@ namespace Nyris.Sdk.Network.API.TextSearch
             return SearchOffersAsync<OfferResponse>(keyword);
         }
 
-        public Task<T> SearchOffersAsync<T>(string keyword)
+        public async Task<T> SearchOffersAsync<T>(string keyword) where T : INyrisResponse
         {
             var xOptions = BuildXOptions();
             var stringContent = new StringContent(keyword, Encoding.UTF8, "text/plain");
-            return _offerTextSearchService.SearchOffersAsync<T>(accept: _apiHeader.OutputFormat,
+            var apiResponse = await _offerTextSearchService.SearchOffersAsync(accept: _apiHeader.OutputFormat,
                 userAgent: _apiHeader.UserAgent,
                 apiKey: _apiHeader.ApiKey,
                 acceptLanguage: _apiHeader.Language,
                 xOptions: xOptions,
                 stringContent: stringContent);
+
+            return CastToNyrisResponse<T>(apiResponse);
         }
 
         protected override string BuildXOptions()

@@ -3,8 +3,11 @@ using Newtonsoft.Json;
 
 namespace Nyris.Sdk.Network.Model
 {
-    public sealed class OfferResponse
+    public sealed class OfferResponse : INyrisResponse
     {
+        [JsonProperty(PropertyName = "request_code")]
+        public string RequestCode { get; set; }
+        
         [JsonProperty(PropertyName = "results")]
         public List<Offer> Offers { get; set; }
 

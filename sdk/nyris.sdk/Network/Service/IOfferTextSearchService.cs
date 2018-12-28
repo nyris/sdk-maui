@@ -8,7 +8,7 @@ namespace Nyris.Sdk.Network.Service
     internal interface IOfferTextSearchService
     {
         [Post("/find/v1/text")]
-        IObservable<T> SearchOffers<T>([Header("Accept")] string accept,
+        IObservable<ApiResponse<string>> SearchOffers([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,
             [Header("X-Api-Key")] string apiKey,
             [Header("Accept-Language")] string acceptLanguage,
@@ -16,7 +16,7 @@ namespace Nyris.Sdk.Network.Service
             [Body] StringContent stringContent);
 
         [Post("/find/v1/text")]
-        Task<T> SearchOffersAsync<T>([Header("Accept")] string accept,
+        Task<ApiResponse<string>> SearchOffersAsync([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,
             [Header("X-Api-Key")] string apiKey,
             [Header("Accept-Language")] string acceptLanguage,

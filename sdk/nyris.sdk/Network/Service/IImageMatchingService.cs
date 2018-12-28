@@ -8,7 +8,7 @@ namespace Nyris.Sdk.Network.Service
     internal interface IImageMatchingService
     {
         [Post("/find/v1")]
-        IObservable<T> Match<T>([Header("Accept")] string accept,
+        IObservable<ApiResponse<string>> Match([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,
             [Header("X-Api-Key")] string apiKey,
             [Header("Accept-Language")] string acceptLanguage,
@@ -17,7 +17,7 @@ namespace Nyris.Sdk.Network.Service
             [Body] ByteArrayContent image);
 
         [Post("/find/v1")]
-        Task<T> MatchAsync<T>([Header("Accept")] string accept,
+        Task<ApiResponse<string>> MatchAsync([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,
             [Header("X-Api-Key")] string apiKey,
             [Header("Accept-Language")] string acceptLanguage,

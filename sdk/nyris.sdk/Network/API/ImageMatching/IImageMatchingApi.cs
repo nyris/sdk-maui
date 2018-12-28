@@ -28,10 +28,10 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         IObservable<OfferResponse> Match([NotNull] byte[] image);
 
+        IObservable<T> Match<T>([NotNull] byte[] image) where T : INyrisResponse;
+
         Task<OfferResponse> MatchAsync([NotNull] byte[] image);
 
-        IObservable<T> Match<T>([NotNull] byte[] image);
-
-        Task<T> MatchAsync<T>([NotNull] byte[] image);
+        Task<T> MatchAsync<T>([NotNull] byte[] image) where T : INyrisResponse;
     }
 }
