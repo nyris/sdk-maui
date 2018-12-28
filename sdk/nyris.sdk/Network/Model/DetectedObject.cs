@@ -9,5 +9,11 @@ namespace Nyris.Sdk.Network.Model
 
         [JsonProperty(PropertyName = "region")]
         public Region Region { get; set; }
+
+        public override string ToString()
+        {
+            return $"Confidence: {Confidence}, \n" +
+                   $"Region: {Region}";
+        }
     }
 }

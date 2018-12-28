@@ -13,5 +13,12 @@ namespace Nyris.Sdk.Network.Model
 
         [JsonProperty(PropertyName = "predicted_category")]
         public Dictionary<string, float> PredictedCategories { get; set; }
+
+        public override string ToString()
+        {
+            return $"Request Code: {RequestCode}, \n" +
+                   $"Offers: {Offers}, \n" +
+                   $"Predicted Categories: {PredictedCategories}";
+        }
     }
 }

@@ -48,5 +48,26 @@ namespace Nyris.Sdk.Network.Model
         [JsonProperty(PropertyName = "sku")] public string Sku { get; set; }
 
         [JsonProperty(PropertyName = "score")] public float Score { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, \n" +
+                   $"Title: {Title}, \n" +
+                   $"Description: {Description}, \n" +
+                   $"Description Long: {DescriptionLong}, \n" +
+                   $"Brand: {Brand}, \n" +
+                   $"Catalog Numbers: {CatalogNumbers}, \n" +
+                   $"Keywords: {Keywords}, \n" +
+                   $"Categories: {Categories}, \n" +
+                   $"Availability: {Availability}, \n" +
+                   $"Group Id: {GroupId}, \n" +
+                   $"Price: {Price}, \n" +
+                   $"Sale Price: {SalePrice}, \n" +
+                   $"Links: {Links}, \n" +
+                   $"Images: {Images}, \n" +
+                   $"Metadata: {Metadata}, \n" +
+                   $"Sku: {Sku}, \n" +
+                   $"Score: {Score}";
+        }
     }
 }

@@ -13,7 +13,7 @@ using Refit;
 
 namespace Nyris.Sdk.Network
 {
-    public class ApiHelper : IApiHelper
+    public class ApiHelper : INyris
     {
         private readonly ApiHeader _apiHeader;
         private string _apiKey;

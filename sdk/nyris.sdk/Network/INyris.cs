@@ -6,7 +6,7 @@ using Nyris.Sdk.Network.API.TextSearch;
 
 namespace Nyris.Sdk.Network
 {
-    public interface IApiHelper
+    public interface INyris
     {
         string ApiKey { get; set; }
 

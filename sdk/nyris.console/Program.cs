@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Nyris.Sdk;
+using Nyris.Sdk.Network;
 using Nyris.Sdk.Network.Model;
 using Nyris.Sdk.Utils;
-using Refit;
 
 namespace nyris.console
 {
@@ -21,10 +19,32 @@ namespace nyris.console
             var imagePath = Path.Combine(solutionPath, "sample.jpg");
             var image = File.ReadAllBytes(imagePath);
             var apiKey = Environment.GetEnvironmentVariable("API_KEY") ?? "";
-
-            var compositeDisposable = new CompositeDisposable();
             var nyris = NyrisApi.CreateInstance(apiKey, Platform.Generic, true);
-            /*nyris.ImageMatchingAPi
+
+            Console.WriteLine("Select Api mode: Reactive(1) or Async(2)");
+            var key = "";
+            do
+            {
+                key = Console.ReadLine();
+            } while (key != "1" && key != "2");
+
+            if (key == "1")
+            {
+                RunReactiveSamples(nyris, image);
+            }
+            else
+            {
+                await RunAsyncSamples(nyris, image);
+            }
+        }
+
+        private static void RunReactiveSamples(INyris nyris, byte[] image)
+        {
+            var compositeDisposable = new CompositeDisposable();
+
+            #region Image Matching
+
+            compositeDisposable.Add(nyris.ImageMatchingAPi
                 .CategoryPrediction(opt =>
                 {
                     opt.Enabled = true;
@@ -32,53 +52,167 @@ namespace nyris.console
                 })
                 .Limit(5)
                 .Match(image)
-                .Subscribe(x => Debug.WriteLine(x),
-                    throwable => Debug.WriteLine(throwable.Message)
-                );*/
+                .Subscribe(response =>
+                    {
+                        Console.WriteLine("#### Image Matching");
+                        Console.WriteLine(response);
+                    },
+                    throwable => Console.WriteLine(throwable.Message)
+                ));
 
+            #endregion
 
-            /*var extractedObjects = await nyris.ObjectProposalApi.ExtractObjectsAsync<string>(image);
-            Debug.WriteLine(extractedObjects);
-            
+            #region Image Matching Json
+
+            compositeDisposable.Add(nyris.ImageMatchingAPi
+                .CategoryPrediction(opt =>
+                {
+                    opt.Enabled = true;
+                    opt.Limit = 5;
+                })
+                .Limit(5)
+                .Match<JsonResponse>(image)
+                .Subscribe(response =>
+                    {
+                        Console.WriteLine("#### Image Matching Json");
+                        Console.WriteLine(response);
+                    },
+                    throwable => Console.WriteLine(throwable.Message)
+                ));
+
+            #endregion
+
+            #region Text Search
+
             nyris.OfferTextSearchApi
                 .Limit(5)
                 .SearchOffers("Keyboard")
-                .Subscribe(x => Debug.WriteLine(x),
-                    throwable => Debug.WriteLine(throwable.Message)
-                );
-            compositeDisposable.Add(nyris.RecommendationApi
-                .GetOffersBySku<string>("sku-test").Subscribe(x => { Debug.WriteLine(x); },
-                    throwable => { Debug.WriteLine(throwable.Message); }));*/
-
-            /*nyris.MarkForManualSearchApi.MarkOfferAsNotFound("d3d8004940564aa78c3f04a7d0536f34")
-                .Subscribe(x =>
+                .Subscribe(response =>
                     {
-                        Debug.WriteLine(x);
+                        Console.WriteLine("#### Text Search");
+                        Console.WriteLine(response);
                     },
-                    throwable => { Debug.WriteLine(throwable.Message); });*/
+                    throwable => Console.WriteLine(throwable.Message)
+                );
 
-            /**/
+            #endregion
 
-            nyris.ImageMatchingAPi
+            #region Object Detections
+
+            compositeDisposable.Add(nyris.ObjectProposalApi
+                .ExtractObjects(image)
+                .Subscribe(response =>
+                    {
+                        Console.WriteLine("#### Extract Objects");
+                        Console.WriteLine(response);
+                    },
+                    throwable => Console.WriteLine(throwable.Message)));
+
+            #endregion
+
+            #region Mark request as not found
+
+            compositeDisposable.Add(nyris.ImageMatchingAPi
+                .Match(image)
+                .Subscribe(response =>
+                    {
+                        compositeDisposable.Add(nyris.MarkForManualSearchApi
+                            .MarkOfferAsNotFound(response.RequestCode)
+                            .Subscribe(response2 =>
+                                {
+                                    Console.WriteLine("#### Mark request as not found");
+                                    Console.WriteLine(response2);
+                                },
+                                thrown => { Console.WriteLine(thrown.Message); }));
+                    },
+                    throwable => Debug.WriteLine(throwable.Message)
+                ));
+
+            #endregion
+
+            #region Recommendation by SKU
+
+            /*compositeDisposable.Add(nyris.RecommendationApi
+                .GetOffersBySku("SKU")
+                .Subscribe(response =>
+                    {
+                        Console.WriteLine("#### Recommendation by SKU");
+                        Console.WriteLine(response);
+                    },
+                    throwable => Console.WriteLine(throwable.Message)
+                ));*/
+
+            #endregion
+
+            Console.Read();
+            compositeDisposable.Dispose();
+        }
+
+        private static async Task RunAsyncSamples(INyris nyris, byte[] image)
+        {
+            #region Image Matching
+
+            var response = await nyris.ImageMatchingAPi
                 .CategoryPrediction(opt =>
                 {
                     opt.Enabled = true;
                     opt.Limit = 5;
                 })
                 .Limit(5)
-                .Match(image)
-                .Subscribe(x =>
-                    {
-                        nyris.MarkForManualSearchApi
-                            .MarkOfferAsNotFound(x.RequestCode)
-                            .Subscribe(response => { Debug.WriteLine(response); },
-                                thrown => { Debug.WriteLine(thrown.Message); });
-                    },
-                    throwable => Debug.WriteLine(throwable.Message)
-                );
-            
-            Console.ReadKey();
-            compositeDisposable.Dispose();
+                .MatchAsync(image);
+
+            Console.WriteLine("#### Image Matching");
+            Console.WriteLine(response);
+
+            #endregion
+
+            #region Image Matching Json
+
+            var response2 = await nyris.ImageMatchingAPi
+                .CategoryPrediction(opt =>
+                {
+                    opt.Enabled = true;
+                    opt.Limit = 5;
+                })
+                .Limit(5)
+                .MatchAsync<JsonResponse>(image);
+
+            Console.WriteLine("#### Image Matching Json");
+            Console.WriteLine(response2);
+
+            #endregion
+
+            #region Object Detections
+
+            var response3 = await nyris.ObjectProposalApi
+                .ExtractObjectsAsync(image);
+
+            Console.WriteLine("#### Object Detections");
+            Console.WriteLine(response3);
+
+            #endregion
+
+            #region Mark request as not found
+
+            var response4 = await nyris.MarkForManualSearchApi
+                .MarkOfferAsNotFoundAsync(response.RequestCode);
+
+            Console.WriteLine("#### Mark request as not found");
+            Console.WriteLine(response4);
+
+            #endregion
+
+            #region Recommendation by SKU
+
+            /*var response5 = await nyris.RecommendationApi
+                .GetOffersBySkuAsync("SKU");
+
+            Console.WriteLine("#### Recommendation by SKU");
+            Console.WriteLine(response5);*/
+
+            #endregion
+
+            Console.Read();
         }
     }
 }

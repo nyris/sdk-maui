@@ -11,7 +11,7 @@ namespace Nyris.Sdk
 {
     public class NyrisApi : INyris
     {
-        private readonly IApiHelper _apiHelper;
+        private readonly INyris _apiHelper;
         private NyrisApi(string apiKey, Platform platform, bool isDebug) =>
             _apiHelper = new ApiHelper(apiKey, platform, isDebug);
 

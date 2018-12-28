@@ -17,5 +17,13 @@ namespace Nyris.Sdk.Network.Model
         public float Width() => Right - Left;
 
         public float Height() => Bottom - Top;
+
+        public override string ToString()
+        {
+            return $"Left: {Left}, \n" +
+                   $"Top: {Top}, \n" +
+                   $"Right: {Right}, \n" +
+                   $"Bottom: {Bottom}";
+        }
     }
 }
