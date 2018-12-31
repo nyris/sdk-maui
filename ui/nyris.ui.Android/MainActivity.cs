@@ -1,15 +1,14 @@
 ﻿using System;
-
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
+using Nyris.Sdk;
+using Nyris.Sdk.Utils;
 
 namespace nyris.ui.Droid
 {
-    [Activity(Label = "nyris.ui", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "nyris.ui", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true,
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -20,6 +19,21 @@ namespace nyris.ui.Droid
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
+
+            var nyris = NyrisApi.CreateInstance("", Platform.Android, true);
+
+            nyris.ImageMatchingAPi
+                .Similarity(opt => { opt.Enabled = false; })
+                .Ocr(opt => { opt.Enabled = false; })
+                .Match(new byte[] {0, 0, 0, 0, 0})
+                .Subscribe(x =>
+                    {
+                        Console.WriteLine(x);
+                    },
+                    throwable =>
+                    {
+                        Console.WriteLine(throwable.Message);
+                    });
         }
     }
 }
