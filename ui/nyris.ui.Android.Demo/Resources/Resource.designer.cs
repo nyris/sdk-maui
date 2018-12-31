@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("nyris.ui.Android.Resource", IsApplication=false)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("nyris.ui.Android.Demo.Resource", IsApplication=true)]
 
-namespace nyris.ui.Android
+namespace nyris.ui.Android.Demo
 {
 	
 	
@@ -22,6 +22,11 @@ namespace nyris.ui.Android
 		static Resource()
 		{
 			global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+		}
+		
+		public static void UpdateIdValues()
+		{
+			global::nyris.ui.Android.Resource.String.library_name = global::nyris.ui.Android.Demo.Resource.String.library_name;
 		}
 		
 		public partial class Attribute
@@ -37,11 +42,30 @@ namespace nyris.ui.Android
 			}
 		}
 		
-		public partial class String
+		public partial class Layout
 		{
 			
 			// aapt resource value: 0x7f020000
-			public static int library_name = 2130837504;
+			public const int Main = 2130837504;
+			
+			static Layout()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Layout()
+			{
+			}
+		}
+		
+		public partial class String
+		{
+			
+			// aapt resource value: 0x7f030001
+			public const int app_name = 2130903041;
+			
+			// aapt resource value: 0x7f030000
+			public const int library_name = 2130903040;
 			
 			static String()
 			{
