@@ -2,7 +2,7 @@
 using Android.Widget;
 using Android.OS;
 
-namespace nyris.ui.Android.Demo
+namespace Nyris.Ui.Android.Demo
 {
     [Activity(Label = "demo", MainLauncher = true)]
     public class MainActivity : Activity

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netcoreapp2.1</TargetFrameworks>
+        <AssemblyName>Nyris.Ui.Common</AssemblyName>
+        <RootNamespace>Nyris.Ui.Common</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\sdk\nyris.sdk\nyris.sdk.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("nyris.ui.Android.Demo.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("Nyris.Ui.Android.Demo.Resource", IsApplication=true)]
 
-namespace nyris.ui.Android.Demo
+namespace Nyris.Ui.Android.Demo
 {
 	
 	
@@ -26,7 +26,7 @@ namespace nyris.ui.Android.Demo
 		
 		public static void UpdateIdValues()
 		{
-			global::nyris.ui.Android.Resource.String.library_name = global::nyris.ui.Android.Demo.Resource.String.library_name;
+			global::Nyris.Ui.Android.Resource.String.library_name = global::Nyris.Ui.Android.Demo.Resource.String.library_name;
 		}
 		
 		public partial class Attribute

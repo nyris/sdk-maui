@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>demo</string>
+	<string>Demo</string>
 	<key>CFBundleIdentifier</key>
 	<string>io.nyris.demo</string>
 	<key>CFBundleShortVersionString</key>

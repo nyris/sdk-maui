@@ -1,5 +1,5 @@
 ﻿using System;
-namespace nyris.ui.iOS
+namespace Nyris.Ui.iOS
 {
     public class MyClass
     {

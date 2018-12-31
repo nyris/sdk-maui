@@ -5,7 +5,7 @@
 //
 using Foundation;
 
-namespace nyris.ui.iOS.Demo
+namespace Nyris.Ui.iOS.Demo
 {
     [Register("ViewController")]
     partial class ViewController
