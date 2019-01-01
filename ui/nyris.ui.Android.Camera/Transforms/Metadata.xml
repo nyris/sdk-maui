@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <add-node path="/api/package[@name='io.nyris.camera']/class[@name='Size']">
+        <method name="compareTo" return="int" abstract="false" native="false" synchronized="false" static="false" final="false" deprecated="not deprecated" visibility="public">
+            <parameter name="p0" type="java.lang.Object" />
+        </method>
+    </add-node>
+
+    <add-node path="/api/package[@name='io.nyris.camera']/class[@name='AspectRatio']">
+        <method name="compareTo" return="int" abstract="false" native="false" synchronized="false" static="false" final="false" deprecated="not deprecated" visibility="public">
+            <parameter name="p0" type="java.lang.Object" />
+        </method>
+    </add-node>
+    
+    <add-node path="/api/package[@name='io.nyris.camera']">
+        <class abstract="false" deprecated="not deprecated" final="false" name="SavingImageTask" static="true" visibility="public" extends="java.lang.Object">
+        </class>
+    </add-node>
+
+    <attr path="api/package[@name='io.nyris.camera']/class[@name='ImageUtils.Companion']" name="managedName">CompanionCls</attr>
+    <attr path="api/package[@name='io.nyris.camera']/class[@name='BarcodeFormat.Companion']" name="managedName">CompanionCls</attr>
+    <attr path="api/package[@name='io.nyris.camera']/class[@name='Camera1ZBar.Companion']" name="managedName">CompanionCls</attr>
+    <attr path="api/package[@name='io.nyris.camera']/class[@name='Camera2ZBar.Companion']" name="managedName">CompanionCls</attr>
+    <attr path="api/package[@name='io.nyris.camera']/class[@name='Camera2ZBar.Companion']" name="managedName">CompanionCls</attr>
+
+
+    <attr path="/api/package[@name='io.nyris.camera']/class[@name='PreviewImpl']" name="visibility">public</attr>
+    <attr path="/api/package[@name='io.nyris.camera']/interface[@name='PreviewImpl.Callback']" name="visibility">public</attr>
+    <attr path="/api/package[@name='io.nyris.camera']/class[@name='CameraViewImpl']" name="visibility">public</attr>
+    <attr path="/api/package[@name='io.nyris.camera']/interface[@name='CameraViewImpl.Callback']" name="visibility">public</attr>
+    
+    <remove-node path="/api/package[@name='net.sourceforge.zbar']/class[@name='SymbolIterator']" />
+</metadata>
