@@ -1,1 +1,1 @@
-include ':demo', ':camera-lib'
+include ':demo', ':camera-lib', ':croppingview-lib'
