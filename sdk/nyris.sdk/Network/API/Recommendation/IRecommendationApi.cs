@@ -10,15 +10,15 @@ namespace Nyris.Sdk.Network.API.Recommendation
         IRecommendationApi OutputFormat(string outputFormat);
 
         IRecommendationApi Language(string language);
-        
-        IRecommendationApi Limit(int limit);
+
+        IRecommendationApi Limit(uint limit);
 
         IObservable<OfferResponse> GetOffersBySku([NotNull] string sku);
-        
+
         IObservable<T> GetOffersBySku<T>([NotNull] string sku);
-        
+
         Task<OfferResponse> GetOffersBySkuAsync([NotNull] string sku);
-        
+
         Task<T> GetOffersBySkuAsync<T>([NotNull] string sku);
     }
 }

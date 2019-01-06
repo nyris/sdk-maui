@@ -18,7 +18,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         IImageMatchingApi Ocr(Action<OcrOptions> options = null);
 
-        IImageMatchingApi Limit(int limit);
+        IImageMatchingApi Limit(uint limit);
 
         IImageMatchingApi Regroup(Action<RegroupOptions> options = null);
 

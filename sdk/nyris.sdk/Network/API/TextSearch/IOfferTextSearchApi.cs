@@ -12,7 +12,7 @@ namespace Nyris.Sdk.Network.API.TextSearch
 
         IOfferTextSearchApi Language(string language);
 
-        IOfferTextSearchApi Limit(int limit);
+        IOfferTextSearchApi Limit(uint limit);
 
         IOfferTextSearchApi Regroup(Action<RegroupOptions> options = null);
 

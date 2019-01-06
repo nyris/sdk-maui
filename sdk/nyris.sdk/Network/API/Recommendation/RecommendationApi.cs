@@ -8,7 +8,7 @@ namespace Nyris.Sdk.Network.API.Recommendation
     public class RecommendationApi : Api, IRecommendationApi
     {
         private readonly IRecommendationService _recommendationService;
-        private int _limit = Options.DEFAULT_LIMIT;
+        private uint _limit = Options.DEFAULT_LIMIT;
 
         internal RecommendationApi(IRecommendationService recommendationService, ApiHeader apiHeader) : base(apiHeader) =>
             _recommendationService = recommendationService;
@@ -25,7 +25,7 @@ namespace Nyris.Sdk.Network.API.Recommendation
             return this;
         }
 
-        public IRecommendationApi Limit(int limit)
+        public IRecommendationApi Limit(uint limit)
         {
             _limit = limit;
             return this;

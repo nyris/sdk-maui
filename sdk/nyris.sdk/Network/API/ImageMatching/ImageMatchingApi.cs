@@ -12,7 +12,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
     internal sealed class ImageMatchingApi : Api, IImageMatchingApi
     {
         private readonly IImageMatchingService _imageMatchingService;
-        private int _limit = Options.DEFAULT_LIMIT;
+        private uint _limit = Options.DEFAULT_LIMIT;
 
         private readonly ExactOptions _exactOptions;
         private readonly SimilarityOptions _similarityOptions;
@@ -80,7 +80,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
             return this;
         }
 
-        public IImageMatchingApi Limit(int limit)
+        public IImageMatchingApi Limit(uint limit)
         {
             _limit = limit;
             return this;
@@ -132,7 +132,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
                 xOptions: xOptions,
                 contentType: "image/jpg",
                 image: byteContent);
-            
+
             var obs2 = Observable.Return(string.Empty);
             return obs1.CombineLatest(obs2, (apiResponse, dummy) => CastToNyrisResponse<T>(apiResponse));
         }
@@ -150,7 +150,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
                 xOptions: xOptions,
                 contentType: "image/jpg",
                 image: byteContent);
-            
+
             return CastToNyrisResponse<T>(apiResponse);
         }
 

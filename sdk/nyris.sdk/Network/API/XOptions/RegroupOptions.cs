@@ -9,7 +9,7 @@ namespace Nyris.Sdk.Network.API.XOptions
             Reset();
         }
 
-        public int Threshold { get; set; }
+        public float Threshold { get; set; }
 
         public override void Reset()
         {

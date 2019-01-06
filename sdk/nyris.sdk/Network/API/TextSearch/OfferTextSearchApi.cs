@@ -12,7 +12,7 @@ namespace Nyris.Sdk.Network.API.TextSearch
     internal class OfferTextSearchApi : Api, IOfferTextSearchApi
     {
         private readonly IOfferTextSearchService _offerTextSearchService;
-        private int _limit = Options.DEFAULT_LIMIT;
+        private uint _limit = Options.DEFAULT_LIMIT;
 
         private readonly RegroupOptions _regroupOptions;
 
@@ -36,7 +36,7 @@ namespace Nyris.Sdk.Network.API.TextSearch
             return this;
         }
 
-        public IOfferTextSearchApi Limit(int limit)
+        public IOfferTextSearchApi Limit(uint limit)
         {
             _limit = limit;
             return this;
@@ -68,7 +68,7 @@ namespace Nyris.Sdk.Network.API.TextSearch
                 acceptLanguage: _apiHeader.Language,
                 xOptions: xOptions,
                 stringContent: stringContent);
-            
+
             var obs2 = Observable.Return(string.Empty);
             return obs1.CombineLatest(obs2, (apiResponse, dummy) => CastToNyrisResponse<T>(apiResponse));
         }
