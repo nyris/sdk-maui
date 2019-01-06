@@ -1,5 +1,4 @@
 ﻿using Android.App;
-using Android.Widget;
 using Android.OS;
 using Nyris.Ui.Android.Demo.Resources;
 
@@ -14,6 +13,15 @@ namespace Nyris.Ui.Android.Demo
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
+
+            NyrisSearcher
+                .Instance(true)
+                .CategoryPrediction(opt =>
+                {
+                    opt.Enabled = true;
+                    opt.Limit = 100;
+                })
+                .Show(this);
         }
     }
 }
