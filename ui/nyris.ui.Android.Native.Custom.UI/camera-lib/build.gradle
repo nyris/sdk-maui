@@ -18,10 +18,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply from: 'git-version.gradle'
 
-if (file('src/dev/build.gradle').exists()) {
-    apply from: 'src/dev/build.gradle'
-}
-
 def getDefaultPublishConfig = { ->
     def publishConfig = System.getenv("SDK_DEFAULT_PUBLISH_CONFIG")
     if (publishConfig == null || publishConfig.isEmpty())
