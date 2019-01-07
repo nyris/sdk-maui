@@ -3,14 +3,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using Nyris.Sdk;
-using Nyris.Sdk.Network;
-using Nyris.Sdk.Network.Model;
-using Nyris.Sdk.Utils;
+using Nyris.Api;
+using Nyris.Api.Model;
 
 namespace nyris.console
 {
-    static class MainClass
+    static class Program
     {
         public static async Task Main(string[] args)
         {
@@ -22,7 +20,7 @@ namespace nyris.console
             var nyris = NyrisApi.CreateInstance(apiKey, Platform.Generic, true);
 
             Console.WriteLine("Select Api mode: Reactive(1) or Async(2)");
-            var key = "";
+            string key;
             do
             {
                 key = Console.ReadLine();
@@ -38,55 +36,57 @@ namespace nyris.console
             }
         }
 
-        private static void RunReactiveSamples(INyris nyris, byte[] image)
+        private static void RunReactiveSamples(INyrisApi nyris, byte[] image)
         {
             var compositeDisposable = new CompositeDisposable();
 
             #region Image Matching
 
-            compositeDisposable.Add(nyris.ImageMatchingAPi
-                .CategoryPrediction(opt =>
-                {
-                    opt.Enabled = true;
-                    opt.Limit = 5;
-                })
-                .Limit(5)
-                .Match(image)
-                .Subscribe(response =>
+            compositeDisposable.Add(
+                nyris.ImageMatching
+                    .CategoryPrediction(opt =>
                     {
-                        Console.WriteLine("#### Image Matching");
-                        Console.WriteLine(response);
-                    },
-                    throwable => Console.WriteLine(throwable.Message)
-                ));
+                        opt.Enabled = true;
+                        opt.Limit = 5;
+                    })
+                    .Limit(5)
+                    .Match(image)
+                    .Subscribe(response =>
+                        {
+                            Console.WriteLine("#### Image Matching");
+                            Console.WriteLine(response);
+                        },
+                        throwable => Console.WriteLine(throwable.Message)
+                    ));
 
             #endregion
 
             #region Image Matching Json
 
-            compositeDisposable.Add(nyris.ImageMatchingAPi
-                .CategoryPrediction(opt =>
-                {
-                    opt.Enabled = true;
-                    opt.Limit = 5;
-                })
-                .Limit(5)
-                .Match<JsonResponseDto>(image)
-                .Subscribe(response =>
+            compositeDisposable.Add(
+                nyris.ImageMatching
+                    .CategoryPrediction(opt =>
                     {
-                        Console.WriteLine("#### Image Matching Json");
-                        Console.WriteLine(response);
-                    },
-                    throwable => Console.WriteLine(throwable.Message)
-                ));
+                        opt.Enabled = true;
+                        opt.Limit = 5;
+                    })
+                    .Limit(5)
+                    .Match<JsonResponseDto>(image)
+                    .Subscribe(response =>
+                        {
+                            Console.WriteLine("#### Image Matching Json");
+                            Console.WriteLine(response);
+                        },
+                        throwable => Console.WriteLine(throwable.Message)
+                    ));
 
             #endregion
 
             #region Text Search
 
-            nyris.OfferTextSearchApi
+            nyris.TextSearch
                 .Limit(5)
-                .SearchOffers("Keyboard")
+                .Search("Keyboard")
                 .Subscribe(response =>
                     {
                         Console.WriteLine("#### Text Search");
@@ -99,34 +99,36 @@ namespace nyris.console
 
             #region Object Detections
 
-            compositeDisposable.Add(nyris.ObjectProposalApi
-                .ExtractObjects(image)
-                .Subscribe(response =>
-                    {
-                        Console.WriteLine("#### Extract Objects");
-                        Console.WriteLine(response);
-                    },
-                    throwable => Console.WriteLine(throwable.Message)));
+            compositeDisposable.Add(
+                nyris.ObjectProposal
+                    .ExtractObjects(image)
+                    .Subscribe(response =>
+                        {
+                            Console.WriteLine("#### Extract Objects");
+                            Console.WriteLine(response);
+                        },
+                        throwable => Console.WriteLine(throwable.Message)));
 
             #endregion
 
             #region Mark request as not found
 
-            compositeDisposable.Add(nyris.ImageMatchingAPi
-                .Match(image)
-                .Subscribe(response =>
-                    {
-                        compositeDisposable.Add(nyris.MarkForManualSearchApi
-                            .MarkOfferAsNotFound(response.RequestCode)
-                            .Subscribe(response2 =>
-                                {
-                                    Console.WriteLine("#### Mark request as not found");
-                                    Console.WriteLine(response2);
-                                },
-                                thrown => { Console.WriteLine(thrown.Message); }));
-                    },
-                    throwable => Debug.WriteLine(throwable.Message)
-                ));
+            compositeDisposable.Add(
+                nyris.ImageMatching
+                    .Match(image)
+                    .Subscribe(response =>
+                        {
+                            compositeDisposable.Add(nyris.Feedback
+                                .MarkAsNotFound(response.RequestCode)
+                                .Subscribe(response2 =>
+                                    {
+                                        Console.WriteLine("#### Mark request as not found");
+                                        Console.WriteLine(response2);
+                                    },
+                                    thrown => { Console.WriteLine(thrown.Message); }));
+                        },
+                        throwable => Debug.WriteLine(throwable.Message)
+                    ));
 
             #endregion
 
@@ -148,11 +150,11 @@ namespace nyris.console
             compositeDisposable.Dispose();
         }
 
-        private static async Task RunAsyncSamples(INyris nyris, byte[] image)
+        private static async Task RunAsyncSamples(INyrisApi nyris, byte[] image)
         {
             #region Image Matching
 
-            var response = await nyris.ImageMatchingAPi
+            var response = await nyris.ImageMatching
                 .CategoryPrediction(opt =>
                 {
                     opt.Enabled = true;
@@ -168,7 +170,7 @@ namespace nyris.console
 
             #region Image Matching Json
 
-            var response2 = await nyris.ImageMatchingAPi
+            var response2 = await nyris.ImageMatching
                 .CategoryPrediction(opt =>
                 {
                     opt.Enabled = true;
@@ -184,7 +186,7 @@ namespace nyris.console
 
             #region Object Detections
 
-            var response3 = await nyris.ObjectProposalApi
+            var response3 = await nyris.ObjectProposal
                 .ExtractObjectsAsync(image);
 
             Console.WriteLine("#### Object Detections");
@@ -194,8 +196,8 @@ namespace nyris.console
 
             #region Mark request as not found
 
-            var response4 = await nyris.MarkForManualSearchApi
-                .MarkOfferAsNotFoundAsync(response.RequestCode);
+            var response4 = await nyris.Feedback
+                .MarkAsNotFoundAsync(response.RequestCode);
 
             Console.WriteLine("#### Mark request as not found");
             Console.WriteLine(response4);

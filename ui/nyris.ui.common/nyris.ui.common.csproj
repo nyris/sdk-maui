@@ -1,13 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;netcoreapp2.1</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0</TargetFrameworks>
         <AssemblyName>Nyris.Ui.Common</AssemblyName>
         <RootNamespace>Nyris.Ui.Common</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\sdk\nyris.sdk\nyris.sdk.csproj" />
+      <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\sdk\nyris.api\nyris.api.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
+using Nyris.Ui.Android.Demo.Resources;
 
 namespace Nyris.Ui.Android.Demo
 {

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.1</TargetFrameworks>
+    <RootNamespace>Nyris.Api</RootNamespace>
+    <AssemblyName>Nyris.Api</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" PrivateAssets="All" />
+    <PackageReference Include="Refit" Version="4.5.6" />
+    <PackageReference Include="System.Reactive" Version="4.1.2" />
+  </ItemGroup>
+</Project>

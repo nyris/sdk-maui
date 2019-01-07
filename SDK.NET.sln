@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdk", "sdk", "{20DF4C7A-157A-42CD-839D-B7817B0F60F8}"
@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nyris.ui.common", "ui\nyris
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nyris.ui.iOS.Demo", "ui\nyris.ui.iOS.Demo\nyris.ui.iOS.Demo.csproj", "{3336A3ED-AE3E-4F28-90DB-3AD6555AD90A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nyris.sdk", "sdk\nyris.sdk\nyris.sdk.csproj", "{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nyris.api", "sdk\nyris.api\nyris.api.csproj", "{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
