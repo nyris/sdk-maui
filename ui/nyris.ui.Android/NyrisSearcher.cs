@@ -115,7 +115,7 @@ namespace Nyris.Ui.Android
             return this;
         }
 
-        public void Show<FromContext>([NonNull] FromContext context)
+        public void Start<FromContext>([NonNull] FromContext context)
         {
             if (context == null)
             {
@@ -162,19 +162,19 @@ namespace Nyris.Ui.Android
             return this;
         }
 
-        public void Show([NonNull] Activity activity)
+        public void Start([NonNull] Activity activity)
         {
-            Show<Activity>(activity);
+            Start<Activity>(activity);
         }
 
-        public void Show([NonNull] FragmentV4 fragment)
+        public void Start([NonNull] FragmentV4 fragment)
         {
-            Show<FragmentV4>(fragment);
+            Start<FragmentV4>(fragment);
         }
 
-        public void Show([NonNull] FragmentOld fragment)
+        public void Start([NonNull] FragmentOld fragment)
         {
-            Show<FragmentOld>(fragment);
+            Start<FragmentOld>(fragment);
         }
     }
 }

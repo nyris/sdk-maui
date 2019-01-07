@@ -138,6 +138,12 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.12.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Android.Support.Constraint.Layout.Solver">
+      <HintPath>..\..\packages\Xamarin.Android.Support.Constraint.Layout.Solver.1.1.2\lib\MonoAndroid70\Xamarin.Android.Support.Constraint.Layout.Solver.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Constraint.Layout">
+      <HintPath>..\..\packages\Xamarin.Android.Support.Constraint.Layout.1.1.2\lib\MonoAndroid70\Xamarin.Android.Support.Constraint.Layout.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -151,9 +157,14 @@
     <Compile Include="NyrisSearcherActivity.cs" />
     <Compile Include="INyrisSearcher.cs" />
     <Compile Include="NyrisSearcherConfig.cs" />
+    <Compile Include="Custom\ImageCameraView.cs" />
+    <Compile Include="Custom\CircleView.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\values\Styles.xml" />
+    <AndroidResource Include="Resources\values\Colors.xml" />
+    <AndroidResource Include="Resources\layout\SearcherLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AboutAssets.txt" />
@@ -163,6 +174,18 @@
       <Project>{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}</Project>
       <Name>nyris.api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\nyris.ui.Android.Camera\nyris.ui.Android.Camera.csproj">
+      <Project>{45888A26-AE9C-419C-8588-6D6988528BC7}</Project>
+      <Name>nyris.ui.Android.Camera</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nyris.ui.Android.Cropping\nyris.ui.Android.Cropping.csproj">
+      <Project>{16DB704F-AF60-4D13-B498-CE47D851C1B3}</Project>
+      <Name>nyris.ui.Android.Cropping</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\layout\" />
+    <Folder Include="Custom\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Android.Support.Annotations.28.0.0\build\monoandroid90\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\..\packages\Xamarin.Android.Support.Annotations.28.0.0\build\monoandroid90\Xamarin.Android.Support.Annotations.targets')" />

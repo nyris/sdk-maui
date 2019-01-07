@@ -21,7 +21,7 @@ namespace Nyris.Ui.Android.Demo
                     opt.Enabled = true;
                     opt.Limit = 100;
                 })
-                .Show(this);
+                .Start(this);
         }
     }
 }
