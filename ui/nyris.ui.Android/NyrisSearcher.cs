@@ -31,6 +31,12 @@ namespace Nyris.Ui.Android
             return new NyrisSearcher(debug);
         }
 
+        public INyrisSearcher ApiKey([NonNull] string apiKey)
+        {
+            _config.ApiKey = apiKey;
+            return this;
+        }
+
         public INyrisSearcher OutputFormat([NonNull] string outputFormat)
         {
             _config.OutputFormat = outputFormat ?? throw new ArgumentException("outputFormat is null");

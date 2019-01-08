@@ -46,10 +46,6 @@ namespace Nyris.Ui.Android.Custom
 
         protected override void OnDraw(Canvas canvas)
         {
-            if (_bitmap == null)
-            {
-                return;
-            }
             canvas.DrawBitmap(_bitmap, 0f, 0f, _paint);
         }
     }

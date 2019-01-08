@@ -2265,8 +2265,8 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f0a006c
 			public static int customPanel = 2131361900;
 			
-			// aapt resource value: 0x7f0a00a2
-			public static int cvTakePic = 2131361954;
+			// aapt resource value: 0x7f0a00a3
+			public static int cvTakePic = 2131361955;
 			
 			// aapt resource value: 0x7f0a007c
 			public static int decor_content_parent = 2131361916;
@@ -2415,6 +2415,9 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f0a0043
 			public static int percent = 2131361859;
 			
+			// aapt resource value: 0x7f0a00a1
+			public static int pinViewCropper = 2131361953;
+			
 			// aapt resource value: 0x7f0a0005
 			public static int progress_circular = 2131361797;
 			
@@ -2526,8 +2529,8 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f0a0089
 			public static int submit_area = 2131361929;
 			
-			// aapt resource value: 0x7f0a00a3
-			public static int surface_view = 2131361955;
+			// aapt resource value: 0x7f0a00a4
+			public static int surface_view = 2131361956;
 			
 			// aapt resource value: 0x7f0a0014
 			public static int tabMode = 2131361812;
@@ -2553,8 +2556,8 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f0a0069
 			public static int textSpacerNoTitle = 2131361897;
 			
-			// aapt resource value: 0x7f0a00a4
-			public static int texture_view = 2131361956;
+			// aapt resource value: 0x7f0a00a5
+			public static int texture_view = 2131361957;
 			
 			// aapt resource value: 0x7f0a0098
 			public static int time = 2131361944;
@@ -2592,8 +2595,8 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f0a009f
 			public static int vPosCam = 2131361951;
 			
-			// aapt resource value: 0x7f0a00a1
-			public static int vProgress = 2131361953;
+			// aapt resource value: 0x7f0a00a2
+			public static int vProgress = 2131361954;
 			
 			// aapt resource value: 0x7f0a0031
 			public static int withText = 2131361841;
@@ -2901,11 +2904,11 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f05001a
 			public static int abc_toolbar_collapse_description = 2131034138;
 			
-			// aapt resource value: 0x7f050029
-			public static int app_name = 2131034153;
-			
 			// aapt resource value: 0x7f05002a
-			public static int library_name = 2131034154;
+			public static int app_name = 2131034154;
+			
+			// aapt resource value: 0x7f050029
+			public static int library_name = 2131034153;
 			
 			// aapt resource value: 0x7f05001b
 			public static int search_menu_title = 2131034139;

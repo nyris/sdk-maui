@@ -18,7 +18,7 @@
             app:imageHeight="512"
             app:imageWidth="512"
             app:recognition="none"
-            app:saveImage="true"/>
+            app:saveImage="false"/>
 
     <TextView
             android:id="@+id/tvCaptureLabel"
@@ -40,6 +40,7 @@
             android:visibility="invisible"/>
 
     <io.nyris.croppingview.PinViewCropper
+            android:id="@+id/pinViewCropper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -60,6 +61,7 @@
             android:id="@+id/cvTakePic"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:onClick="onCircleViewClick" 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -8,6 +8,8 @@ namespace Nyris.Ui.Android
     {
         public bool IsDebug { get; set; }
 
+        public string ApiKey { get; set; }
+
         public string OutputFormat { get; set; }
 
         public string Language { get; set; }

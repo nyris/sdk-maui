@@ -2,7 +2,6 @@
 using Android.App;
 using Android.Support.Annotation;
 using Nyris.Sdk.Network.API.XOptions;
-using Nyris.Sdk.Network.Model;
 using FragmentOld = Android.App.Fragment;
 using FragmentV4 = Android.Support.V4.App.Fragment;
 
@@ -10,6 +9,8 @@ namespace Nyris.Ui.Android
 {
     public interface INyrisSearcher
     {
+        INyrisSearcher ApiKey([NonNull] string apiKey);
+
         INyrisSearcher OutputFormat([NonNull] string outputFormat);
 
         INyrisSearcher Language([NonNull] string language);
