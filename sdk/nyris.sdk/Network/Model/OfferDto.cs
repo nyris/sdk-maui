@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Nyris.Sdk.Network.Model
 {
-    public class Offer
+    public class OfferDto
     {
         [JsonProperty(PropertyName = "oid")] public string Id { get; set; }
 
@@ -37,7 +37,7 @@ namespace Nyris.Sdk.Network.Model
         [JsonProperty(PropertyName = "salePrice")]
         public string SalePrice { get; set; }
 
-        [JsonProperty(PropertyName = "links")] public Links Links { get; set; }
+        [JsonProperty(PropertyName = "links")] public LinksDto Links { get; set; }
 
         [JsonProperty(PropertyName = "images")]
         public List<string> Images { get; set; }

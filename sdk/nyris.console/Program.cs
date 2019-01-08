@@ -71,7 +71,7 @@ namespace nyris.console
                     opt.Limit = 5;
                 })
                 .Limit(5)
-                .Match<JsonResponse>(image)
+                .Match<JsonResponseDto>(image)
                 .Subscribe(response =>
                     {
                         Console.WriteLine("#### Image Matching Json");
@@ -175,7 +175,7 @@ namespace nyris.console
                     opt.Limit = 5;
                 })
                 .Limit(5)
-                .MatchAsync<JsonResponse>(image);
+                .MatchAsync<JsonResponseDto>(image);
 
             Console.WriteLine("#### Image Matching Json");
             Console.WriteLine(response2);

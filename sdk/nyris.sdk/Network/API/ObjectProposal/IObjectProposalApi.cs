@@ -8,9 +8,9 @@ namespace Nyris.Sdk.Network.API.ObjectProposal
 {
     public interface IObjectProposalApi
     {
-        IObservable<List<DetectedObject>> ExtractObjects([NotNull] byte[] image);
+        IObservable<List<DetectedObjectDto>> ExtractObjects([NotNull] byte[] image);
 
-        Task<List<DetectedObject>> ExtractObjectsAsync([NotNull] byte[] image);
+        Task<List<DetectedObjectDto>> ExtractObjectsAsync([NotNull] byte[] image);
 
         IObservable<T> ExtractObjects<T>([NotNull] byte[] image);
 

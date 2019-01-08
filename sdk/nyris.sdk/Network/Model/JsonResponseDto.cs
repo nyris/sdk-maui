@@ -1,8 +1,8 @@
 namespace Nyris.Sdk.Network.Model
 {
-    public class JsonResponse : INyrisResponse
+    public class JsonResponseDto : INyrisResponse
     {
-        internal JsonResponse(string json)
+        internal JsonResponseDto(string json)
         {
             Content = json;
         }

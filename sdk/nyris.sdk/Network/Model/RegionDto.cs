@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Nyris.Sdk.Network.Model
 {
-    public class Region
+    public class RegionDto
     {
         [JsonProperty(PropertyName = "left")] public float Left { get; set; }
 

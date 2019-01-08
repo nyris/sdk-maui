@@ -26,19 +26,25 @@ namespace Nyris.Sdk.Network.API.TextSearch
 
         public IOfferTextSearchApi OutputFormat(string outputFormat)
         {
-            _apiHeader.OutputFormat = outputFormat;
+            if (outputFormat != null)
+            {
+                _apiHeader.OutputFormat = outputFormat;
+            }
             return this;
         }
 
         public IOfferTextSearchApi Language(string language)
         {
-            _apiHeader.Language = language;
+            if (language != null)
+            {
+                _apiHeader.Language = language;
+            }
             return this;
         }
 
         public IOfferTextSearchApi Limit(uint limit)
         {
-            _limit = limit;
+            _limit = limit == 0 ? Options.DEFAULT_LIMIT : limit;
             return this;
         }
 
@@ -53,9 +59,9 @@ namespace Nyris.Sdk.Network.API.TextSearch
             return this;
         }
 
-        public IObservable<OfferResponse> SearchOffers(string keyword)
+        public IObservable<OfferResponseDto> SearchOffers(string keyword)
         {
-            return SearchOffers<OfferResponse>(keyword);
+            return SearchOffers<OfferResponseDto>(keyword);
         }
 
         public IObservable<T> SearchOffers<T>(string keyword) where T : INyrisResponse
@@ -73,9 +79,9 @@ namespace Nyris.Sdk.Network.API.TextSearch
             return obs1.CombineLatest(obs2, (apiResponse, dummy) => CastToNyrisResponse<T>(apiResponse));
         }
 
-        public Task<OfferResponse> SearchOffersAsync(string keyword)
+        public Task<OfferResponseDto> SearchOffersAsync(string keyword)
         {
-            return SearchOffersAsync<OfferResponse>(keyword);
+            return SearchOffersAsync<OfferResponseDto>(keyword);
         }
 
         public async Task<T> SearchOffersAsync<T>(string keyword) where T : INyrisResponse

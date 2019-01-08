@@ -37,13 +37,25 @@ namespace Nyris.Sdk.Network.API.ImageMatching
 
         public IImageMatchingApi OutputFormat(string outputFormat)
         {
-            _apiHeader.OutputFormat = outputFormat;
+            if (outputFormat != null)
+            {
+                _apiHeader.OutputFormat = outputFormat;
+            }
             return this;
         }
 
         public IImageMatchingApi Language(string language)
         {
-            _apiHeader.Language = language;
+            if (language != null)
+            {
+                _apiHeader.Language = language;
+            }
+            return this;
+        }
+
+        public IImageMatchingApi Limit(uint limit)
+        {
+            _limit = limit == 0 ? Options.DEFAULT_LIMIT : limit;
             return this;
         }
 
@@ -80,12 +92,6 @@ namespace Nyris.Sdk.Network.API.ImageMatching
             return this;
         }
 
-        public IImageMatchingApi Limit(uint limit)
-        {
-            _limit = limit;
-            return this;
-        }
-
         public IImageMatchingApi Regroup(Action<RegroupOptions> options = null)
         {
             if (options == null)
@@ -119,7 +125,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
             return this;
         }
 
-        public IObservable<OfferResponse> Match(byte[] image) => Match<OfferResponse>(image);
+        public IObservable<OfferResponseDto> Match(byte[] image) => Match<OfferResponseDto>(image);
 
         public IObservable<T> Match<T>(byte[] image) where T : INyrisResponse
         {
@@ -137,7 +143,7 @@ namespace Nyris.Sdk.Network.API.ImageMatching
             return obs1.CombineLatest(obs2, (apiResponse, dummy) => CastToNyrisResponse<T>(apiResponse));
         }
 
-        public Task<OfferResponse> MatchAsync(byte[] image) => MatchAsync<OfferResponse>(image);
+        public Task<OfferResponseDto> MatchAsync(byte[] image) => MatchAsync<OfferResponseDto>(image);
 
         public async Task<T> MatchAsync<T>(byte[] image) where T : INyrisResponse
         {

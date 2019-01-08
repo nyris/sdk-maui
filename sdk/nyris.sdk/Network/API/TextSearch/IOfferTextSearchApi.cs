@@ -16,11 +16,11 @@ namespace Nyris.Sdk.Network.API.TextSearch
 
         IOfferTextSearchApi Regroup(Action<RegroupOptions> options = null);
 
-        IObservable<OfferResponse> SearchOffers([NotNull] string keyword);
+        IObservable<OfferResponseDto> SearchOffers([NotNull] string keyword);
 
         IObservable<T> SearchOffers<T>([NotNull] string keyword) where T : INyrisResponse;
 
-        Task<OfferResponse> SearchOffersAsync([NotNull] string keyword);
+        Task<OfferResponseDto> SearchOffersAsync([NotNull] string keyword);
 
         Task<T> SearchOffersAsync<T>([NotNull] string keyword) where T : INyrisResponse;
     }

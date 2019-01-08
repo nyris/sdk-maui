@@ -27,13 +27,13 @@ namespace Nyris.Sdk.Network.API.Recommendation
 
         public IRecommendationApi Limit(uint limit)
         {
-            _limit = limit;
+            _limit = limit == 0 ? Options.DEFAULT_LIMIT : limit;
             return this;
         }
 
-        public IObservable<OfferResponse> GetOffersBySku(string sku)
+        public IObservable<OfferResponseDto> GetOffersBySku(string sku)
         {
-            return GetOffersBySku<OfferResponse>(sku);
+            return GetOffersBySku<OfferResponseDto>(sku);
         }
 
         public IObservable<T> GetOffersBySku<T>(string sku)
@@ -45,9 +45,9 @@ namespace Nyris.Sdk.Network.API.Recommendation
                 sku: sku);
         }
 
-        public Task<OfferResponse> GetOffersBySkuAsync(string sku)
+        public Task<OfferResponseDto> GetOffersBySkuAsync(string sku)
         {
-            return GetOffersBySkuAsync<OfferResponse>(sku);
+            return GetOffersBySkuAsync<OfferResponseDto>(sku);
         }
 
         public Task<T> GetOffersBySkuAsync<T>(string sku)

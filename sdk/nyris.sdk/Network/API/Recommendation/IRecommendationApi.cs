@@ -13,11 +13,11 @@ namespace Nyris.Sdk.Network.API.Recommendation
 
         IRecommendationApi Limit(uint limit);
 
-        IObservable<OfferResponse> GetOffersBySku([NotNull] string sku);
+        IObservable<OfferResponseDto> GetOffersBySku([NotNull] string sku);
 
         IObservable<T> GetOffersBySku<T>([NotNull] string sku);
 
-        Task<OfferResponse> GetOffersBySkuAsync([NotNull] string sku);
+        Task<OfferResponseDto> GetOffersBySkuAsync([NotNull] string sku);
 
         Task<T> GetOffersBySkuAsync<T>([NotNull] string sku);
     }

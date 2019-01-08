@@ -14,11 +14,11 @@ namespace Nyris.Sdk.Network.API.ObjectProposal
         internal ObjectProposalApi(IObjectProposalService objectProposalService,
             ApiHeader apiHeader) : base(apiHeader) => _objectProposalService = objectProposalService;
 
-        public IObservable<List<DetectedObject>> ExtractObjects(byte[] image) =>
-            ExtractObjects<List<DetectedObject>>(image);
+        public IObservable<List<DetectedObjectDto>> ExtractObjects(byte[] image) =>
+            ExtractObjects<List<DetectedObjectDto>>(image);
 
-        public Task<List<DetectedObject>> ExtractObjectsAsync(byte[] image) =>
-            ExtractObjectsAsync<List<DetectedObject>>(image);
+        public Task<List<DetectedObjectDto>> ExtractObjectsAsync(byte[] image) =>
+            ExtractObjectsAsync<List<DetectedObjectDto>>(image);
 
         public IObservable<T> ExtractObjects<T>(byte[] image)
         {

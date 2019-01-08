@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Nyris.Sdk.Network.Model
 {
-    public class Links
+    public class LinksDto
     {
         [JsonProperty(PropertyName = "main")] public string Main { get; set; }
 
