@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.App;
@@ -10,7 +11,9 @@ using Java.Interop;
 using Newtonsoft.Json;
 using Nyris.Ui.Android.Custom;
 using Nyris.Ui.Android.Extensions;
+using Nyris.Ui.Android.Models;
 using Nyris.Ui.Android.Mvp;
+using AlertDialog = Android.App.AlertDialog;
 
 namespace Nyris.Ui.Android
 {
@@ -23,6 +26,7 @@ namespace Nyris.Ui.Android
         private ImageCameraView _imagePreview;
         private PinViewCropper _viewCropper;
         private TextView _captureLabel;
+        private View _validateBtn;
 
         private SearcherContract.IPresenter _presenter;
 
@@ -38,6 +42,7 @@ namespace Nyris.Ui.Android
             _imagePreview = FindViewById<ImageCameraView>(Resource.Id.imPreview);
             _viewCropper = FindViewById<PinViewCropper>(Resource.Id.pinViewCropper);
             _captureLabel = FindViewById<TextView>(Resource.Id.tvCaptureLabel);
+            _validateBtn = FindViewById(Resource.Id.imValidate);
             #endregion
 
             var extraJson = Intent.GetStringExtra(NyrisSearcher.CONFIG_KEY);
@@ -66,11 +71,22 @@ namespace Nyris.Ui.Android
             _presenter?.OnDetach();
         }
 
+        public override void OnBackPressed()
+        {
+            _presenter?.OnBackPressed();
+        }
+
         #region Listeners
         [Export("onCircleViewClick")]
         public void OnCircleViewClick(View v)
         {
             _presenter?.OnCircleVieClickw();
+        }
+
+        [Export("onValidateClick")]
+        public void OnValidateClick(View v)
+        {
+            _presenter?.OnImageCrop(_viewCropper.SelectedObjectProposal);
         }
         #endregion
 
@@ -131,12 +147,12 @@ namespace Nyris.Ui.Android
 
         public void ShowValidateView()
         {
-            throw new System.NotImplementedException();
+            _validateBtn.Show();
         }
 
         public void HideValidateView()
         {
-            throw new System.NotImplementedException();
+            _validateBtn.Hide();
         }
 
         public void ShowLoading()
@@ -161,7 +177,7 @@ namespace Nyris.Ui.Android
 
         public void ShowError(string message)
         {
-            throw new System.NotImplementedException();
+            ShowDialog(message);
         }
 
         public void ResetViewCropper()
@@ -177,6 +193,44 @@ namespace Nyris.Ui.Android
         public void ShowViewCropper()
         {
             _viewCropper.Show();
+        }
+
+        public void Close()
+        {
+            SetResult(Result.Canceled, null);
+            base.OnBackPressed();
+        }
+
+        public void SenResult(OfferResponse offerResponse)
+        {
+            SetResult(offerResponse);
+            Finish();
+        }
+
+        public void SenResult(JsonResponse jsonResponse)
+        {
+            SetResult(jsonResponse);
+            Finish();
+        }
+
+        private void SetResult(IParcelable parcelable)
+        {
+            var result = new Intent();
+            result.PutExtra(NyrisSearcher.SEARCH_RESULT_KEY, parcelable);
+            SetResult(Result.Ok, result);
+        }
+
+        private void ShowDialog(string message)
+        {
+            var alertDialog = new AlertDialog.Builder(this);
+            alertDialog.SetTitle("Error");
+            alertDialog.SetMessage(message);
+            alertDialog.SetCancelable(false);
+            alertDialog.SetPositiveButton("OK", (s, a) =>
+            {
+                _presenter?.OnOkErrorClick();
+            });
+            alertDialog.Show();
         }
     }
 }

@@ -34,9 +34,12 @@
 
     <io.nyris.customs.ImageCameraView
             android:id="@+id/imPreview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="invisible"/>
 
     <io.nyris.croppingview.PinViewCropper
@@ -44,7 +47,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            app:layout_constraintRight_toRightOf="@+id/imPreview"
+            app:layout_constraintLeft_toLeftOf="@+id/imPreview"
+            app:layout_constraintTop_toTopOf="@+id/imPreview"
+            app:layout_constraintBottom_toBottomOf="@+id/imPreview"/>
 
     <ProgressBar
             android:id="@+id/vProgress"
@@ -61,7 +68,7 @@
             android:id="@+id/cvTakePic"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:onClick="onCircleViewClick" 
+            android:onClick="onCircleViewClick"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -77,10 +84,15 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
+            android:id="@+id/imValidate"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
+            android:onClick="onValidateClick"
+            android:visibility="invisible"
+            android:padding="24dp"
+            app:srcCompat="@drawable/ic_done"
             app:layout_constraintRight_toRightOf="@+id/vPosCam"
             app:layout_constraintLeft_toLeftOf="@+id/vPosCam"
             app:layout_constraintTop_toTopOf="@+id/vPosCam"

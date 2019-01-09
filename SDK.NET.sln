@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nyris.ui.iOS.Demo", "ui\nyr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nyris.api", "sdk\nyris.api\nyris.api.csproj", "{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nyris.ui.Android.Camera", "ui\nyris.ui.Android.Camera\nyris.ui.Android.Camera.csproj", "{45888A26-AE9C-419C-8588-6D6988528BC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nyris.ui.Android.Cropping", "ui\nyris.ui.Android.Cropping\nyris.ui.Android.Cropping.csproj", "{16DB704F-AF60-4D13-B498-CE47D851C1B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -149,6 +153,38 @@ Global
 		{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
 		{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
 		{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Debug|x86.Build.0 = Debug|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Release|x86.ActiveCfg = Release|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Release|x86.Build.0 = Release|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Release|iPhone.Build.0 = Release|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{45888A26-AE9C-419C-8588-6D6988528BC7}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Debug|x86.Build.0 = Debug|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Release|x86.ActiveCfg = Release|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Release|x86.Build.0 = Release|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Release|iPhone.Build.0 = Release|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3}.AppStore|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3E10D7AE-421C-4FD9-8CCD-E0F277EBB518} = {20DF4C7A-157A-42CD-839D-B7817B0F60F8}
@@ -158,5 +194,7 @@ Global
 		{81DB1CE0-3384-462C-953B-F40393C18FA9} = {EC1E180A-1CB4-4F4C-A031-F112E0C61978}
 		{3336A3ED-AE3E-4F28-90DB-3AD6555AD90A} = {EC1E180A-1CB4-4F4C-A031-F112E0C61978}
 		{5AC15E4D-6BA2-45EA-9003-C897C4A061F5} = {20DF4C7A-157A-42CD-839D-B7817B0F60F8}
+		{45888A26-AE9C-419C-8588-6D6988528BC7} = {EC1E180A-1CB4-4F4C-A031-F112E0C61978}
+		{16DB704F-AF60-4D13-B498-CE47D851C1B3} = {EC1E180A-1CB4-4F4C-A031-F112E0C61978}
 	EndGlobalSection
 EndGlobal

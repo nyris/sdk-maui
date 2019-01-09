@@ -4,7 +4,7 @@ using Android.Content;
 using Android.Support.Annotation;
 using Newtonsoft.Json;
 using Nyris.Sdk.Network.API.XOptions;
-using Nyris.Sdk.Network.Model;
+using Nyris.Ui.Android.Models;
 using FragmentOld = Android.App.Fragment;
 using FragmentV4 = Android.Support.V4.App.Fragment;
 
@@ -14,21 +14,52 @@ namespace Nyris.Ui.Android
     {
         public static readonly int REQUEST_CODE = 20160401;
 
+        public static readonly string SEARCH_RESULT_KEY = "SEARCH_RESULT_KEY";
+
         internal static readonly string CONFIG_KEY = "CONFIG_KEY";
 
         private NyrisSearcherConfig _config;
+        private Activity _fromActivity;
+        private FragmentV4 _fromFragmentV4;
+        private FragmentOld _fromFragmentOld;
 
-        private NyrisSearcher(bool debug)
+        private NyrisSearcher(string apiKey, bool debug)
         {
             _config = new NyrisSearcherConfig
             {
+                ApiKey = apiKey,
                 IsDebug = debug
             };
         }
 
-        public static INyrisSearcher Instance(bool debug = false)
+        private NyrisSearcher([NonNull] string apiKey, [NonNull] Activity activity, bool debug) : this(apiKey, debug)
         {
-            return new NyrisSearcher(debug);
+            _fromActivity = activity;
+        }
+
+        private NyrisSearcher([NonNull] string apiKey, [NonNull] FragmentV4 fragmentV4, bool debug) : this(apiKey, debug)
+        {
+            _fromFragmentV4 = fragmentV4;
+        }
+
+        private NyrisSearcher([NonNull]string apiKey, [NonNull] FragmentOld fragmentOld, bool debug) : this(apiKey, debug)
+        {
+            _fromFragmentOld = fragmentOld;
+        }
+
+        public static INyrisSearcher Builder(string apiKey, Activity activity, bool debug = false)
+        {
+            return new NyrisSearcher(apiKey, activity, debug);
+        }
+
+        public static INyrisSearcher Builder(string apiKey, FragmentV4 fragmentV4, bool debug = false)
+        {
+            return new NyrisSearcher(apiKey, fragmentV4, debug);
+        }
+
+        public static INyrisSearcher Builder(string apiKey, FragmentOld fragmentOld, bool debug = false)
+        {
+            return new NyrisSearcher(apiKey, fragmentOld, debug);
         }
 
         public INyrisSearcher ApiKey([NonNull] string apiKey)
@@ -121,41 +152,6 @@ namespace Nyris.Ui.Android
             return this;
         }
 
-        public void Start<FromContext>([NonNull] FromContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            var configJson = JsonConvert.SerializeObject(_config);
-            if (context is Activity)
-            {
-                Activity activity = context as Activity;
-                var intent = new Intent(activity, typeof(NyrisSearcherActivity));
-                intent.PutExtra(CONFIG_KEY, configJson);
-                activity.StartActivityForResult(intent, REQUEST_CODE);
-            }
-            else if (context is FragmentV4)
-            {
-                FragmentV4 fragmentV4 = context as FragmentV4;
-                var intent = new Intent(fragmentV4.Context, typeof(NyrisSearcherActivity));
-                intent.PutExtra(CONFIG_KEY, configJson);
-                fragmentV4.StartActivityForResult(intent, REQUEST_CODE);
-            }
-            else if (context is FragmentOld)
-            {
-                FragmentOld fragmentOld = context as FragmentOld;
-                var intent = new Intent(fragmentOld.Context, typeof(NyrisSearcherActivity));
-                intent.PutExtra(CONFIG_KEY, configJson);
-                fragmentOld.StartActivityForResult(intent, REQUEST_CODE);
-            }
-            else
-            {
-                throw new ArgumentException("Internal Error : You need to handle casting here");
-            }
-        }
-
         public INyrisSearcher AsJson()
         {
             _config.ResponseType = typeof(JsonResponse);
@@ -168,19 +164,31 @@ namespace Nyris.Ui.Android
             return this;
         }
 
-        public void Start([NonNull] Activity activity)
+        public void Start()
         {
-            Start<Activity>(activity);
-        }
-
-        public void Start([NonNull] FragmentV4 fragment)
-        {
-            Start<FragmentV4>(fragment);
-        }
-
-        public void Start([NonNull] FragmentOld fragment)
-        {
-            Start<FragmentOld>(fragment);
+            var configJson = JsonConvert.SerializeObject(_config);
+            if (_fromActivity != null)
+            {
+                var intent = new Intent(_fromActivity, typeof(NyrisSearcherActivity));
+                intent.PutExtra(CONFIG_KEY, configJson);
+                _fromActivity.StartActivityForResult(intent, REQUEST_CODE);
+            }
+            else if (_fromFragmentV4 != null)
+            {
+                var intent = new Intent(_fromFragmentV4.Context, typeof(NyrisSearcherActivity));
+                intent.PutExtra(CONFIG_KEY, configJson);
+                _fromFragmentV4.StartActivityForResult(intent, REQUEST_CODE);
+            }
+            else if (_fromFragmentOld != null)
+            {
+                var intent = new Intent(_fromFragmentOld.Context, typeof(NyrisSearcherActivity));
+                intent.PutExtra(CONFIG_KEY, configJson);
+                _fromFragmentOld.StartActivityForResult(intent, REQUEST_CODE);
+            }
+            else
+            {
+                throw new ArgumentException("Internal Error : You need to handle casting here");
+            }
         }
     }
 }

@@ -2055,46 +2055,49 @@ namespace Nyris.Ui.Android
 			public static int focus_marker_outline = 2130837589;
 			
 			// aapt resource value: 0x7f020056
-			public static int notification_action_background = 2130837590;
+			public static int ic_done = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public static int notification_bg = 2130837591;
+			public static int notification_action_background = 2130837591;
 			
 			// aapt resource value: 0x7f020058
-			public static int notification_bg_low = 2130837592;
+			public static int notification_bg = 2130837592;
 			
 			// aapt resource value: 0x7f020059
-			public static int notification_bg_low_normal = 2130837593;
+			public static int notification_bg_low = 2130837593;
 			
 			// aapt resource value: 0x7f02005a
-			public static int notification_bg_low_pressed = 2130837594;
+			public static int notification_bg_low_normal = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public static int notification_bg_normal = 2130837595;
+			public static int notification_bg_low_pressed = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public static int notification_bg_normal_pressed = 2130837596;
+			public static int notification_bg_normal = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public static int notification_icon_background = 2130837597;
-			
-			// aapt resource value: 0x7f020062
-			public static int notification_template_icon_bg = 2130837602;
-			
-			// aapt resource value: 0x7f020063
-			public static int notification_template_icon_low_bg = 2130837603;
+			public static int notification_bg_normal_pressed = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public static int notification_tile_bg = 2130837598;
+			public static int notification_icon_background = 2130837598;
+			
+			// aapt resource value: 0x7f020063
+			public static int notification_template_icon_bg = 2130837603;
+			
+			// aapt resource value: 0x7f020064
+			public static int notification_template_icon_low_bg = 2130837604;
 			
 			// aapt resource value: 0x7f02005f
-			public static int notify_panel_notification_icon_bg = 2130837599;
+			public static int notification_tile_bg = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public static int tooltip_frame_dark = 2130837600;
+			public static int notify_panel_notification_icon_bg = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public static int tooltip_frame_light = 2130837601;
+			public static int tooltip_frame_dark = 2130837601;
+			
+			// aapt resource value: 0x7f020062
+			public static int tooltip_frame_light = 2130837602;
 			
 			static Drawable()
 			{
@@ -2340,6 +2343,9 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f0a00a0
 			public static int imPreview = 2131361952;
 			
+			// aapt resource value: 0x7f0a00a4
+			public static int imValidate = 2131361956;
+			
 			// aapt resource value: 0x7f0a005a
 			public static int image = 2131361882;
 			
@@ -2529,8 +2535,8 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f0a0089
 			public static int submit_area = 2131361929;
 			
-			// aapt resource value: 0x7f0a00a4
-			public static int surface_view = 2131361956;
+			// aapt resource value: 0x7f0a00a5
+			public static int surface_view = 2131361957;
 			
 			// aapt resource value: 0x7f0a0014
 			public static int tabMode = 2131361812;
@@ -2556,8 +2562,8 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f0a0069
 			public static int textSpacerNoTitle = 2131361897;
 			
-			// aapt resource value: 0x7f0a00a5
-			public static int texture_view = 2131361957;
+			// aapt resource value: 0x7f0a00a6
+			public static int texture_view = 2131361958;
 			
 			// aapt resource value: 0x7f0a0098
 			public static int time = 2131361944;
@@ -2904,11 +2910,11 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f05001a
 			public static int abc_toolbar_collapse_description = 2131034138;
 			
-			// aapt resource value: 0x7f05002a
-			public static int app_name = 2131034154;
-			
 			// aapt resource value: 0x7f050029
-			public static int library_name = 2131034153;
+			public static int app_name = 2131034153;
+			
+			// aapt resource value: 0x7f05002a
+			public static int library_name = 2131034154;
 			
 			// aapt resource value: 0x7f05001b
 			public static int search_menu_title = 2131034139;

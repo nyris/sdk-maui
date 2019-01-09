@@ -29,12 +29,10 @@ namespace Nyris.Ui.Android
 
         INyrisSearcher CategoryPrediction(Action<CategoryPredictionOptions> options = null);
 
-        void Start<FromContext>([NonNull] FromContext context);
+        INyrisSearcher AsJson();
 
-        void Start([NonNull] Activity activity);
+        INyrisSearcher AsObject();
 
-        void Start([NonNull] FragmentV4 fragment);
-
-        void Start([NonNull] FragmentOld fragment);
+        void Start();
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using Nyris.Sdk.Network.API;
 using Nyris.Sdk.Network.API.XOptions;
 using Nyris.Sdk.Network.Model;
+using Nyris.Sdk.Utils;
 
 namespace Nyris.Ui.Android
 {
@@ -10,13 +12,13 @@ namespace Nyris.Ui.Android
 
         public string ApiKey { get; set; }
 
-        public string OutputFormat { get; set; }
+        public string OutputFormat { get; set; } = Constants.DEFAULT_OUTPUT_FORMAT;
 
-        public string Language { get; set; }
+        public string Language { get; set; } = Constants.DEFAULT_LANGUAGE;
 
-        public uint Limit { get; set; }
+        public uint Limit { get; set; } = Options.DEFAULT_LIMIT;
 
-        public Type ResponseType { set; get; } = typeof(OfferResponse);
+        public Type ResponseType { set; get; } = typeof(OfferResponseDto);
 
         public ExactOptions ExactOptions { get; set; }
 

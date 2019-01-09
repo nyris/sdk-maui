@@ -1,6 +1,8 @@
 ﻿using Android.Graphics;
 using Android.Support.Annotation;
 using IO.Nyris.Camera;
+using Nyris.Ui.Android.Models;
+
 namespace Nyris.Ui.Android.Mvp
 {
     internal class SearcherContract
@@ -11,7 +13,9 @@ namespace Nyris.Ui.Android.Mvp
             void OnResume();
             void OnPause();
             void OnCircleVieClickw();
-            void OnImageCrop(Bitmap croppedImage);
+            void OnImageCrop(RectF rectF);
+            void OnBackPressed();
+            void OnOkErrorClick();
         }
 
         internal interface IView : IMvpView<IPresenter>
@@ -36,6 +40,9 @@ namespace Nyris.Ui.Android.Mvp
             void ResetViewCropper();
             void HideViewCropper();
             void ShowViewCropper();
+            void SenResult(OfferResponse offerResponse);
+            void SenResult(JsonResponse jsonResponse);
+            void Close();
         }
     }
 }
