@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="B6q-Ke-dIa">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Camera-->
+        <scene sceneID="BKQ-tx-kvD">
+            <objects>
+                <viewController restorationIdentifier="ImageCaptureController" storyboardIdentifier="ImageCaptureController" title="Camera" id="B6q-Ke-dIa" customClass="CameraController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HVc-ga-hko"/>
+                        <viewControllerLayoutGuide type="bottom" id="ewh-R4-h0C"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="X6d-aY-5iW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OeZ-9G-nLa">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <label hidden="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2cJ-xs-Vj7">
+                                <rect key="frame" x="0.0" y="313.5" width="375" height="40"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.87" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Capture your product" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xeT-KT-Fbe">
+                                <rect key="frame" x="122.5" y="508" width="130" height="16"/>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view hidden="YES" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N3E-eZ-u0F">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Y0Q-aO-CoX">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                            </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yX5-oX-1p5">
+                                <rect key="frame" x="152.5" y="548" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="ArF-de-icT"/>
+                                    <constraint firstAttribute="width" secondItem="yX5-oX-1p5" secondAttribute="height" id="I1f-xt-cmK"/>
+                                </constraints>
+                                <color key="tintColor" red="0.89019607840000003" green="0.1058823529" blue="0.36470588240000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="capture_icon"/>
+                                <connections>
+                                    <action selector="captureAction:" destination="B6q-Ke-dIa" eventType="touchUpInside" id="kZg-5L-V5f"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ewh-R4-h0C" firstAttribute="top" secondItem="OeZ-9G-nLa" secondAttribute="bottom" id="3dF-T7-Ftm"/>
+                            <constraint firstItem="N3E-eZ-u0F" firstAttribute="height" secondItem="X6d-aY-5iW" secondAttribute="height" id="3dz-ZP-WFo"/>
+                            <constraint firstItem="N3E-eZ-u0F" firstAttribute="centerX" secondItem="X6d-aY-5iW" secondAttribute="centerX" id="3fd-H1-k1v"/>
+                            <constraint firstItem="2cJ-xs-Vj7" firstAttribute="height" secondItem="X6d-aY-5iW" secondAttribute="height" multiplier="0.06" id="40g-OE-2mq"/>
+                            <constraint firstItem="yX5-oX-1p5" firstAttribute="centerX" secondItem="X6d-aY-5iW" secondAttribute="centerX" id="6zb-fp-4oT"/>
+                            <constraint firstItem="OeZ-9G-nLa" firstAttribute="leading" secondItem="X6d-aY-5iW" secondAttribute="leading" id="Dlc-Tv-WSG"/>
+                            <constraint firstItem="2cJ-xs-Vj7" firstAttribute="centerX" secondItem="X6d-aY-5iW" secondAttribute="centerX" id="ESU-P7-nzA"/>
+                            <constraint firstItem="2cJ-xs-Vj7" firstAttribute="centerY" secondItem="X6d-aY-5iW" secondAttribute="centerY" id="Fwr-nX-UH9"/>
+                            <constraint firstItem="N3E-eZ-u0F" firstAttribute="width" secondItem="X6d-aY-5iW" secondAttribute="width" id="FyT-gO-wD3"/>
+                            <constraint firstItem="2cJ-xs-Vj7" firstAttribute="width" secondItem="X6d-aY-5iW" secondAttribute="width" id="Gyb-8f-pUz"/>
+                            <constraint firstItem="N3E-eZ-u0F" firstAttribute="centerY" secondItem="X6d-aY-5iW" secondAttribute="centerY" id="Kuw-0A-kbw"/>
+                            <constraint firstItem="yX5-oX-1p5" firstAttribute="top" secondItem="xeT-KT-Fbe" secondAttribute="bottom" constant="24" id="Ps4-hG-j6S"/>
+                            <constraint firstItem="xeT-KT-Fbe" firstAttribute="centerX" secondItem="yX5-oX-1p5" secondAttribute="centerX" id="Up7-Up-SAf"/>
+                            <constraint firstAttribute="trailing" secondItem="OeZ-9G-nLa" secondAttribute="trailing" id="YKf-z6-nCe"/>
+                            <constraint firstItem="ewh-R4-h0C" firstAttribute="top" secondItem="yX5-oX-1p5" secondAttribute="bottom" constant="49" id="a9v-gB-60u"/>
+                            <constraint firstItem="Y0Q-aO-CoX" firstAttribute="centerY" secondItem="X6d-aY-5iW" secondAttribute="centerY" id="bOs-cq-7S8"/>
+                            <constraint firstItem="Y0Q-aO-CoX" firstAttribute="centerX" secondItem="X6d-aY-5iW" secondAttribute="centerX" id="cOk-ih-5qv"/>
+                            <constraint firstItem="OeZ-9G-nLa" firstAttribute="top" secondItem="HVc-ga-hko" secondAttribute="bottom" id="xAb-Hn-kUa"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="activityIndicator" destination="Y0Q-aO-CoX" id="MMQ-CK-gne"/>
+                        <outlet property="captureButton" destination="yX5-oX-1p5" id="0QR-hZ-vXg"/>
+                        <outlet property="captureLable" destination="xeT-KT-Fbe" id="MrV-0W-m80"/>
+                        <outlet property="darkView" destination="N3E-eZ-u0F" id="8Vq-Wc-Uwz"/>
+                        <outlet property="networkStatusLable" destination="2cJ-xs-Vj7" id="1ON-3G-Ije"/>
+                        <outlet property="cameraView" destination="OeZ-9G-nLa" id="name-outlet-OeZ-9G-nLa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jvL-66-L57" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="881" y="63"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="capture_icon" width="140" height="140"/>
+    </resources>
+</document>

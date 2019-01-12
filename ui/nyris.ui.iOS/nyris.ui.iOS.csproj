@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,11 +52,19 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controller" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyClass.cs" />
+    <Compile Include="Camera\CameraConfiguration.cs" />
+    <Compile Include="Camera\CameraManager.cs" />
+    <Compile Include="Camera\Enum\CameraEnumeration.cs" />
+    <Compile Include="Camera\EventArgs\DidTapCameraPreviewLayerEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CameraController.cs" />
+    <Compile Include="CameraController.designer.cs">
+      <DependentUpon>CameraController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\sdk\nyris.sdk\nyris.sdk.csproj">
@@ -67,6 +75,23 @@
       <Project>{81db1ce0-3384-462c-953b-f40393c18fa9}</Project>
       <Name>nyris.ui.common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CameraController.storyboard" />
+    <Content Include="images.xcassets\capture\capture_icon.imageset\capture_icon.png" />
+    <Content Include="images.xcassets\capture\capture_icon.imageset\capture_icon@2x.png" />
+    <Content Include="images.xcassets\capture\capture_icon.imageset\capture_icon@3x.png" />
+    <Content Include="images.xcassets\capture\capture_icon.imageset\Contents.json" />
+    <Content Include="images.xcassets\capture\Contents.json" />
+    <Content Include="images.xcassets\capture\validate_icon.imageset\Contents.json" />
+    <Content Include="images.xcassets\capture\validate_icon.imageset\validate_icon.png" />
+    <Content Include="images.xcassets\capture\validate_icon.imageset\validate_icon@2x.png" />
+    <Content Include="images.xcassets\capture\validate_icon.imageset\validate_icon@3x.png" />
+    <Content Include="images.xcassets\objects_proposal\Contents.json" />
+    <Content Include="images.xcassets\objects_proposal\point_icon.imageset\Contents.json" />
+    <Content Include="images.xcassets\objects_proposal\point_icon.imageset\point_icon.png" />
+    <Content Include="images.xcassets\objects_proposal\point_icon.imageset\point_icon@2x.png" />
+    <Content Include="images.xcassets\objects_proposal\point_icon.imageset\point_icon@3x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
