@@ -1,7 +1,7 @@
 ﻿using System;
 using Nyris.Sdk.Network.API.XOptions;
 
-namespace Nyris.Ui.Common
+namespace Nyris.UI.Common
 {
     public interface INyrisSearcher
     {
