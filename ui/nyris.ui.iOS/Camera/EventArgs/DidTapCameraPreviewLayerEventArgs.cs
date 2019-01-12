@@ -1,6 +1,6 @@
 using CoreGraphics;
 
-namespace Nyris.Ui.iOS.Camera.EventArgs
+namespace Nyris.UI.iOS.Camera.EventArgs
 {
     public class DidTapCameraPreviewLayerEventArgs : System.EventArgs
     {

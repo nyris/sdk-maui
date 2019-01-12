@@ -1,11 +1,11 @@
 using Foundation;
 using System;
 using AVFoundation;
-using Nyris.Ui.iOS.Camera;
-using Nyris.Ui.iOS.Camera.Enum;
+using Nyris.UI.iOS.Camera;
+using Nyris.UI.iOS.Camera.Enum;
 using UIKit;
 
-namespace Nyris.Ui.iOS
+namespace Nyris.UI.iOS
 {
     public partial class CameraController : UIViewController
     {
@@ -19,14 +19,27 @@ namespace Nyris.Ui.iOS
 			base.ViewDidLoad ();
 
 			_cameraManager = new CameraManager();
-			_cameraManager.Setup();
-			if (_cameraManager.AuthorizationResult == CameraAuthorizationResult.Authorized) {
-				_cameraManager.Show(cameraView);
-			}
+            try
+            {
+                _cameraManager.Setup();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 			AddObservers();
 		}
-		
-		private void AddObservers ()
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            if (_cameraManager.AuthorizationResult == CameraAuthorizationResult.Authorized)
+            {
+                _cameraManager.Show(cameraView);
+            }
+        }
+
+        private void AddObservers ()
 		{
 			
 			NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.RuntimeErrorNotification, SessionRuntimeError, this);
@@ -104,6 +117,11 @@ namespace Nyris.Ui.iOS
 			if (_cameraManager.IsRunning ) {
 				_cameraManager.stop();
 			}
-		}
+        }
+
+        partial void CaptureTapped(UIButton sender)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

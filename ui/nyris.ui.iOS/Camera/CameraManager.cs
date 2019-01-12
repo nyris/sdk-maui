@@ -6,11 +6,11 @@ using CoreFoundation;
 using CoreGraphics;
 using CoreVideo;
 using Foundation;
-using Nyris.Ui.iOS.Camera.Enum;
-using Nyris.Ui.iOS.Camera.EventArgs;
+using Nyris.UI.iOS.Camera.Enum;
+using Nyris.UI.iOS.Camera.EventArgs;
 using UIKit;
 
-namespace Nyris.Ui.iOS.Camera
+namespace Nyris.UI.iOS.Camera
 {
     public class CameraManager : AVCaptureVideoDataOutputSampleBufferDelegate
     {
@@ -25,7 +25,7 @@ namespace Nyris.Ui.iOS.Camera
         private UIView _displayView;
         private CameraConfiguration _cameraConfiguration;
 
-        public SessionSetupResult SetupResult { get; private set; } = SessionSetupResult.Success;
+        public SessionSetupResult SetupResult { get; private set; } = SessionSetupResult.NotAuthorized;
         public CameraAuthorizationResult AuthorizationResult { get; private set; } = CameraAuthorizationResult.NotDetermined;
 
         public AVCaptureVideoPreviewLayer VideoPreviewLayer => _videoPreviewLayer;
@@ -57,10 +57,11 @@ namespace Nyris.Ui.iOS.Camera
         void ConfigureSession (CameraConfiguration configuration)
         {
 	        _cameraConfiguration = configuration;
-	        
-			if (SetupResult != SessionSetupResult.Success)
+
+            CheckCameraPermission();
+            if (AuthorizationResult != CameraAuthorizationResult.Authorized)
 			{
-				// request camera authorization
+                // request camera authorization
 				return;
 			}
 
@@ -99,37 +100,18 @@ namespace Nyris.Ui.iOS.Camera
 				throw new Exception(message:$"can't set {_cameraConfiguration.Preset} as session preset");
 			}
 			_captureSession.SessionPreset = _cameraConfiguration.Preset;
-			
-				
-			DispatchQueue.MainQueue.DispatchAsync (() => {
-				var settings = new AVVideoSettingsUncompressed {PixelFormatType = CVPixelFormatType.CV32BGRA};
-				_videoOutput.WeakVideoSettings = settings.Dictionary;
-				_videoOutput.AlwaysDiscardsLateVideoFrames = true;
 
-				if (_captureSession.CanAddOutput(_videoOutput))
-				{
-					_captureSession.AddOutput(_videoOutput);
-					_videoOutput.SetSampleBufferDelegateQueue(this, SessionQueue);
-				}
-				
-				_videoPreviewLayer = AVCaptureVideoPreviewLayer.FromSession(_captureSession);
-				if (_videoPreviewLayer == null)
-				{
-					throw new Exception(message:"Invalid videoPreviewLayer");
-				}
+            var settings = new AVVideoSettingsUncompressed { PixelFormatType = CVPixelFormatType.CV32BGRA };
+            _videoOutput.WeakVideoSettings = settings.Dictionary;
+            _videoOutput.AlwaysDiscardsLateVideoFrames = true;
 
-				if (_videoPreviewLayer.Connection.SupportsVideoOrientation)
-				{
-					var statusBarOrientation = UIApplication.SharedApplication.StatusBarOrientation;
-					var initialVideoOrientation = AVCaptureVideoOrientation.Portrait;
-					if (statusBarOrientation != UIInterfaceOrientation.Unknown)
-					{
-						initialVideoOrientation = (AVCaptureVideoOrientation)statusBarOrientation;
-					}
+            if (_captureSession.CanAddOutput(_videoOutput))
+            {
+                _captureSession.AddOutput(_videoOutput);
+                _videoOutput.SetSampleBufferDelegateQueue(this, SessionQueue);
+            }
 
-					_videoPreviewLayer.Connection.VideoOrientation = (AVCaptureVideoOrientation)statusBarOrientation;
-				}
-			} );
+            _videoPreviewLayer = AVCaptureVideoPreviewLayer.FromSession(_captureSession);
 			_captureSession.CommitConfiguration ();
 		}
 
@@ -140,21 +122,41 @@ namespace Nyris.Ui.iOS.Camera
 		        throw new Exception(message:"Invalid capture session, make sure Setup is called befor displaying a preview");
 	        }
 
-	        _displayView = view;
-	        _videoPreviewLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
-	        _videoPreviewLayer.Frame = UIScreen.MainScreen.Bounds;
-	        view.Layer.AddSublayer(_videoPreviewLayer);
+            DispatchQueue.MainQueue.DispatchAsync(() =>
+            {
 
-	        if (!view.GestureRecognizers.Contains(_focusTapGesture) )
-	        {
-		        view.UserInteractionEnabled = true;
-		        view.AddGestureRecognizer(_focusTapGesture);
-	        }
+                if (_videoPreviewLayer == null)
+                {
+                    throw new Exception(message: "Invalid videoPreviewLayer");
+                }
 
-	        if (!_captureSession.Running)
-	        {
-		        _captureSession?.StartRunning();
-	        }
+                if (_videoPreviewLayer.Connection.SupportsVideoOrientation)
+                {
+                    var statusBarOrientation = UIApplication.SharedApplication.StatusBarOrientation;
+                    var initialVideoOrientation = AVCaptureVideoOrientation.Portrait;
+                    if (statusBarOrientation != UIInterfaceOrientation.Unknown)
+                    {
+                        initialVideoOrientation = (AVCaptureVideoOrientation)statusBarOrientation;
+                    }
+
+                    _videoPreviewLayer.Connection.VideoOrientation = (AVCaptureVideoOrientation)statusBarOrientation;
+                }
+                _displayView = view;
+                _videoPreviewLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
+                _videoPreviewLayer.Frame = UIScreen.MainScreen.Bounds;
+                view.Layer.AddSublayer(_videoPreviewLayer);
+
+                if (view.GestureRecognizers == null || !view.GestureRecognizers.Contains(_focusTapGesture))
+                {
+                    view.UserInteractionEnabled = true;
+                    view.AddGestureRecognizer(_focusTapGesture);
+                }
+
+                if (!_captureSession.Running)
+                {
+                    _captureSession?.StartRunning();
+                }
+            });
         }
         
         

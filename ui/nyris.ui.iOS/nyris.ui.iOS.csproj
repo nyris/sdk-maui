@@ -77,7 +77,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CameraController.storyboard" />
     <Content Include="images.xcassets\capture\capture_icon.imageset\capture_icon.png" />
     <Content Include="images.xcassets\capture\capture_icon.imageset\capture_icon@2x.png" />
     <Content Include="images.xcassets\capture\capture_icon.imageset\capture_icon@3x.png" />
@@ -92,6 +91,26 @@
     <Content Include="images.xcassets\objects_proposal\point_icon.imageset\point_icon.png" />
     <Content Include="images.xcassets\objects_proposal\point_icon.imageset\point_icon@2x.png" />
     <Content Include="images.xcassets\objects_proposal\point_icon.imageset\point_icon@3x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="CameraController.storyboard" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="assets.xcassets\Contents.json" />
+    <ImageAsset Include="assets.xcassets\capture\Contents.json" />
+    <ImageAsset Include="assets.xcassets\capture\capture_icon.imageset\Contents.json" />
+    <ImageAsset Include="assets.xcassets\capture\capture_icon.imageset\capture_icon.png" />
+    <ImageAsset Include="assets.xcassets\capture\capture_icon.imageset\capture_icon%402x.png" />
+    <ImageAsset Include="assets.xcassets\capture\capture_icon.imageset\capture_icon%403x.png" />
+    <ImageAsset Include="assets.xcassets\capture\validate_icon.imageset\Contents.json" />
+    <ImageAsset Include="assets.xcassets\capture\validate_icon.imageset\validate_icon.png" />
+    <ImageAsset Include="assets.xcassets\capture\validate_icon.imageset\validate_icon%402x.png" />
+    <ImageAsset Include="assets.xcassets\capture\validate_icon.imageset\validate_icon%403x.png" />
+    <ImageAsset Include="assets.xcassets\objects_proposal\Contents.json" />
+    <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\Contents.json" />
+    <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\point_icon.png" />
+    <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\point_icon%402x.png" />
+    <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\point_icon%403x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

@@ -9,7 +9,7 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace Nyris.Ui.iOS
+namespace Nyris.UI.iOS
 {
     [Register ("CameraController")]
     partial class CameraController
@@ -38,9 +38,9 @@ namespace Nyris.Ui.iOS
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel networkStatusLable { get; set; }
 
-        [Action ("captureAction:")]
+        [Action ("CaptureTapped:")]
         [GeneratedCode ("iOS Designer", "1.0")]
-        partial void captureAction (UIKit.UIButton sender);
+        partial void CaptureTapped (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {

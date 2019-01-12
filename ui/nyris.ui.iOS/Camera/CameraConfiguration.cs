@@ -1,9 +1,9 @@
 using System;
 using Foundation;
 using AVFoundation;
-using Nyris.Ui.iOS.Camera.Enum;
+using Nyris.UI.iOS.Camera.Enum;
 
-namespace Nyris.Ui.iOS.Camera
+namespace Nyris.UI.iOS.Camera
 {
     public struct CameraConfiguration
     {

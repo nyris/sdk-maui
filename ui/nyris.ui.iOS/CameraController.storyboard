@@ -55,7 +55,7 @@
                                 <color key="tintColor" red="0.89019607840000003" green="0.1058823529" blue="0.36470588240000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="capture_icon"/>
                                 <connections>
-                                    <action selector="captureAction:" destination="B6q-Ke-dIa" eventType="touchUpInside" id="kZg-5L-V5f"/>
+                                    <action selector="CaptureTapped:" destination="B6q-Ke-dIa" id="249" eventType="touchUpInside"/>
                                 </connections>
                             </button>
                         </subviews>

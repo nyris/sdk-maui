@@ -1,4 +1,4 @@
-namespace Nyris.Ui.iOS.Camera.Enum
+namespace Nyris.UI.iOS.Camera.Enum
 {
     public enum TorchMode {
         On, Off, Auto

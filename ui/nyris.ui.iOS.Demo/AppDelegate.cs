@@ -1,8 +1,7 @@
 ﻿using Foundation;
 using ObjCRuntime;
 using UIKit;
-
-namespace Nyris.Ui.iOS.Demo
+namespace Nyris.UI.iOS.Demo
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the
     // User Interface of the application, as well as listening (and optionally responding) to application events from iOS.
@@ -22,19 +21,20 @@ namespace Nyris.Ui.iOS.Demo
             // Override point for customization after application launch.
             // If not required for your application you can safely delete this method
 
-            Window = new UIWindow();
-            var nvc = new UINavigationController();
+            //Window = new UIWindow();
+            //var nvc = new UINavigationController();
 
-            var all = NSBundle._AllBundles;
-            var bundle = NSBundle.FromClass(new Class(typeof(CameraController)));
-            var storyboard2 = UIStoryboard.FromName("CameraController.storyboard", NSBundle.MainBundle);
-            var storyboard = UIStoryboard.FromName("CameraController", bundle);
+            //var all = NSBundle._AllBundles;
+            //var bundle = NSBundle.FromClass(new Class(typeof(Nyris.UI.iOS.CameraController)));
+            //var f = NSBundle.AllFrameworks;
+            //var storyboard2 = UIStoryboard.FromName("CameraController.storyboard", NSBundle.MainBundle);
+            //var storyboard = UIStoryboard.FromName("CameraController", bundle);
              
-            var cameraController = storyboard.InstantiateInitialViewController();
+            //var cameraController = storyboard.InstantiateInitialViewController();
             
-            nvc.PushViewController(cameraController,true);
-            Window.RootViewController = nvc;
-            Window.MakeKeyWindow();
+            //nvc.PushViewController(cameraController,true);
+            //Window.RootViewController = nvc;
+            //Window.MakeKeyWindow();
             return true;
         }
 
