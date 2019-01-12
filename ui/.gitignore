@@ -8,3 +8,4 @@
 /nyris.ui.iOS.Demo/obj/*
 /nyris.ui.common/bin/*
 /nyris.ui.common/obj/*
+*.DS_Store
