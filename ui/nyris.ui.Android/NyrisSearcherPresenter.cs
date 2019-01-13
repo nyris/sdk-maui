@@ -63,6 +63,7 @@ namespace Nyris.Ui.Android
             var nyris = NyrisApi.CreateInstance(_config.ApiKey, Platform.Android, _config.IsDebug);
             _imageMatchingApi = nyris.ImageMatchingAPi;
             //Apply Config
+            MapConfig();
         }
 
         public void OnCircleVieClickw()
@@ -181,6 +182,7 @@ namespace Nyris.Ui.Android
                 return;
             }
 
+            _presenterStatus = PresenterStatus.Cropping;
             ClearDisposables();
             _view?.HideLoading();
             _view?.ShowCircleView();
@@ -208,6 +210,66 @@ namespace Nyris.Ui.Android
                 newRectF.Right = _bitmapForCropping.Width;
 
             return newRectF;
+        }
+
+        private void MapConfig()
+        {
+            _imageMatchingApi.OutputFormat(_config.OutputFormat);
+            _imageMatchingApi.Language(_config.Language);
+            _imageMatchingApi.Limit(_config.Limit);
+
+            if (_config.ExactOptions != null)
+            {
+                _imageMatchingApi.Exact(obj =>
+                {
+                    obj.Enabled = _config.ExactOptions.Enabled;
+                });
+            }
+
+            if (_config.SimilarityOptions != null)
+            {
+                _imageMatchingApi.Similarity(obj =>
+                {
+                    obj.Enabled = _config.SimilarityOptions.Enabled;
+                    obj.Limit = _config.SimilarityOptions.Limit;
+                    obj.Threshold = _config.SimilarityOptions.Threshold;
+                });
+            }
+
+            if (_config.OcrOptions != null)
+            {
+                _imageMatchingApi.Ocr(obj =>
+                {
+                    obj.Enabled = _config.OcrOptions.Enabled;
+                });
+            }
+
+            if (_config.RegroupOptions != null)
+            {
+                _imageMatchingApi.Regroup(obj =>
+                {
+                    obj.Enabled = _config.RegroupOptions.Enabled;
+                    obj.Threshold = _config.RegroupOptions.Threshold;
+                });
+            }
+
+            if (_config.RecommendationOptions != null)
+            {
+                _imageMatchingApi.Recommendation(obj =>
+                {
+                    obj.Enabled = _config.RecommendationOptions.Enabled;
+                });
+            }
+
+            if (_config.CategoryPredictionOptions != null)
+            {
+                _imageMatchingApi.CategoryPrediction(obj =>
+                {
+                    obj.Enabled = _config.CategoryPredictionOptions.Enabled;
+                    obj.Limit = _config.CategoryPredictionOptions.Limit;
+                    obj.Threshold = _config.CategoryPredictionOptions.Threshold;
+                });
+            }
         }
 
         #region Ignore

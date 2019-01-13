@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -9,7 +10,7 @@ using Nyris.Ui.Android.Models;
 
 namespace Nyris.Ui.Android.Demo
 {
-    [Activity(Label = "demo", MainLauncher = true)]
+    [Activity(Label = "demo", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
         TextView _tvResult;
@@ -24,8 +25,9 @@ namespace Nyris.Ui.Android.Demo
         public void OnValidateClick(View v)
         {
             NyrisSearcher
-                .Builder("Your API Key Here", this, true)
-                .AsJson()
+                .Builder("Your API Key Here", this)
+                .CategoryPrediction()
+                //.AsJson()
                 .Start();
         }
 
@@ -40,7 +42,7 @@ namespace Nyris.Ui.Android.Demo
                     try
                     {
                         var offerResponse = data.GetParcelableExtra(NyrisSearcher.SEARCH_RESULT_KEY) as OfferResponse;
-                        _tvResult.Text = $"Found ({offerResponse.Offers.Count}) offers";
+                        _tvResult.Text = $"Found ({offerResponse.Offers.Count}) offers, Categories : ({offerResponse.PredictedCategories.Count})";
                     }
                     catch
                     {

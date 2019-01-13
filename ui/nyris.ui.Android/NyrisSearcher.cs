@@ -90,7 +90,7 @@ namespace Nyris.Ui.Android
         {
             if (options == null)
             {
-                return this;
+                options = opt => { opt.Enabled = true; };
             }
             _config.ExactOptions = new ExactOptions();
             options(_config.ExactOptions);
@@ -101,7 +101,7 @@ namespace Nyris.Ui.Android
         {
             if (options == null)
             {
-                return this;
+                options = opt => { opt.Enabled = true; };
             }
             _config.SimilarityOptions = new SimilarityOptions();
             options(_config.SimilarityOptions);
@@ -112,7 +112,7 @@ namespace Nyris.Ui.Android
         {
             if (options == null)
             {
-                return this;
+                options = opt => { opt.Enabled = true; };
             }
             _config.OcrOptions = new OcrOptions();
             options(_config.OcrOptions);
@@ -123,7 +123,7 @@ namespace Nyris.Ui.Android
         {
             if (options == null)
             {
-                return this;
+                options = opt => { opt.Enabled = true; };
             }
             _config.RegroupOptions = new RegroupOptions();
             options(_config.RegroupOptions);
@@ -134,7 +134,7 @@ namespace Nyris.Ui.Android
         {
             if (options == null)
             {
-                return this;
+                options = opt => { opt.Enabled = true; };
             }
             _config.RecommendationOptions = new RecommendationOptions();
             options(_config.RecommendationOptions);
@@ -145,7 +145,7 @@ namespace Nyris.Ui.Android
         {
             if (options == null)
             {
-                return this;
+                options = opt => { opt.Enabled = true; };
             }
             _config.CategoryPredictionOptions = new CategoryPredictionOptions();
             options(_config.CategoryPredictionOptions);
