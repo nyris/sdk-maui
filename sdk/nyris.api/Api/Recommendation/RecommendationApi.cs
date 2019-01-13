@@ -94,5 +94,10 @@ namespace Nyris.Api.Api.Recommendation
         {
             _limit = OptionDefaults.DefaultLimit;
         }
+
+        public IRecommendationApi ApiKey([NotNull] string apiKey)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

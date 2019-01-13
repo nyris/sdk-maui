@@ -1,7 +1,4 @@
 ﻿using Android.Support.Annotation;
-using Nyris.Sdk;
-using Nyris.Sdk.Network.API.ImageMatching;
-using Nyris.Sdk.Utils;
 using Nyris.Ui.Android.Mvp;
 using IO.Nyris.Camera;
 using System.Reactive.Disposables;
@@ -15,7 +12,8 @@ using Nyris.Ui.Android.Resources.layout;
 using Android.OS;
 using Nyris.Ui.Android.Custom;
 using Nyris.Ui.Android.Models;
-using Nyris.Sdk.Network.Model;
+using Nyris.Api;
+using Nyris.Api.Model;
 
 namespace Nyris.Ui.Android
 {
@@ -23,7 +21,7 @@ namespace Nyris.Ui.Android
     {
         private enum PresenterStatus { CamerListening, Cropping, Searching }
         private SearcherContract.IView _view;
-        private IImageMatchingApi _imageMatchingApi;
+        private INyrisApi _nyrisApi;
         private NyrisSearcherConfig _config;
         private CompositeDisposable _compositeDisposable;
         private Bitmap _bitmapForCropping;
@@ -60,9 +58,7 @@ namespace Nyris.Ui.Android
         {
             _config = config;
 
-            var nyris = NyrisApi.CreateInstance(_config.ApiKey, Platform.Android, _config.IsDebug);
-            _imageMatchingApi = nyris.ImageMatchingAPi;
-            //Apply Config
+            _nyrisApi = NyrisApi.CreateInstance(_config.ApiKey, Platform.Android, _config.IsDebug);
             MapConfig();
         }
 
@@ -113,7 +109,7 @@ namespace Nyris.Ui.Android
 
             if (_config.ResponseType == typeof(JsonResponse))
             {
-                _imageMatchingApi
+                _nyrisApi.ImageMatching
                     .Limit(_config.Limit)
                     .Match<JsonResponseDto>(image)
                     .SubscribeOn(NewThreadScheduler.Default)
@@ -130,7 +126,7 @@ namespace Nyris.Ui.Android
             }
             else
             {
-                _imageMatchingApi
+                _nyrisApi.ImageMatching
                     .Limit(_config.Limit)
                     .Match(image)
                     .SubscribeOn(NewThreadScheduler.Default)
@@ -214,13 +210,13 @@ namespace Nyris.Ui.Android
 
         private void MapConfig()
         {
-            _imageMatchingApi.OutputFormat(_config.OutputFormat);
-            _imageMatchingApi.Language(_config.Language);
-            _imageMatchingApi.Limit(_config.Limit);
+            _nyrisApi.ImageMatching.OutputFormat(_config.OutputFormat);
+            _nyrisApi.ImageMatching.Language(_config.Language);
+            _nyrisApi.ImageMatching.Limit(_config.Limit);
 
             if (_config.ExactOptions != null)
             {
-                _imageMatchingApi.Exact(obj =>
+                _nyrisApi.ImageMatching.Exact(obj =>
                 {
                     obj.Enabled = _config.ExactOptions.Enabled;
                 });
@@ -228,7 +224,7 @@ namespace Nyris.Ui.Android
 
             if (_config.SimilarityOptions != null)
             {
-                _imageMatchingApi.Similarity(obj =>
+                _nyrisApi.ImageMatching.Similarity(obj =>
                 {
                     obj.Enabled = _config.SimilarityOptions.Enabled;
                     obj.Limit = _config.SimilarityOptions.Limit;
@@ -238,7 +234,7 @@ namespace Nyris.Ui.Android
 
             if (_config.OcrOptions != null)
             {
-                _imageMatchingApi.Ocr(obj =>
+                _nyrisApi.ImageMatching.Ocr(obj =>
                 {
                     obj.Enabled = _config.OcrOptions.Enabled;
                 });
@@ -246,24 +242,24 @@ namespace Nyris.Ui.Android
 
             if (_config.RegroupOptions != null)
             {
-                _imageMatchingApi.Regroup(obj =>
+                _nyrisApi.ImageMatching.Regroup(obj =>
                 {
                     obj.Enabled = _config.RegroupOptions.Enabled;
                     obj.Threshold = _config.RegroupOptions.Threshold;
                 });
             }
 
-            if (_config.RecommendationOptions != null)
+            if (_config.RecommendationModeOptions != null)
             {
-                _imageMatchingApi.Recommendation(obj =>
+                _nyrisApi.ImageMatching.RecommendationMode(obj =>
                 {
-                    obj.Enabled = _config.RecommendationOptions.Enabled;
+                    obj.Enabled = _config.RecommendationModeOptions.Enabled;
                 });
             }
 
             if (_config.CategoryPredictionOptions != null)
             {
-                _imageMatchingApi.CategoryPrediction(obj =>
+                _nyrisApi.ImageMatching.CategoryPrediction(obj =>
                 {
                     obj.Enabled = _config.CategoryPredictionOptions.Enabled;
                     obj.Limit = _config.CategoryPredictionOptions.Limit;

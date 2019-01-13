@@ -27,7 +27,7 @@ namespace Nyris.Ui.Android.Demo
             NyrisSearcher
                 .Builder("Your API Key Here", this)
                 .CategoryPrediction()
-                //.AsJson()
+                //.ResultAsJson()
                 .Start();
         }
 

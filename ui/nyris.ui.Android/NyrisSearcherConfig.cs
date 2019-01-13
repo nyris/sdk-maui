@@ -1,8 +1,8 @@
 ﻿using System;
-using Nyris.Sdk.Network.API;
-using Nyris.Sdk.Network.API.XOptions;
-using Nyris.Sdk.Network.Model;
-using Nyris.Sdk.Utils;
+using Nyris.Api.Api;
+using Nyris.Api.Api.RequestOptions;
+using Nyris.Api.Model;
+using Nyris.Api.Utils;
 
 namespace Nyris.Ui.Android
 {
@@ -12,11 +12,11 @@ namespace Nyris.Ui.Android
 
         public string ApiKey { get; set; }
 
-        public string OutputFormat { get; set; } = Constants.DEFAULT_OUTPUT_FORMAT;
+        public string OutputFormat { get; set; } = Constants.DefaultResultFormat;
 
-        public string Language { get; set; } = Constants.DEFAULT_LANGUAGE;
+        public string Language { get; set; } = Constants.DefaultLanguage;
 
-        public uint Limit { get; set; } = Options.DEFAULT_LIMIT;
+        public int Limit { get; set; } = OptionDefaults.DefaultLimit;
 
         public Type ResponseType { set; get; } = typeof(OfferResponseDto);
 
@@ -28,7 +28,7 @@ namespace Nyris.Ui.Android
 
         public RegroupOptions RegroupOptions { get; set; }
 
-        public RecommendationOptions RecommendationOptions { get; set; }
+        public RecommendationModeOptions RecommendationModeOptions { get; set; }
 
         public CategoryPredictionOptions CategoryPredictionOptions { get; set; }
     }

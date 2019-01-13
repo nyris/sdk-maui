@@ -7,7 +7,7 @@ namespace Nyris.Api.Api
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IMatchResultFormat<out T>
-        where T: class
+        where T : class
     {
         /// <summary>
         /// Sets the required output format.

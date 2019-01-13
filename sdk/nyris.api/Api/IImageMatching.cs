@@ -9,7 +9,7 @@ namespace Nyris.Api.Api
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IImageMatching<out T> : IRegrouping<T>
-        where T: class
+        where T : class
     {
         /// <summary>
         /// Configures exact image matching.

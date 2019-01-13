@@ -1,6 +1,6 @@
 namespace Nyris.Api.Utils
 {
-    internal static class Constants
+    public static class Constants
     {
         public const string SdkId = "nyris.net";
         public const string SdkVersion = "1.0";

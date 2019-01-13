@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Android.OS;
 using Android.Runtime;
 using Java.Interop;
-using Nyris.Sdk.Network.Model;
+using Nyris.Api.Model;
 
 namespace Nyris.Ui.Android.Models
 {
@@ -42,8 +41,8 @@ namespace Nyris.Ui.Android.Models
                     SalePrice = offer.SalePrice,
                     Links = new Links
                     {
-                        Main = offer.Links?.Main,
-                        Mobile = offer.Links?.Mobile
+                        Main = offer.LinksDto?.Main,
+                        Mobile = offer.LinksDto?.Mobile
                     },
                     Images = offer.Images,
                     Metadata = offer.Metadata,

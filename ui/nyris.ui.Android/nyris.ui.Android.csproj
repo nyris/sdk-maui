@@ -162,7 +162,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NyrisSearcher.cs" />
     <Compile Include="NyrisSearcherActivity.cs" />
-    <Compile Include="INyrisSearcher.cs" />
     <Compile Include="NyrisSearcherConfig.cs" />
     <Compile Include="Custom\ImageCameraView.cs" />
     <Compile Include="Custom\CircleView.cs" />
@@ -201,6 +200,10 @@
     <ProjectReference Include="..\nyris.ui.Android.Cropping\nyris.ui.Android.Cropping.csproj">
       <Project>{16DB704F-AF60-4D13-B498-CE47D851C1B3}</Project>
       <Name>nyris.ui.Android.Cropping</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nyris.ui.common\nyris.ui.common.csproj">
+      <Project>{81DB1CE0-3384-462C-953B-F40393C18FA9}</Project>
+      <Name>nyris.ui.common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

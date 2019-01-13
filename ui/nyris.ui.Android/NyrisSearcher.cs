@@ -3,8 +3,9 @@ using Android.App;
 using Android.Content;
 using Android.Support.Annotation;
 using Newtonsoft.Json;
-using Nyris.Sdk.Network.API.XOptions;
+using Nyris.Api.Api.RequestOptions;
 using Nyris.Ui.Android.Models;
+using Nyris.Ui.Common;
 using FragmentOld = Android.App.Fragment;
 using FragmentV4 = Android.Support.V4.App.Fragment;
 
@@ -80,7 +81,7 @@ namespace Nyris.Ui.Android
             return this;
         }
 
-        public INyrisSearcher Limit(uint limit)
+        public INyrisSearcher Limit(int limit)
         {
             _config.Limit = limit;
             return this;
@@ -130,14 +131,14 @@ namespace Nyris.Ui.Android
             return this;
         }
 
-        public INyrisSearcher Recommendation(Action<RecommendationOptions> options = null)
+        public INyrisSearcher RecommendationMode(Action<RecommendationModeOptions> options = null)
         {
             if (options == null)
             {
                 options = opt => { opt.Enabled = true; };
             }
-            _config.RecommendationOptions = new RecommendationOptions();
-            options(_config.RecommendationOptions);
+            _config.RecommendationModeOptions = new RecommendationModeOptions();
+            options(_config.RecommendationModeOptions);
             return this;
         }
 
@@ -152,13 +153,13 @@ namespace Nyris.Ui.Android
             return this;
         }
 
-        public INyrisSearcher AsJson()
+        public INyrisSearcher ResultAsJson()
         {
             _config.ResponseType = typeof(JsonResponse);
             return this;
         }
 
-        public INyrisSearcher AsObject()
+        public INyrisSearcher ResultAsObject()
         {
             _config.ResponseType = typeof(OfferResponse);
             return this;
