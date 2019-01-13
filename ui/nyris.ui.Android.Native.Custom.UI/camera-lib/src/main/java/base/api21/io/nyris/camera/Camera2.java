@@ -35,6 +35,7 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -44,8 +45,6 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.SortedSet;
-
-import timber.log.Timber;
 
 @SuppressWarnings("MissingPermission")
 @TargetApi(21)
@@ -101,7 +100,7 @@ class Camera2 extends CameraViewImpl {
                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
                         CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_IDLE);
             } catch (CameraAccessException e) {
-                Timber.e(tag, "Failed to run precapture sequence.");
+                e.printStackTrace();
             }
         }
 
@@ -126,15 +125,15 @@ class Camera2 extends CameraViewImpl {
                 mCaptureSession.setRepeatingRequest(mPreviewRequestBuilder.build(),
                         mCaptureCallback, null);
             } catch (CameraAccessException e) {
-                Timber.e(e, tag, "Failed to start camera preview because it couldn't access camera");
+                e.printStackTrace();
             } catch (IllegalStateException e) {
-                Timber.e(e, tag, "Failed to start camera preview.");
+                e.printStackTrace();
             }
         }
 
         @Override
         public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-            Timber.e(tag, "Failed to configure capture session.");
+            Log.e(tag, "Failed to configure capture session.");
         }
 
         @Override
@@ -167,7 +166,7 @@ class Camera2 extends CameraViewImpl {
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
-            Timber.e(tag, "onError: " + camera.getId() + " (" + error + ")");
+            Log.e(tag, "onError: " + camera.getId() + " (" + error + ")");
             mCamera = null;
         }
 
@@ -339,7 +338,7 @@ class Camera2 extends CameraViewImpl {
             int internalFacing = INTERNAL_FACINGS.get(mFacing);
             final String[] ids = mCameraManager.getCameraIdList();
             if (ids.length == 0) { // No camera
-                Timber.e(tag, "No camera available.");
+                Log.e(tag, "No camera available.");
                 mCallback.onError("No camera available.");
                 return false;
             }
@@ -353,7 +352,7 @@ class Camera2 extends CameraViewImpl {
                 }
                 Integer internal = characteristics.get(CameraCharacteristics.LENS_FACING);
                 if (internal == null) {
-                    Timber.e(tag, "Unexpected state: LENS_FACING null");
+                    Log.e(tag, "Unexpected state: LENS_FACING null");
                     mCallback.onError("Unexpected state: LENS_FACING null");
                     return false;
                 }
@@ -374,7 +373,7 @@ class Camera2 extends CameraViewImpl {
             }
             Integer internal = mCameraCharacteristics.get(CameraCharacteristics.LENS_FACING);
             if (internal == null) {
-                Timber.e(tag, "Unexpected state: LENS_FACING null");
+                Log.e(tag, "Unexpected state: LENS_FACING null");
                 mCallback.onError("Unexpected state: LENS_FACING null");
                 return false;
             }
@@ -402,7 +401,7 @@ class Camera2 extends CameraViewImpl {
         StreamConfigurationMap map = mCameraCharacteristics.get(
                 CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
         if (map == null) {
-            Timber.e(tag, "Failed to get configuration map: %d", mCameraId);
+            Log.e(tag, "Failed to get configuration map: "+mCameraId);
             mCallback.onError("Failed to get configuration map: " + mCameraId);
             return;
         }
@@ -452,7 +451,7 @@ class Camera2 extends CameraViewImpl {
         try {
             mCameraManager.openCamera(mCameraId, mCameraDeviceCallback, null);
         } catch (CameraAccessException e) {
-            Timber.e(e, tag, "Failed to open camera: ", mCameraId);
+            e.printStackTrace();
             mCallback.onError("Failed to open camera: " + mCameraId);
         }
     }
@@ -475,7 +474,7 @@ class Camera2 extends CameraViewImpl {
             mCamera.createCaptureSession(Arrays.asList(surface, mImageReader.getSurface()),
                     mSessionCallback, null);
         } catch (CameraAccessException e) {
-            Timber.e(e, tag, "Failed to open camera: ", mCameraId);
+            e.printStackTrace();
             mCallback.onError("Failed to start camera session");
         }
     }
@@ -588,7 +587,7 @@ class Camera2 extends CameraViewImpl {
             mCaptureCallback.setState(PictureCaptureCallback.STATE_LOCKING);
             mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback, null);
         } catch (CameraAccessException e) {
-            Timber.e(e, tag, "Failed to lock focus.");
+            e.printStackTrace();
         }
     }
 
@@ -648,7 +647,7 @@ class Camera2 extends CameraViewImpl {
                         }
                     }, null);
         } catch (CameraAccessException e) {
-            Timber.e(e, tag, "Cannot capture a still picture.");
+            e.printStackTrace();
         }
     }
 
@@ -671,7 +670,7 @@ class Camera2 extends CameraViewImpl {
                     null);
             mCaptureCallback.setState(PictureCaptureCallback.STATE_PREVIEW);
         } catch (CameraAccessException e) {
-            Timber.e(e, tag, "Failed to restart camera preview.");
+            e.printStackTrace();
         }
     }
 

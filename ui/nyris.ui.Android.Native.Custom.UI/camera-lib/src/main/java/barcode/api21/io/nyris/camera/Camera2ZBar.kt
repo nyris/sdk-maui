@@ -8,9 +8,9 @@ import android.media.ImageReader
 import android.os.Handler
 import android.os.HandlerThread
 import android.text.TextUtils
+import android.util.Log
 import net.sourceforge.zbar.Config
 import net.sourceforge.zbar.ImageScanner
-import timber.log.Timber
 import java.nio.charset.StandardCharsets
 import java.util.*
 
@@ -157,7 +157,7 @@ internal open class Camera2ZBar(callback: Callback?, preview: PreviewImpl, conte
         }
 
         override fun onConfigureFailed(session: CameraCaptureSession) {
-            Timber.e(tag, "Failed to configure capture session.")
+            Log.e(tag, "Failed to configure capture session.")
         }
 
         override fun onClosed(session: CameraCaptureSession) {

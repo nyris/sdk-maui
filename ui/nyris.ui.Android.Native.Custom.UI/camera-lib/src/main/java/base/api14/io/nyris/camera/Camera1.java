@@ -24,6 +24,7 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.util.SparseArrayCompat;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -34,8 +35,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import timber.log.Timber;
 
 
 @SuppressWarnings("deprecation")
@@ -136,7 +135,7 @@ class Camera1 extends CameraViewImpl {
             }
         } catch (IOException e) {
             mCallback.onError(e.getMessage());
-            Timber.e(tag, e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -238,7 +237,7 @@ class Camera1 extends CameraViewImpl {
                 mCallback.onError(
                         "Camera is not ready. Call start() before takePicture().");
 
-            Timber.e(tag, "Camera is not ready. Call start() before takePicture().");
+            Log.e(tag, "Camera is not ready. Call start() before takePicture().");
             return;
         }
         if (getAutoFocus()) {
