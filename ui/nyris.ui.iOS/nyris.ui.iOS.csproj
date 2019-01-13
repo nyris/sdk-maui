@@ -59,8 +59,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\sdk\nyris.sdk\nyris.sdk.csproj">
-      <Project>{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}</Project>
+    <ProjectReference Include="..\..\sdk\nyris.api\nyris.api.csproj">
+      <Project>{292e48e6-c9b5-4c52-997f-8d662727c623}</Project>
       <Name>nyris.sdk</Name>
     </ProjectReference>
     <ProjectReference Include="..\nyris.ui.common\nyris.ui.common.csproj">

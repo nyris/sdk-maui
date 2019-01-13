@@ -11,7 +11,7 @@
 
 [assembly: global::Android.Runtime.ResourceDesignerAttribute("Nyris.Ui.Android.Resource", IsApplication=false)]
 
-namespace Nyris.Ui.Android
+namespace Nyris.Ui.Android.Resources
 {
 	
 	

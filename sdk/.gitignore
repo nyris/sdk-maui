@@ -1,4 +1,2 @@
-/nyris.console/bin/*
-/nyris.console/obj/*
-/nyris.sdk/bin/*
-/nyris.sdk/obj/*
+/**/bin/*
+/**/obj/*
