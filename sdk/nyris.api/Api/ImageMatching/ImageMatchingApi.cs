@@ -108,7 +108,7 @@ namespace Nyris.Api.Api.ImageMatching
         {
             if (options == null)
             {
-                options = opt => { opt.Enabled = false; };
+                options = opt => { opt.Enabled = true; };
             }
 
             options(_regroupOptions);
@@ -120,7 +120,7 @@ namespace Nyris.Api.Api.ImageMatching
         {
             if (options == null)
             {
-                options = opt => { opt.Enabled = false; };
+                options = opt => { opt.Enabled = true; };
             }
 
             options(_recommendationModeOptions);
@@ -132,7 +132,7 @@ namespace Nyris.Api.Api.ImageMatching
         {
             if (options == null)
             {
-                options = opt => { opt.Enabled = false; };
+                options = opt => { opt.Enabled = true; };
             }
 
             options(_categoryPredictionOptions);

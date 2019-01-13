@@ -156,7 +156,9 @@ public class PinViewCropper extends FrameLayout {
             }
         };
         onPinClickListeners.add(onPinClickListener);
+    }
 
+    public void Reset(){
         extractedObjects = new ArrayList<>();
         post(new Runnable() {
             @Override
