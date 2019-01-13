@@ -1134,44 +1134,44 @@ namespace Nyris.Ui.Android
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f090046
-			public static int abc_background_cache_hint_selector_material_dark = 2131296326;
-			
-			// aapt resource value: 0x7f090047
-			public static int abc_background_cache_hint_selector_material_light = 2131296327;
-			
-			// aapt resource value: 0x7f090048
-			public static int abc_btn_colored_borderless_text_material = 2131296328;
-			
 			// aapt resource value: 0x7f090049
-			public static int abc_btn_colored_text_material = 2131296329;
+			public static int abc_background_cache_hint_selector_material_dark = 2131296329;
 			
 			// aapt resource value: 0x7f09004a
-			public static int abc_color_highlight_material = 2131296330;
+			public static int abc_background_cache_hint_selector_material_light = 2131296330;
 			
 			// aapt resource value: 0x7f09004b
-			public static int abc_hint_foreground_material_dark = 2131296331;
+			public static int abc_btn_colored_borderless_text_material = 2131296331;
 			
 			// aapt resource value: 0x7f09004c
-			public static int abc_hint_foreground_material_light = 2131296332;
+			public static int abc_btn_colored_text_material = 2131296332;
+			
+			// aapt resource value: 0x7f09004d
+			public static int abc_color_highlight_material = 2131296333;
+			
+			// aapt resource value: 0x7f09004e
+			public static int abc_hint_foreground_material_dark = 2131296334;
+			
+			// aapt resource value: 0x7f09004f
+			public static int abc_hint_foreground_material_light = 2131296335;
 			
 			// aapt resource value: 0x7f090000
 			public static int abc_input_method_navigation_guard = 2131296256;
 			
-			// aapt resource value: 0x7f09004d
-			public static int abc_primary_text_disable_only_material_dark = 2131296333;
-			
-			// aapt resource value: 0x7f09004e
-			public static int abc_primary_text_disable_only_material_light = 2131296334;
-			
-			// aapt resource value: 0x7f09004f
-			public static int abc_primary_text_material_dark = 2131296335;
-			
 			// aapt resource value: 0x7f090050
-			public static int abc_primary_text_material_light = 2131296336;
+			public static int abc_primary_text_disable_only_material_dark = 2131296336;
 			
 			// aapt resource value: 0x7f090051
-			public static int abc_search_url_text = 2131296337;
+			public static int abc_primary_text_disable_only_material_light = 2131296337;
+			
+			// aapt resource value: 0x7f090052
+			public static int abc_primary_text_material_dark = 2131296338;
+			
+			// aapt resource value: 0x7f090053
+			public static int abc_primary_text_material_light = 2131296339;
+			
+			// aapt resource value: 0x7f090054
+			public static int abc_search_url_text = 2131296340;
 			
 			// aapt resource value: 0x7f090001
 			public static int abc_search_url_text_normal = 2131296257;
@@ -1182,29 +1182,29 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f090003
 			public static int abc_search_url_text_selected = 2131296259;
 			
-			// aapt resource value: 0x7f090052
-			public static int abc_secondary_text_material_dark = 2131296338;
-			
-			// aapt resource value: 0x7f090053
-			public static int abc_secondary_text_material_light = 2131296339;
-			
-			// aapt resource value: 0x7f090054
-			public static int abc_tint_btn_checkable = 2131296340;
-			
 			// aapt resource value: 0x7f090055
-			public static int abc_tint_default = 2131296341;
+			public static int abc_secondary_text_material_dark = 2131296341;
 			
 			// aapt resource value: 0x7f090056
-			public static int abc_tint_edittext = 2131296342;
+			public static int abc_secondary_text_material_light = 2131296342;
 			
 			// aapt resource value: 0x7f090057
-			public static int abc_tint_seek_thumb = 2131296343;
+			public static int abc_tint_btn_checkable = 2131296343;
 			
 			// aapt resource value: 0x7f090058
-			public static int abc_tint_spinner = 2131296344;
+			public static int abc_tint_default = 2131296344;
 			
 			// aapt resource value: 0x7f090059
-			public static int abc_tint_switch_track = 2131296345;
+			public static int abc_tint_edittext = 2131296345;
+			
+			// aapt resource value: 0x7f09005a
+			public static int abc_tint_seek_thumb = 2131296346;
+			
+			// aapt resource value: 0x7f09005b
+			public static int abc_tint_spinner = 2131296347;
+			
+			// aapt resource value: 0x7f09005c
+			public static int abc_tint_switch_track = 2131296348;
 			
 			// aapt resource value: 0x7f090004
 			public static int accent_material_dark = 2131296260;
@@ -1250,6 +1250,15 @@ namespace Nyris.Ui.Android
 			
 			// aapt resource value: 0x7f090011
 			public static int button_material_light = 2131296273;
+			
+			// aapt resource value: 0x7f090043
+			public static int colorAccent = 2131296323;
+			
+			// aapt resource value: 0x7f090044
+			public static int colorPrimary = 2131296324;
+			
+			// aapt resource value: 0x7f090045
+			public static int colorPrimaryDark = 2131296325;
 			
 			// aapt resource value: 0x7f09003f
 			public static int corner = 2131296319;
@@ -1329,14 +1338,14 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f09003d
 			public static int notification_icon_bg_color = 2131296317;
 			
-			// aapt resource value: 0x7f090045
-			public static int nyris_color_accent = 2131296325;
+			// aapt resource value: 0x7f090048
+			public static int nyris_color_accent = 2131296328;
 			
-			// aapt resource value: 0x7f090043
-			public static int nyris_color_primary = 2131296323;
+			// aapt resource value: 0x7f090046
+			public static int nyris_color_primary = 2131296326;
 			
-			// aapt resource value: 0x7f090044
-			public static int nyris_color_primary_dark = 2131296324;
+			// aapt resource value: 0x7f090047
+			public static int nyris_color_primary_dark = 2131296327;
 			
 			// aapt resource value: 0x7f090028
 			public static int primary_dark_material_dark = 2131296296;
@@ -1389,11 +1398,11 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f090037
 			public static int switch_thumb_disabled_material_light = 2131296311;
 			
-			// aapt resource value: 0x7f09005a
-			public static int switch_thumb_material_dark = 2131296346;
+			// aapt resource value: 0x7f09005d
+			public static int switch_thumb_material_dark = 2131296349;
 			
-			// aapt resource value: 0x7f09005b
-			public static int switch_thumb_material_light = 2131296347;
+			// aapt resource value: 0x7f09005e
+			public static int switch_thumb_material_light = 2131296350;
 			
 			// aapt resource value: 0x7f090038
 			public static int switch_thumb_normal_material_dark = 2131296312;
@@ -2913,14 +2922,23 @@ namespace Nyris.Ui.Android
 			// aapt resource value: 0x7f050029
 			public static int app_name = 2131034153;
 			
+			// aapt resource value: 0x7f05002d
+			public static int library_name = 2131034157;
+			
 			// aapt resource value: 0x7f05002a
-			public static int library_name = 2131034154;
+			public static int rationale_ask = 2131034154;
+			
+			// aapt resource value: 0x7f05002b
+			public static int rationale_ask_again = 2131034155;
 			
 			// aapt resource value: 0x7f05001b
 			public static int search_menu_title = 2131034139;
 			
 			// aapt resource value: 0x7f050028
 			public static int status_bar_notification_info_overflow = 2131034152;
+			
+			// aapt resource value: 0x7f05002c
+			public static int title_settings_dialog = 2131034156;
 			
 			static String()
 			{
@@ -3416,7 +3434,13 @@ namespace Nyris.Ui.Android
 			public static int Base_Widget_AppCompat_Toolbar_Button_Navigation = 2131165294;
 			
 			// aapt resource value: 0x7f07015b
-			public static int NyrisSearcherTheme = 2131165531;
+			public static int EasyPermissions = 2131165531;
+			
+			// aapt resource value: 0x7f07015c
+			public static int EasyPermissions_Transparent = 2131165532;
+			
+			// aapt resource value: 0x7f07015d
+			public static int NyrisSearcherTheme = 2131165533;
 			
 			// aapt resource value: 0x7f07006f
 			public static int Platform_AppCompat = 2131165295;

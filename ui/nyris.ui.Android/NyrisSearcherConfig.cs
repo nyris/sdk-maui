@@ -18,6 +18,16 @@ namespace Nyris.Ui.Android
 
         public int Limit { get; set; } = OptionDefaults.DefaultLimit;
 
+        public string DialogErrorTitle { get; set; } = "Error";
+
+        public string PositiveButtonText { get; set; } = "OK";
+
+        public string CaptureLabelText { get; set; } = "Capture your product";
+
+        public string CameraPermissionDeniedErrorMessage { get; set; } = "Camera permission denied!";
+
+        public string ShouldShowCameraPermissionMessage { get; set; } = "You need to activate camera permission to perform camera search.";
+
         public Type ResponseType { set; get; } = typeof(OfferResponseDto);
 
         public ExactOptions ExactOptions { get; set; }

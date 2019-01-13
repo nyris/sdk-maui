@@ -1,4 +1,5 @@
-﻿using Android.Graphics;
+﻿using System.Collections.Generic;
+using Android.Graphics;
 using Android.Support.Annotation;
 using IO.Nyris.Camera;
 using Nyris.Ui.Android.Models;
@@ -16,11 +17,13 @@ namespace Nyris.Ui.Android.Mvp
             void OnImageCrop(RectF rectF);
             void OnBackPressed();
             void OnOkErrorClick();
+            void OnPermissionsDenied(IList<string> permissions);
         }
 
         internal interface IView : IMvpView<IPresenter>
         {
             void StartCircleViewAnimation();
+            void SetCaptureLabel(string label);
             void AddCameraCallback([NonNull] ICallback callback);
             void RemoveCameraCallback([NonNull] ICallback callback);
             void StartCamera();

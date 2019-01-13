@@ -14,6 +14,8 @@ using Nyris.Ui.Android.Custom;
 using Nyris.Ui.Android.Models;
 using Nyris.Api;
 using Nyris.Api.Model;
+using System.Collections.Generic;
+using Android;
 
 namespace Nyris.Ui.Android
 {
@@ -30,9 +32,10 @@ namespace Nyris.Ui.Android
 
         public void OnAtach(SearcherContract.IView view)
         {
-            _view = view;
-            _view?.StartCircleViewAnimation();
             _compositeDisposable = new CompositeDisposable();
+            _view = view;
+            _view?.SetCaptureLabel(_config.CaptureLabelText);
+            _view?.StartCircleViewAnimation();
         }
 
         public void OnDetach()
@@ -57,7 +60,6 @@ namespace Nyris.Ui.Android
         public void OnSearchConfig([NonNull]NyrisSearcherConfig config)
         {
             _config = config;
-
             _nyrisApi = NyrisApi.CreateInstance(_config.ApiKey, Platform.Android, _config.IsDebug);
             MapConfig();
         }
@@ -266,6 +268,18 @@ namespace Nyris.Ui.Android
                     obj.Threshold = _config.CategoryPredictionOptions.Threshold;
                 });
             }
+        }
+
+        public void OnPermissionsDenied(IList<string> permissions)
+        {
+            foreach (var permission in permissions)
+            {
+                if (permission != Manifest.Permission.Camera)
+                {
+                    continue;
+                }
+            }
+            _view.ShowError(_config.CameraPermissionDeniedErrorMessage);
         }
 
         #region Ignore

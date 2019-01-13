@@ -1,7 +1,12 @@
-﻿using Android.App;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Android;
+using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
+using Android.Support.V4.Content;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
@@ -13,13 +18,16 @@ using Nyris.Ui.Android.Custom;
 using Nyris.Ui.Android.Extensions;
 using Nyris.Ui.Android.Models;
 using Nyris.Ui.Android.Mvp;
+using Pub.Devrel.Easypermissions;
 using AlertDialog = Android.App.AlertDialog;
 
 namespace Nyris.Ui.Android
 {
     [Activity(Label = "NyrisSearcherActivity", Theme = "@style/NyrisSearcherTheme")]
-    internal class NyrisSearcherActivity : AppCompatActivity, SearcherContract.IView
+    internal sealed class NyrisSearcherActivity : AppCompatActivity, SearcherContract.IView,
+        EasyPermissions.IPermissionCallbacks
     {
+        private const int PermisionRequestCode = 1234;
         private CameraView _cameraView;
         private CircleView _circleViewBtn;
         private View _progress;
@@ -28,7 +36,9 @@ namespace Nyris.Ui.Android
         private TextView _captureLabel;
         private View _validateBtn;
 
+        public NyrisSearcherConfig _config;
         private SearcherContract.IPresenter _presenter;
+        private bool isPermissionDeniedOnce;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -46,17 +56,47 @@ namespace Nyris.Ui.Android
             #endregion
 
             var extraJson = Intent.GetStringExtra(NyrisSearcher.CONFIG_KEY);
-            var config = JsonConvert.DeserializeObject<NyrisSearcherConfig>(extraJson);
+            _config = JsonConvert.DeserializeObject<NyrisSearcherConfig>(extraJson);
             _presenter = new NyrisSearcherPresenter();
-            _presenter?.OnSearchConfig(config);
+            _presenter?.OnSearchConfig(_config);
 
             _presenter?.OnAtach(this);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            var grantResultsInt = grantResults.Select(permission =>
+            {
+                if (permission == Permission.Granted)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return -1;
+                }
+            }).ToArray();
+            EasyPermissions.OnRequestPermissionsResult(requestCode, permissions, grantResultsInt, this);
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-            _presenter?.OnResume();
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
+            {
+                _presenter?.OnResume();
+            }
+            else
+            {
+                if (isPermissionDeniedOnce) return;
+                isPermissionDeniedOnce = true;
+                EasyPermissions.RequestPermissions(
+                    this,
+                    _config?.ShouldShowCameraPermissionMessage,
+                    PermisionRequestCode,
+                    Manifest.Permission.Camera);
+            }
         }
 
         protected override void OnPause()
@@ -90,9 +130,23 @@ namespace Nyris.Ui.Android
         }
         #endregion
 
+        public void OnPermissionsDenied(int p0, IList<string> permissions)
+        {
+            _presenter.OnPermissionsDenied(permissions);
+        }
+
+        public void OnPermissionsGranted(int p0, IList<string> permissions)
+        {
+        }
+
         public void StartCircleViewAnimation()
         {
             _circleViewBtn?.StartAnimation(FindViewById(Resource.Id.vPosCam));
+        }
+
+        public void SetCaptureLabel(string label)
+        {
+            _captureLabel.Text = label;
         }
 
         public void AddCameraCallback(ICallback callback)
@@ -223,10 +277,10 @@ namespace Nyris.Ui.Android
         private void ShowDialog(string message)
         {
             var alertDialog = new AlertDialog.Builder(this);
-            alertDialog.SetTitle("Error");
+            alertDialog.SetTitle(_config.DialogErrorTitle);
             alertDialog.SetMessage(message);
             alertDialog.SetCancelable(false);
-            alertDialog.SetPositiveButton("OK", (s, a) =>
+            alertDialog.SetPositiveButton(_config.PositiveButtonText, (s, a) =>
             {
                 _presenter?.OnOkErrorClick();
             });

@@ -11,6 +11,19 @@ using FragmentV4 = Android.Support.V4.App.Fragment;
 
 namespace Nyris.Ui.Android
 {
+    public interface INyrisSearcher : INyrisSearcher<INyrisSearcher>
+    {
+        INyrisSearcher DialogErrorTitle([NonNull] string title);
+
+        INyrisSearcher PositiveButtonText([NonNull] string text);
+
+        INyrisSearcher CameraPermissionDeniedErrorMessage([NonNull] string message);
+
+        INyrisSearcher CaptureLabelText([NonNull] string label);
+
+        INyrisSearcher ShouldShowCameraPermissionMessage([NonNull] string message);
+    }
+
     public class NyrisSearcher : INyrisSearcher
     {
         public static readonly int REQUEST_CODE = 20160401;
@@ -61,6 +74,36 @@ namespace Nyris.Ui.Android
         public static INyrisSearcher Builder(string apiKey, FragmentOld fragmentOld, bool debug = false)
         {
             return new NyrisSearcher(apiKey, fragmentOld, debug);
+        }
+
+        public INyrisSearcher CameraPermissionDeniedErrorMessage([NonNull] string message = "")
+        {
+            _config.CameraPermissionDeniedErrorMessage = message;
+            return this;
+        }
+
+        public INyrisSearcher CaptureLabelText([NonNull] string label)
+        {
+            _config.CaptureLabelText = label;
+            return this;
+        }
+
+        public INyrisSearcher DialogErrorTitle([NonNull] string title)
+        {
+            _config.DialogErrorTitle = title;
+            return this;
+        }
+
+        public INyrisSearcher PositiveButtonText([NonNull] string text)
+        {
+            _config.PositiveButtonText = text;
+            return this;
+        }
+
+        public INyrisSearcher ShouldShowCameraPermissionMessage([NonNull] string message)
+        {
+            _config.ShouldShowCameraPermissionMessage = message;
+            return this;
         }
 
         public INyrisSearcher ApiKey([NonNull] string apiKey)

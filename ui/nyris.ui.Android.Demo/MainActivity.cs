@@ -26,6 +26,11 @@ namespace Nyris.Ui.Android.Demo
         {
             NyrisSearcher
                 .Builder("Your API Key Here", this)
+                .CaptureLabelText("My Capture label.")
+                .CameraPermissionDeniedErrorMessage("You can not use this componenet until you activate the camera permission!")
+                .ShouldShowCameraPermissionMessage("Should show message after second permission request")
+                .DialogErrorTitle("Error Title")
+                .PositiveButtonText("My OK")
                 .CategoryPrediction()
                 //.ResultAsJson()
                 .Start();
