@@ -17,6 +17,8 @@ namespace Nyris.UI.iOS.Camera.Enum
     {
         Authorized,
 
+        Restricted,
+        
         NotAuthorized,
 
         NotDetermined

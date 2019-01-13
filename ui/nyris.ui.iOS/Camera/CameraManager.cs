@@ -19,19 +19,29 @@ namespace Nyris.UI.iOS.Camera
         private AVCaptureDeviceInput _input;
         private readonly AVCaptureVideoDataOutput _videoOutput;
         private AVCaptureVideoPreviewLayer _videoPreviewLayer;
-        private UITapGestureRecognizer _focusTapGesture;
+        private readonly UITapGestureRecognizer _focusTapGesture;
         private CAShapeLayer _circleShape;
         [Weak]
         private UIView _displayView;
         private CameraConfiguration _cameraConfiguration;
 
         public SessionSetupResult SetupResult { get; private set; } = SessionSetupResult.NotAuthorized;
-        public CameraAuthorizationResult AuthorizationResult { get; private set; } = CameraAuthorizationResult.NotDetermined;
+        private CameraAuthorizationResult _authorizationResult = CameraAuthorizationResult.NotDetermined;
+        public CameraAuthorizationResult AuthorizationResult
+        {
+	        get => _authorizationResult;
+	        private set
+	        {
+		        _authorizationResult = value;
+		        OnAuthorizationChanged(value);
+	        }
+        }
 
         public AVCaptureVideoPreviewLayer VideoPreviewLayer => _videoPreviewLayer;
         private AVCaptureDevice CaptureDevice { get; set; }
 
         public event EventHandler<DidTapCameraPreviewLayerEventArgs> DidTapCameraPreview ;
+        public event EventHandler<CameraAuthorizationEventArgs> OnAuthorizationChange ;
 
         public bool IsRunning => _captureSession?.Running ?? false;
 
@@ -47,9 +57,7 @@ namespace Nyris.UI.iOS.Camera
         {
 	        SessionQueue.DispatchSync(() =>
 	        {
-		        var config = new CameraConfiguration();
-		        config.Preset = AVCaptureSession.PresetMedium;
-		        config.AllowTapToFocus = true;
+		        var config = new CameraConfiguration {Preset = AVCaptureSession.PresetMedium, AllowTapToFocus = true};
 		        ConfigureSession (config);
 	        });
         }
@@ -59,15 +67,13 @@ namespace Nyris.UI.iOS.Camera
 	        _cameraConfiguration = configuration;
 
             CheckCameraPermission();
-            if (AuthorizationResult != CameraAuthorizationResult.Authorized)
+            if (_authorizationResult != CameraAuthorizationResult.Authorized)
 			{
                 // request camera authorization
 				return;
 			}
 
-			NSError error = null;
-
-			_captureSession.BeginConfiguration ();
+            _captureSession.BeginConfiguration ();
 			_captureSession.SessionPreset = _cameraConfiguration.Preset;
 	
 			// Add video input.
@@ -79,8 +85,8 @@ namespace Nyris.UI.iOS.Camera
 				throw new Exception(message:"Video recording not supported on this device");
 			}
 			
-			_input = AVCaptureDeviceInput.FromDevice (CaptureDevice, out error);
-			if (_input == null)
+			_input = AVCaptureDeviceInput.FromDevice (CaptureDevice, out var error);
+			if (_input == null || error != null)
 			{
 				SetupResult = SessionSetupResult.ConfigurationFailed;
 				_captureSession.CommitConfiguration();
@@ -119,7 +125,7 @@ namespace Nyris.UI.iOS.Camera
         {
 	        if (_captureSession == null)
 	        {
-		        throw new Exception(message:"Invalid capture session, make sure Setup is called befor displaying a preview");
+		        throw new Exception(message:"Invalid capture session, make sure Setup is called before displaying a preview");
 	        }
 
             DispatchQueue.MainQueue.DispatchAsync(() =>
@@ -139,17 +145,18 @@ namespace Nyris.UI.iOS.Camera
                         initialVideoOrientation = (AVCaptureVideoOrientation)statusBarOrientation;
                     }
 
-                    _videoPreviewLayer.Connection.VideoOrientation = (AVCaptureVideoOrientation)statusBarOrientation;
+                    _videoPreviewLayer.Connection.VideoOrientation = initialVideoOrientation;
                 }
                 _displayView = view;
                 _videoPreviewLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
                 _videoPreviewLayer.Frame = UIScreen.MainScreen.Bounds;
-                view.Layer.AddSublayer(_videoPreviewLayer);
+                _videoPreviewLayer.RemoveFromSuperLayer();
+                _displayView.Layer.AddSublayer(_videoPreviewLayer);
 
-                if (view.GestureRecognizers == null || !view.GestureRecognizers.Contains(_focusTapGesture))
+                if (_displayView.GestureRecognizers == null || !_displayView.GestureRecognizers.Contains(_focusTapGesture))
                 {
-                    view.UserInteractionEnabled = true;
-                    view.AddGestureRecognizer(_focusTapGesture);
+	                _displayView.UserInteractionEnabled = true;
+	                _displayView.AddGestureRecognizer(_focusTapGesture);
                 }
 
                 if (!_captureSession.Running)
@@ -164,14 +171,14 @@ namespace Nyris.UI.iOS.Camera
 	        _captureSession?.StartRunning();
         }
     
-        public void stop() {
+        public void Stop() {
 	        _captureSession?.StopRunning();
         }
         
         
         public void AddFocusCircle(UIView view, CGPoint point)
         {
-	        var circle = this.GenerateFocusCircle(point);
+	        var circle = GenerateFocusCircle(point);
 	        circle.Opacity = 0;
 	        view.Layer.AddSublayer(circle);
 	        _circleShape = circle;
@@ -194,7 +201,7 @@ namespace Nyris.UI.iOS.Camera
 	        CATransaction.Commit();
         }
         
-        private CAShapeLayer GenerateFocusCircle(CGPoint location)
+        private static CAShapeLayer GenerateFocusCircle(CGPoint location)
         {
 	        var circlePath = UIBezierPath.FromArc(center:location,
 		        radius: 40, 
@@ -210,13 +217,19 @@ namespace Nyris.UI.iOS.Camera
 	        return shapeLayer;
         }
         
-        void OnCameraLayerTapped(CGPoint touchLocation)
+        private void OnCameraLayerTapped(CGPoint touchLocation)
         {
 	        var args = new DidTapCameraPreviewLayerEventArgs(touchLocation);
 	        DidTapCameraPreview?.Invoke(this, args);
         }
         
-        void FocusWhenTapped(UITapGestureRecognizer sender)
+        private void OnAuthorizationChanged(CameraAuthorizationResult authorization)
+        {
+	        var args = new CameraAuthorizationEventArgs(authorization);
+	        OnAuthorizationChange?.Invoke(this, args);
+        }
+        
+        private void FocusWhenTapped(UITapGestureRecognizer sender)
         {
 	        if (_displayView == null)
 	        {
@@ -227,12 +240,12 @@ namespace Nyris.UI.iOS.Camera
 	        OnCameraLayerTapped(touchPoint);
         }
 
-        void CheckCameraPermission()
+        public void CheckCameraPermission()
         {
 	        switch (AVCaptureDevice.GetAuthorizationStatus (AVMediaType.Video ))
 	        {
 		        case AVAuthorizationStatus.Authorized:
-			        AuthorizationResult = CameraAuthorizationResult.Authorized;
+			        _authorizationResult = CameraAuthorizationResult.Authorized;
 			        break;
 
 		        case AVAuthorizationStatus.NotDetermined:
@@ -248,15 +261,17 @@ namespace Nyris.UI.iOS.Camera
 			        */
 			        SessionQueue.Suspend ();
 			        AVCaptureDevice.RequestAccessForMediaType (AVMediaType.Video, (bool granted) => {
-				        AuthorizationResult = !granted ? CameraAuthorizationResult.NotAuthorized : CameraAuthorizationResult.Authorized;
+				        _authorizationResult = !granted ? CameraAuthorizationResult.NotAuthorized : CameraAuthorizationResult.Authorized;
 				        SessionQueue.Resume ();
 			        });
 			        break;
+		        case AVAuthorizationStatus.Restricted:
+			        _authorizationResult = CameraAuthorizationResult.Restricted;
+			        break;
 		        default:
 		        {
-			        // The user has previously denied access.
-			        SetupResult = SessionSetupResult.NotAuthorized;
-			        AuthorizationResult = CameraAuthorizationResult.NotAuthorized;
+			        // The user has previously denied access. 
+			        _authorizationResult = CameraAuthorizationResult.NotAuthorized;
 			        break;
 		        }
 	        }
