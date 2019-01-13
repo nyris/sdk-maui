@@ -3,15 +3,16 @@ using Nyris.Api.Api;
 
 namespace Nyris.Ui.Common
 {
-    public interface INyrisSearcher : IMatchResultFormat<INyrisSearcher>, IImageMatching<INyrisSearcher>
+    public interface INyrisSearcher<out T> : IMatchResultFormat<T>, IImageMatching<T>
+        where T : class
     {
-        INyrisSearcher ApiKey([NotNull] string apiKey);
+        T ApiKey([NotNull] string apiKey);
 
         [NotNull]
-        INyrisSearcher ResultAsJson();
+        T ResultAsJson();
 
         [NotNull]
-        INyrisSearcher ResultAsObject();
+        T ResultAsObject();
 
         void Start();
     }
