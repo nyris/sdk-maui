@@ -36,8 +36,6 @@ namespace Nyris.UI.iOS.Camera
 		        OnAuthorizationChanged(value);
 	        }
         }
-
-        public AVCaptureVideoPreviewLayer VideoPreviewLayer => _videoPreviewLayer;
         private AVCaptureDevice CaptureDevice { get; set; }
 
         public event EventHandler<DidTapCameraPreviewLayerEventArgs> DidTapCameraPreview ;
@@ -55,24 +53,13 @@ namespace Nyris.UI.iOS.Camera
 
         public void Setup()
         {
-	        SessionQueue.DispatchSync(() =>
-	        {
-		        var config = new CameraConfiguration {Preset = AVCaptureSession.PresetMedium, AllowTapToFocus = true};
-		        ConfigureSession (config);
-	        });
+            var config = new CameraConfiguration { Preset = AVCaptureSession.PresetMedium, AllowTapToFocus = true };
+            ConfigureSession(config);
         }
         
         void ConfigureSession (CameraConfiguration configuration)
         {
 	        _cameraConfiguration = configuration;
-
-            CheckCameraPermission();
-            if (_authorizationResult != CameraAuthorizationResult.Authorized)
-			{
-                // request camera authorization
-				return;
-			}
-
             _captureSession.BeginConfiguration ();
 			_captureSession.SessionPreset = _cameraConfiguration.Preset;
 	
@@ -102,7 +89,9 @@ namespace Nyris.UI.iOS.Camera
 			_captureSession.AddInput (_input);
 
 			if (!_captureSession.CanSetSessionPreset(_cameraConfiguration.Preset))
-			{
+			{				
+				SetupResult = SessionSetupResult.ConfigurationFailed;
+				_captureSession.CommitConfiguration();
 				throw new Exception(message:$"can't set {_cameraConfiguration.Preset} as session preset");
 			}
 			_captureSession.SessionPreset = _cameraConfiguration.Preset;
@@ -118,7 +107,10 @@ namespace Nyris.UI.iOS.Camera
             }
 
             _videoPreviewLayer = AVCaptureVideoPreviewLayer.FromSession(_captureSession);
-			_captureSession.CommitConfiguration ();
+            _videoPreviewLayer.Session = _captureSession;
+
+            _captureSession.CommitConfiguration ();
+			SetupResult = SessionSetupResult.Success;
 		}
 
         public void Show(UIView view)
@@ -161,18 +153,21 @@ namespace Nyris.UI.iOS.Camera
 
                 if (!_captureSession.Running)
                 {
-                    _captureSession?.StartRunning();
+
+	                this.Start();
                 }
             });
         }
         
         
-        public void Start() {
-	        _captureSession?.StartRunning();
+        public void Start()
+        {
+	        SessionQueue.DispatchAsync(() => { _captureSession?.StartRunning(); });
         }
     
-        public void Stop() {
-	        _captureSession?.StopRunning();
+        public void Stop()
+        {
+	        SessionQueue.DispatchAsync(() => { _captureSession?.StopRunning(); });
         }
         
         
@@ -245,7 +240,7 @@ namespace Nyris.UI.iOS.Camera
 	        switch (AVCaptureDevice.GetAuthorizationStatus (AVMediaType.Video ))
 	        {
 		        case AVAuthorizationStatus.Authorized:
-			        _authorizationResult = CameraAuthorizationResult.Authorized;
+			        this.AuthorizationResult = CameraAuthorizationResult.Authorized;
 			        break;
 
 		        case AVAuthorizationStatus.NotDetermined:
@@ -259,19 +254,20 @@ namespace Nyris.UI.iOS.Camera
 				        Note that audio access will be implicitly requested when we
 				        create an AVCaptureDeviceInput for audio during session setup.
 			        */
-			        SessionQueue.Suspend ();
+			        //SessionQueue.Suspend ();
 			        AVCaptureDevice.RequestAccessForMediaType (AVMediaType.Video, (bool granted) => {
-				        _authorizationResult = !granted ? CameraAuthorizationResult.NotAuthorized : CameraAuthorizationResult.Authorized;
-				        SessionQueue.Resume ();
+				        this.AuthorizationResult = !granted ? CameraAuthorizationResult.NotAuthorized : CameraAuthorizationResult.Authorized;
+                        
+				        //SessionQueue.Resume ();
 			        });
 			        break;
 		        case AVAuthorizationStatus.Restricted:
-			        _authorizationResult = CameraAuthorizationResult.Restricted;
+			        this.AuthorizationResult = CameraAuthorizationResult.Restricted;
 			        break;
 		        default:
 		        {
 			        // The user has previously denied access. 
-			        _authorizationResult = CameraAuthorizationResult.NotAuthorized;
+			        this.AuthorizationResult = CameraAuthorizationResult.NotAuthorized;
 			        break;
 		        }
 	        }

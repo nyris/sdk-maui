@@ -4,10 +4,10 @@ namespace Nyris.UI.iOS.Camera.EventArgs
 {
     public class CameraAuthorizationEventArgs
     {
-        private CameraAuthorizationResult _authorization;
+        public CameraAuthorizationResult Authorization;
         public CameraAuthorizationEventArgs(CameraAuthorizationResult authorization)
         {
-            _authorization = authorization;
+            Authorization = authorization;
         }
     }
 }

@@ -1,8 +1,10 @@
 using Foundation;
 using System;
 using AVFoundation;
+using CoreFoundation;
 using Nyris.UI.iOS.Camera;
 using Nyris.UI.iOS.Camera.Enum;
+using Nyris.UI.iOS.Camera.EventArgs;
 using UIKit;
 
 namespace Nyris.UI.iOS
@@ -19,29 +21,73 @@ namespace Nyris.UI.iOS
 			base.ViewDidLoad ();
 
 			_cameraManager = new CameraManager();
-            try
-            {
-                _cameraManager.Setup();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-			AddObservers();
+            _cameraManager.OnAuthorizationChange += CameraManagerOnOnAuthorizationChange;
 		}
 
-        public override void ViewDidAppear(bool animated)
-        {
-            base.ViewDidAppear(animated);
-            if (_cameraManager.AuthorizationResult == CameraAuthorizationResult.Authorized)
+		private void CameraManagerOnOnAuthorizationChange(object sender, CameraAuthorizationEventArgs e)
+		{
+            if (e.Authorization != CameraAuthorizationResult.Authorized)
             {
-                _cameraManager.Show(cameraView);
+                DispatchQueue.MainQueue.DispatchAsync(() =>
+                {
+                    const string errorTitle = "Authorization Error";
+                    const string message = "Please authorize camera access to use this app";
+                    const string okTitle = "Cancel";
+                    var settingsTitle = NSBundle.MainBundle.GetLocalizedString(@"Settings", @"Settings");
+                    var alertController = UIAlertController.Create(errorTitle, message, UIAlertControllerStyle.Alert);
+                    var cancelAction = UIAlertAction.Create(okTitle, UIAlertActionStyle.Cancel, null);
+                    alertController.AddAction(cancelAction);
+                    // Provide quick access to Settings.
+                    var settingsAction = UIAlertAction.Create(settingsTitle, UIAlertActionStyle.Default, (action) => {
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+                    });
+                    alertController.AddAction(settingsAction);
+                    PresentViewController(alertController, true, null);
+                });
+                return;
             }
+
+            if (_cameraManager.SetupResult != SessionSetupResult.Success)
+            {
+	            try
+	            {
+		            _cameraManager.Setup();
+	            }
+	            catch 
+	            {
+		            DispatchQueue.MainQueue.DispatchAsync(() =>
+		            {
+			            const string errorTitle = "Configuration Error";
+			            const string message = "Unable to capture media";
+			            const string okTitle = "Ok";
+			            var alertController =
+				            UIAlertController.Create(errorTitle, message, UIAlertControllerStyle.Alert);
+			            var cancelAction = UIAlertAction.Create(okTitle, UIAlertActionStyle.Cancel, null);
+			            alertController.AddAction(cancelAction);
+			            PresentViewController(alertController, true, null);
+		            });
+	            }
+            }
+            
+            
+            if (!_cameraManager.IsRunning)
+            {
+	            _cameraManager.Show(cameraView);
+            }
+	            
         }
+
+        public override void ViewDidAppear(bool animated)
+		{
+
+			base.ViewDidAppear(animated);
+            _cameraManager.CheckCameraPermission();
+            AddObservers();
+        }
+
 
         private void AddObservers ()
 		{
-			
 			NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.RuntimeErrorNotification, SessionRuntimeError, this);
 
 			/*
@@ -54,11 +100,8 @@ namespace Nyris.UI.iOS
 			NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.WasInterruptedNotification, SessionWasInterrupted, this);
 			NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.InterruptionEndedNotification, SessionInterruptionEnded, this);
 			
-			NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillResignActiveNotification, ApplicationSuspended, this);
-			NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidBecomeActiveNotification, ApplicationActivated, this);
-			NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidEnterBackgroundNotification, ApplicationSuspended, this);
-			NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillTerminateNotification, ApplicationSuspended, this);
-			NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillEnterForegroundNotification, ApplicationActivated, this);
+			NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidBecomeActiveNotification, ApplicationActivated);
+			NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidEnterBackgroundNotification, ApplicationSuspended);
 		}
 
 		private void RemoveObservers ()
@@ -106,16 +149,18 @@ namespace Nyris.UI.iOS
 		}
 		
 		void ApplicationActivated(NSNotification notification) {
-			if (!_cameraManager.IsRunning ) {
-				_cameraManager.Start();
-			}
-		}
+            if (!_cameraManager.IsRunning && _cameraManager.SetupResult == SessionSetupResult.Success)
+            {
+                _cameraManager.CheckCameraPermission();
+            }
+
+        }
     
 		/// properly shutdown/stop camera service when the app is in the background or will be terminated
 		void ApplicationSuspended(NSNotification notification) {
         
 			if (_cameraManager.IsRunning ) {
-				_cameraManager.stop();
+				_cameraManager.Stop();
 			}
         }
 
