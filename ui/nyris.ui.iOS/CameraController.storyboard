@@ -46,6 +46,14 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Y0Q-aO-CoX">
                                 <rect key="frame" x="169" y="315" width="37" height="37"/>
                             </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="499">
+                                <rect key="frame" x="16" y="36" width="39" height="30"/>
+                                <state key="normal" title="Close"/>
+                                <connections>
+                                    <action selector="CloseTapped:" destination="B6q-Ke-dIa" id="755"/>
+                                    <action selector="CloseTapped:" destination="B6q-Ke-dIa" id="1685" eventType="touchUpInside"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yX5-oX-1p5">
                                 <rect key="frame" x="152.5" y="548" width="70" height="70"/>
                                 <constraints>
@@ -55,7 +63,7 @@
                                 <color key="tintColor" red="0.89019607840000003" green="0.1058823529" blue="0.36470588240000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="capture_icon"/>
                                 <connections>
-                                    <action selector="CaptureTapped:" destination="B6q-Ke-dIa" id="249" eventType="touchUpInside"/>
+                                    <action selector="CaptureTapped:" destination="B6q-Ke-dIa" eventType="touchUpInside" id="249"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -78,6 +86,8 @@
                             <constraint firstItem="ewh-R4-h0C" firstAttribute="top" secondItem="yX5-oX-1p5" secondAttribute="bottom" constant="49" id="a9v-gB-60u"/>
                             <constraint firstItem="Y0Q-aO-CoX" firstAttribute="centerY" secondItem="X6d-aY-5iW" secondAttribute="centerY" id="bOs-cq-7S8"/>
                             <constraint firstItem="Y0Q-aO-CoX" firstAttribute="centerX" secondItem="X6d-aY-5iW" secondAttribute="centerX" id="cOk-ih-5qv"/>
+                            <constraint firstItem="499" firstAttribute="top" secondItem="HVc-ga-hko" secondAttribute="bottom" constant="16" id="eIk-qG-ENT"/>
+                            <constraint firstItem="499" firstAttribute="leading" secondItem="X6d-aY-5iW" secondAttribute="leading" constant="16" id="mZh-wc-j7E"/>
                             <constraint firstItem="OeZ-9G-nLa" firstAttribute="top" secondItem="HVc-ga-hko" secondAttribute="bottom" id="xAb-Hn-kUa"/>
                         </constraints>
                     </view>
@@ -85,12 +95,13 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="CloseButton" destination="499" id="name-outlet-499"/>
                         <outlet property="activityIndicator" destination="Y0Q-aO-CoX" id="MMQ-CK-gne"/>
+                        <outlet property="cameraView" destination="OeZ-9G-nLa" id="name-outlet-OeZ-9G-nLa"/>
                         <outlet property="captureButton" destination="yX5-oX-1p5" id="0QR-hZ-vXg"/>
                         <outlet property="captureLable" destination="xeT-KT-Fbe" id="MrV-0W-m80"/>
                         <outlet property="darkView" destination="N3E-eZ-u0F" id="8Vq-Wc-Uwz"/>
                         <outlet property="networkStatusLable" destination="2cJ-xs-Vj7" id="1ON-3G-Ije"/>
-                        <outlet property="cameraView" destination="OeZ-9G-nLa" id="name-outlet-OeZ-9G-nLa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jvL-66-L57" userLabel="First Responder" sceneMemberID="firstResponder"/>

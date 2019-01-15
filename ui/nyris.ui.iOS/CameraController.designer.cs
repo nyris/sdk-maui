@@ -32,6 +32,10 @@ namespace Nyris.UI.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton CloseButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIView darkView { get; set; }
 
         [Outlet]
@@ -41,6 +45,10 @@ namespace Nyris.UI.iOS
         [Action ("CaptureTapped:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void CaptureTapped (UIKit.UIButton sender);
+
+        [Action ("CloseTapped:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void CloseTapped (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {
@@ -62,6 +70,11 @@ namespace Nyris.UI.iOS
             if (captureLable != null) {
                 captureLable.Dispose ();
                 captureLable = null;
+            }
+
+            if (CloseButton != null) {
+                CloseButton.Dispose ();
+                CloseButton = null;
             }
 
             if (darkView != null) {
