@@ -2,16 +2,24 @@ using Foundation;
 using System;
 using AVFoundation;
 using CoreFoundation;
+using CoreGraphics;
+using CoreImage;
+using CoreMedia;
+using CoreVideo;
 using Nyris.UI.iOS.Camera;
 using Nyris.UI.iOS.Camera.Enum;
 using Nyris.UI.iOS.Camera.EventArgs;
 using UIKit;
+using ObjCRuntime;
 
 namespace Nyris.UI.iOS
 {
     public partial class CameraController : UIViewController
     {
 		private CameraManager _cameraManager;
+        [Weak]
+		private CVImageBuffer _videoFramePixelBuffer;
+		
         public CameraController (IntPtr handle) : base (handle)
         {
         }
@@ -22,8 +30,30 @@ namespace Nyris.UI.iOS
 
 			_cameraManager = new CameraManager();
             _cameraManager.OnAuthorizationChange += CameraManagerOnOnAuthorizationChange;
+            _cameraManager.OnFrameCapture += CameraManagerOnOnFrameCapture;
 		}
 
+		public override void ViewDidAppear(bool animated)
+		{
+
+			base.ViewDidAppear(animated);
+			_cameraManager.CheckCameraPermission();
+			AddObservers();
+		}
+
+		public override void ViewDidDisappear(bool animated)
+		{
+			base.ViewDidDisappear(animated);
+			RemoveObservers();
+		}
+
+		
+		private void CameraManagerOnOnFrameCapture(object sender, FrameCaptureEventArgs e)
+		{
+            _videoFramePixelBuffer?.Dispose();
+            _videoFramePixelBuffer = e.FrameBuffer;
+		}
+		
 		private void CameraManagerOnOnAuthorizationChange(object sender, CameraAuthorizationEventArgs e)
 		{
             if (e.Authorization != CameraAuthorizationResult.Authorized)
@@ -53,13 +83,14 @@ namespace Nyris.UI.iOS
 	            {
 		            _cameraManager.Setup();
 	            }
-	            catch 
+	            catch(Exception ex) 
 	            {
 		            DispatchQueue.MainQueue.DispatchAsync(() =>
 		            {
 			            const string errorTitle = "Configuration Error";
 			            const string message = "Unable to capture media";
 			            const string okTitle = "Ok";
+                        Console.WriteLine(ex.Message);
 			            var alertController =
 				            UIAlertController.Create(errorTitle, message, UIAlertControllerStyle.Alert);
 			            var cancelAction = UIAlertAction.Create(okTitle, UIAlertActionStyle.Cancel, null);
@@ -77,14 +108,75 @@ namespace Nyris.UI.iOS
 	            
         }
 
-        public override void ViewDidAppear(bool animated)
+		public UIImage GetScreenshoot()
 		{
 
-			base.ViewDidAppear(animated);
-            _cameraManager.CheckCameraPermission();
-            AddObservers();
-        }
+            if (_videoFramePixelBuffer == null)
+            {
+                return null;
+            }
+            var pixelBuffer = Runtime.GetINativeObject<CVPixelBuffer>(_videoFramePixelBuffer.Handle, false);
+            var bounds = View.Bounds;
+            UIGraphics.BeginImageContextWithOptions(bounds.Size, false, UIScreen.MainScreen.Scale);
 
+            var ciImage = new CIImage(pixelBuffer);
+            var preview = new UIImage(ciImage: ciImage);
+            var imageView = new UIImageView(frame: bounds) { Image = preview };
+            imageView.ContentMode = UIViewContentMode.ScaleAspectFit;
+            View.AddSubview(imageView);
+            View.DrawViewHierarchy(bounds, true);
+            var image = UIGraphics.GetImageFromCurrentImageContext();
+            UIGraphics.EndImageContext();
+            imageView.RemoveFromSuperview();
+
+            ciImage.Dispose();
+            imageView.Dispose();
+            preview.Dispose();
+            _videoFramePixelBuffer.Dispose();
+            pixelBuffer.Dispose();
+            _videoFramePixelBuffer = null;
+            pixelBuffer = null;
+            imageView = null;
+            preview = null;
+            ciImage = null;
+            GC.Collect();
+            return image;
+
+        }
+		
+		private UIImage GetImageFromSampleBuffer(CMSampleBuffer sampleBuffer) {
+
+			// Get a pixel buffer from the sample buffer
+			using (var pixelBuffer = sampleBuffer.GetImageBuffer () as CVPixelBuffer) {
+				// Lock the base address
+				pixelBuffer.Lock (CVOptionFlags.None);
+
+				// Prepare to decode buffer
+				var flags = CGBitmapFlags.PremultipliedFirst | CGBitmapFlags.ByteOrder32Little;
+
+				// Decode buffer - Create a new colorspace
+				using (var cs = CGColorSpace.CreateDeviceRGB ()) {
+
+					// Create new context from buffer
+					using (var context = new CGBitmapContext (pixelBuffer.BaseAddress,
+						pixelBuffer.Width,
+						pixelBuffer.Height,
+						8,
+						pixelBuffer.BytesPerRow,
+						cs,
+						(CGImageAlphaInfo)flags)) {
+
+						// Get the image from the context
+						using (var cgImage = context.ToImage ()) {
+
+							// Unlock and return image
+							pixelBuffer.Unlock (CVOptionFlags.None);
+							return UIImage.FromImage (cgImage);
+						}
+					}
+				}
+			}
+		}
 
         private void AddObservers ()
 		{
@@ -107,6 +199,7 @@ namespace Nyris.UI.iOS
 		private void RemoveObservers ()
 		{
 			NSNotificationCenter.DefaultCenter.RemoveObserver(this);
+			_cameraManager.OnAuthorizationChange -= CameraManagerOnOnAuthorizationChange;
 		}
 
 		void SessionRuntimeError (NSNotification notification)
@@ -165,6 +258,13 @@ namespace Nyris.UI.iOS
         }
 
         partial void CaptureTapped(UIButton sender)
+        {
+	        var image = GetScreenshoot();
+	        var bounds = View.Bounds;
+            image.Dispose();
+        }
+
+        void ProcessImage(UIImage image)
         {
             throw new NotImplementedException();
         }

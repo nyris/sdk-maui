@@ -59,7 +59,9 @@
     <Compile Include="Camera\CameraConfiguration.cs" />
     <Compile Include="Camera\CameraManager.cs" />
     <Compile Include="Camera\Enum\CameraEnumeration.cs" />
+    <Compile Include="Camera\EventArgs\CameraAuthorizationEventArgs.cs" />
     <Compile Include="Camera\EventArgs\DidTapCameraPreviewLayerEventArgs.cs" />
+    <Compile Include="Camera\EventArgs\FrameCaptureEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CameraController.cs" />
     <Compile Include="CameraController.designer.cs">

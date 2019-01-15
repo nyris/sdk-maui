@@ -4,10 +4,12 @@ using AVFoundation;
 using CoreAnimation;
 using CoreFoundation;
 using CoreGraphics;
+using CoreMedia;
 using CoreVideo;
 using Foundation;
 using Nyris.UI.iOS.Camera.Enum;
 using Nyris.UI.iOS.Camera.EventArgs;
+using ObjCRuntime;
 using UIKit;
 
 namespace Nyris.UI.iOS.Camera
@@ -24,7 +26,11 @@ namespace Nyris.UI.iOS.Camera
         [Weak]
         private UIView _displayView;
         private CameraConfiguration _cameraConfiguration;
+        private CMSampleBuffer previousFrameSample;
+        private CVPixelBuffer pixelBuffer;
 
+        public AVCaptureStillImageOutput StillImageOutput { get; set; }
+        
         public SessionSetupResult SetupResult { get; private set; } = SessionSetupResult.NotAuthorized;
         private CameraAuthorizationResult _authorizationResult = CameraAuthorizationResult.NotDetermined;
         public CameraAuthorizationResult AuthorizationResult
@@ -40,6 +46,7 @@ namespace Nyris.UI.iOS.Camera
 
         public event EventHandler<DidTapCameraPreviewLayerEventArgs> DidTapCameraPreview ;
         public event EventHandler<CameraAuthorizationEventArgs> OnAuthorizationChange ;
+        public event EventHandler<FrameCaptureEventArgs> OnFrameCapture ;
 
         public bool IsRunning => _captureSession?.Running ?? false;
 
@@ -49,11 +56,12 @@ namespace Nyris.UI.iOS.Camera
             _captureSession = new AVCaptureSession();
             _videoOutput = new AVCaptureVideoDataOutput();
             _focusTapGesture = new UITapGestureRecognizer(FocusWhenTapped);
+            StillImageOutput = new AVCaptureStillImageOutput ();
         }
 
         public void Setup()
         {
-            var config = new CameraConfiguration { Preset = AVCaptureSession.PresetMedium, AllowTapToFocus = true };
+            var config = new CameraConfiguration { Preset = AVCaptureSession.PresetHigh, AllowTapToFocus = true };
             ConfigureSession(config);
         }
         
@@ -104,11 +112,32 @@ namespace Nyris.UI.iOS.Camera
             {
                 _captureSession.AddOutput(_videoOutput);
                 _videoOutput.SetSampleBufferDelegateQueue(this, SessionQueue);
+                var videoOutputConnection = _videoOutput.ConnectionFromMediaType(AVMediaType.Video);
+                if (videoOutputConnection == null || !videoOutputConnection.SupportsVideoOrientation)
+                {
+                    SetupResult = SessionSetupResult.ConfigurationFailed;
+                    _captureSession.CommitConfiguration();
+                    throw new Exception(message: "Video connection doesn't support orientation.");
+                }
+                videoOutputConnection.VideoOrientation = AVCaptureVideoOrientation.Portrait;
             }
 
             _videoPreviewLayer = AVCaptureVideoPreviewLayer.FromSession(_captureSession);
             _videoPreviewLayer.Session = _captureSession;
 
+            var availableCodec = StillImageOutput.AvailableImageDataCodecTypes.FirstOrDefault();
+            if (availableCodec != null)
+            {
+	            var dict = new NSMutableDictionary ();
+	            dict[AVVideo.CodecKey] = new NSString(availableCodec);
+	            StillImageOutput.OutputSettings = dict;
+
+	            if(_captureSession.CanAddOutput(StillImageOutput))
+	            {
+		            _captureSession.AddOutput(StillImageOutput);
+	            }
+            }
+            
             _captureSession.CommitConfiguration ();
 			SetupResult = SessionSetupResult.Success;
 		}
@@ -126,18 +155,6 @@ namespace Nyris.UI.iOS.Camera
                 if (_videoPreviewLayer == null)
                 {
                     throw new Exception(message: "Invalid videoPreviewLayer");
-                }
-
-                if (_videoPreviewLayer.Connection.SupportsVideoOrientation)
-                {
-                    var statusBarOrientation = UIApplication.SharedApplication.StatusBarOrientation;
-                    var initialVideoOrientation = AVCaptureVideoOrientation.Portrait;
-                    if (statusBarOrientation != UIInterfaceOrientation.Unknown)
-                    {
-                        initialVideoOrientation = (AVCaptureVideoOrientation)statusBarOrientation;
-                    }
-
-                    _videoPreviewLayer.Connection.VideoOrientation = initialVideoOrientation;
                 }
                 _displayView = view;
                 _videoPreviewLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
@@ -271,6 +288,69 @@ namespace Nyris.UI.iOS.Camera
 			        break;
 		        }
 	        }
+        }
+
+        private UIImage GetImageFromSampleBuffer(CMSampleBuffer sampleBuffer)
+        {
+
+            // Get a pixel buffer from the sample buffer
+            using (var pixelBuffer = sampleBuffer.GetImageBuffer() as CVPixelBuffer)
+            {
+                // Lock the base address
+                pixelBuffer.Lock(CVOptionFlags.None);
+
+                // Prepare to decode buffer
+                var flags = CGBitmapFlags.PremultipliedFirst | CGBitmapFlags.ByteOrder32Little;
+
+                // Decode buffer - Create a new colorspace
+                using (var cs = CGColorSpace.CreateDeviceRGB())
+                {
+
+                    // Create new context from buffer
+                    using (var context = new CGBitmapContext(pixelBuffer.BaseAddress,
+                        pixelBuffer.Width,
+                        pixelBuffer.Height,
+                        8,
+                        pixelBuffer.BytesPerRow,
+                        cs,
+                        (CGImageAlphaInfo)flags))
+                    {
+
+                        // Get the image from the context
+                        using (var cgImage = context.ToImage())
+                        {
+
+                            // Unlock and return image
+                            pixelBuffer.Unlock(CVOptionFlags.None);
+                            return UIImage.FromImage(cgImage);
+                        }
+                    }
+                }
+            }
+        }
+
+        public override void DidOutputSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection)
+        {
+
+            try
+            {
+                //previousFrameSample?.Dispose();
+                //previousFrameSample = sampleBuffer;
+                //var image = GetImageFromSampleBuffer(sampleBuffer);
+                var buffer = sampleBuffer.GetImageBuffer();
+                // since we want to keep the managed `pixelBuffer` alive outside the execution 
+                // of the callback we need to create our own (managed) instance from the handle
+                //var buffer = sampleBuffer.GetImageBuffer();
+                //pixelBuffer = Runtime.GetINativeObject<CVPixelBuffer>(buffer.Handle, false);
+                var frameEventArgs = new FrameCaptureEventArgs(buffer);
+                this.OnFrameCapture?.Invoke(this, frameEventArgs);
+
+                sampleBuffer.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }
