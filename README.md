@@ -1,65 +1,60 @@
-﻿# nyris SDK for .Net and Xamarin
-![](nyris_logo.png)
+# nyris SDK for .NET and Xamarin
 
-Introduction
-------
-nyris is a high performance visual product search, object detection and visual recommendations engine 
-for retail and industry. 
+![nyris.io logo](https://storage.googleapis.com/nyris-logos/title.png)
 
-For more information please see [nyris.io](https://nyris.io/)
+## Introduction
 
-We provide a SDK with better error handling and reactive/asynchronous programming support.
-The SDK is written in [C#](https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2012/kx37x362(v%3dvs.110)). 
+[nyris](https://nyris.io/) is a high performance visual product search, object detection and visual recommendations engine 
+for retail and industry applications. For more information please visit us at [nyris.io](https://nyris.io/).
 
-The SDK offers :
------
-* Support of Reactive/Asynchronous programming paradigm
-* Better error handling
-* Type-safe HTTP client
-* Unified response
-* All the different nyris services 
+This repo provides a [C#](https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2012/kx37x362(v%3dvs.110)) SDK 
+to use our system, including error handling, as well as reactive and asynchronous programming support. Specifically, we provide
 
-nyris services 
------
-We offer : 
-* Visual search
-* Similarity search by image
+* Support for all nyris services,
+* Support of Reactive/Asynchronous programming paradigms,
+* Simplified error handling,
+* Type-safe HTTP client, and a
+* Unified response format.
+
+To the following nyris services:
+
+* Exact visual search
+* Visual similarity search
 * Object detection
-* Manual matching
-* Text Search
+* Text search
 
-Requirements
------ 
-* Images in **JPEG** format
-* The minimum dimensions of the image are `512x512 px`
-* The maximum size of the image is less than or equal to `500 KB` 
+### Requirements
 
-Solution
------
+Please see the documentation at [docs.nyris.io](https://docs.nyris.io) for a complete reference.
+At the minimum, the following criteria must be met:
+
+* Images are sent in **JPEG** format,
+* The minimum dimensions of an image are `512x512 px`, and
+* The size of an image is less than or equal to `500 KB`.
+
+## SDK Solution
+
 The current solution is composed of multiple projects:
-* **nyris API**: Which represents sdk of nyris APIs.
 
-* **nyris Console Demo**: Which represents demo console app that shows different usages of the API.
+* **nyris API**: The SDK for accessing nyris APIs.
+* **nyris Console Demo**: A demo console application that shows different usages of the API.
+* **nyris ui Android**: The nyris image matching components.
+* **nyris ui Camera Android**: A jar binding project for our Java [Camera view](https://github.com/nyris/Camera.Android).
+* **nyris ui Cropping Android**: A jar binding project for the Java image cropping view.
+* **nyris ui Demo Android**: An Android demo app that shows how to use nyris search component(s).
 
-* **nyris ui Android**: Which represents nyris Image matching or Seracher.
+## Get Started with nyris SDK
 
-* **nyris ui Camera Android**: Which represents a Camera binding jar project for this [library](https://github.com/nyris/Camera.Android).
-
-* **nyris ui Cropping Android**: Which represents a image cropping ui binding jar project.
-
-* **nyris ui Demo Android**: Which represents Android demo app that shows how to use nyris Search component.
-
-Get Started with nyris SDK
------
 ### Jump To
 
-* [Get instance](#get-instance)
+* [Getting an instance](#getting-an-instance)
 * [Match your first image](#match-your-first-image)
 * [Extract objects from your image](#extract-objects-from-your-image)
 * [Mark sent image as not found](#mark-sent-image-as-not-found)
 * [Text Match Search](#text-match-search)
 
-### Get instance 
+### Getting an instance 
+
 First, initialize an instance of `NyrisApi` with your API Key :
  
 ```csharp
@@ -67,13 +62,17 @@ static class Program
 {
     public static async Task Main(string[] args)
     {
-        var nyris = NyrisApi.CreateInstance("Your Api Key",/*Select your platform*/ Platform.Generic , /*Enable debug mode*/true);
+        var apiKey = "Your Api Key";     // specify your nyris API key
+        var platform = Platform.Generic; // select your platform
+        var debugMode = true;            // enable or disable debugging
+
+        var nyris = NyrisApi.CreateInstance(apiKey, platform, debugMode);
     }
 }
 ```
 
 ### Match your first image 
-#### Basic way to match an image : 
+#### Simple matching using RX
 
 ```csharp
     byte[] imageByteArray = /*Your byte array*/;
@@ -93,11 +92,11 @@ static class Program
 ```
 
 
-#### Advanced way to match an image : 
+#### Fully-configured image matching
 
 ```csharp
     //For more details about available feed attributes please check our documentation : http://docs.nyris.io/#available-feed-attributes.
-    val imageByteArray : ByteArray = /* Your byte array */
+    var imageByteArray = ...; /* Your byte array */
     nyris.ImageMatching
         .OutputFormat("PROVIDED_OUTPUT_FORMAT") // Set the desired OUTPUT_FORMAT
         .Language("de") // Return only offers with language "de".
@@ -136,9 +135,10 @@ static class Program
             throwable => ...
         );
 ```
-The response is an object of type `OfferResponseDto` that contains list of `Offers`, `RequestCode` and  `PredictedCategories`
 
-* If you specified a custom output format, you should use this call to get response as `Json` format :
+The response will be an object of type `OfferResponseDto` that contains list of `Offers`, `RequestId` and  `PredictedCategories`
+
+* If you specified a custom output format before, you should use this call to get response as `JSON` format :
 
 ```csharp
     nyris.ImageMatching
@@ -152,7 +152,8 @@ The response is an object of type `OfferResponseDto` that contains list of `Offe
 ```
 
 ### Extract objects from your image 
-Extract objects from an image
+
+Extract objects from an image:
 
 ```csharp
     nyris.ObjectProposal
@@ -163,24 +164,24 @@ Extract objects from an image
             var objects = response;
         }, throwable => ...);
 ```
-Returned response is a List of Detected Object. 
+The returned response is a List of detected objects. 
+Each object has:
 
-The extracted object has:
-* `Confidence` is the probability of the top item. Value range between : `0-1`.
-* `Region` is a Bounding box. It represents the location and the size of the object in the sent image. 
+* `Confidence`; this is the probability of the top item with values ranging between: `0-1`.
+* `Region` is a bounding box. It represents the location and the size of the object in the sent image as a fraction of the image size. 
 
+### Marking a response as not successful
 
-### Mark sent image as not found
 It may happen that our service can't recognize or match an image. This is why we provide you a service to notify us
-about the unrecognized image.
+about any unsuccessful matches.
 
-Before you mark an image as not found, you will need to have the `RequestCode`. For more details please check this [section](#match-your-first-image). 
+Before you mark an image as "not found", you will need to have the `RequestId`. For more details please check this [section](#match-your-first-image). 
 
-After getting the `RequestCode` you can mark the image as not found. 
+After getting the `RequestId` you can mark the image as not found. 
 
 ```csharp
     nyris.Feedback
-        .MarkAsNotFound(RequestCode)
+        .MarkAsNotFound(RequestId)
         .Subscribe(response /* HttpResponseMessage */=>
         {
             // Handle your response...
@@ -188,9 +189,9 @@ After getting the `RequestCode` you can mark the image as not found.
 ```
 
 ### Text Match Search
-nyris offers a service that helps you to search offers by text, SKU, barcode, etc.
 
-you can use the text search service the same way as [image matching service](#match-your-first-image)
+nyris offers a service that helps you to search offers by text, SKU, barcode, etc.
+You can use the text search service the same way as the [image matching service](#match-your-first-image):
 
 ```csharp
     nyris.TextSearch
@@ -203,21 +204,24 @@ you can use the text search service the same way as [image matching service](#ma
         );
 ```
 
-Get Started with nyris Xamarin Searcher
------
+## Get Started with nyris Xamarin Searcher
 
 ### Xamarin Image Matching component for Android
-To start using Image Matching component you will need to refence the project `nyris.ui.Android` and iclude all the required dependencies with it. 
 
-#### Start the component: 
+To start using image matching component, you will need to refence the project `nyris.ui.Android` and include all the required dependencies with it. 
+
+#### Starting the component
+
 ```csharp
     NyrisSearcher
         .Builder("Your API Key Here", ActivityOrFragment)
         .Start();
 ```
 
-#### Custom image matching options :
-For more details about image matching options please check this [section](#match-your-first-image)
+#### Setting image matching options
+
+For more details about image matching options please check [this section](#match-your-first-image).
+
 ```csharp
     NyrisSearcher
         .Builder("Your API Key Here", ActivityOrFragment)
@@ -237,15 +241,16 @@ For more details about image matching options please check this [section](#match
         .Start();
 ```
 
-#### Handle returned results : 
+#### Handling returned results
+
 ```csharp 
-protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+protected override void OnActivityResult(int requestId, Result resultCode, Intent data)
 {
-    base.OnActivityResult(requestCode, resultCode, data);
+    base.OnActivityResult(requestId, resultCode, data);
 
     if (resultCode == Result.Ok)
     {
-        if (requestCode == NyrisSearcher.REQUEST_CODE)
+        if (requestId == NyrisSearcher.REQUEST_ID)
         {
             try
             {
@@ -266,8 +271,10 @@ protected override void OnActivityResult(int requestCode, Result resultCode, Int
 }
 ```
 
-#### Json Results : 
-If you specified a custom output format, you should use this call to get response as `Json` format :
+#### Handling JSON results
+
+If you specified a custom output format, you should use this call to get response as `JSON` format:
+
 ```csharp
     NyrisSearcher
         .Builder("Your API Key Here", ActivityOrFragment)
@@ -275,8 +282,10 @@ If you specified a custom output format, you should use this call to get respons
         .Start();
 ```
 
-#### Customize text of the component 
-You can change text of the coponent by using : 
+#### Customizing the text of the component 
+
+You can change text of the coponent by using
+
 ```csharp
     NyrisSearcher
         .Builder("Your API Key Here", this)
@@ -287,8 +296,10 @@ You can change text of the coponent by using :
         .PositiveButtonText("My OK")
         .Start();
 ```
-#### Customize color of the component:
+#### Customizing the color of the component
+
 To customize the color of the coponent you will need to override the defined colors:
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -298,6 +309,7 @@ To customize the color of the coponent you will need to override the defined col
     <color name="nyris_color_accent">YOUR_COLOR</color>
 </resources>
 ```
+
 License
 =======
     Copyright 2018 nyris GmbH
