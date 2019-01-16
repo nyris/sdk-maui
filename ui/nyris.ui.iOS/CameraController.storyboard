@@ -13,7 +13,7 @@
         <!--Camera-->
         <scene sceneID="BKQ-tx-kvD">
             <objects>
-                <viewController restorationIdentifier="ImageCaptureController" storyboardIdentifier="ImageCaptureController" title="Camera" id="B6q-Ke-dIa" customClass="CameraController" sceneMemberID="viewController">
+                <viewController restorationIdentifier="ImageCaptureController" storyboardIdentifier="ImageCaptureController" title="Camera" id="B6q-Ke-dIa" customClass="CropController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HVc-ga-hko"/>
                         <viewControllerLayoutGuide type="bottom" id="ewh-R4-h0C"/>

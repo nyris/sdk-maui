@@ -9,10 +9,10 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace Nyris.UI.iOS
+namespace Nyris.Ui.iOS
 {
-    [Register ("CameraController")]
-    partial class CameraController
+    [Register ("CropController")]
+    partial class CropController
     {
         [Action ("CaptureTapped:")]
         [GeneratedCode ("iOS Designer", "1.0")]

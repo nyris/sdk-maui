@@ -179,12 +179,15 @@ namespace Nyris.UI.iOS.Camera
         
         public void Start()
         {
-	        SessionQueue.DispatchAsync(() => { _captureSession?.StartRunning(); });
+            _captureSession?.StartRunning();
+
+            //SessionQueue.DispatchAsync(() => { _captureSession?.StartRunning(); });
         }
     
         public void Stop()
         {
-	        SessionQueue.DispatchAsync(() => { _captureSession?.StopRunning(); });
+            _captureSession?.StopRunning();
+            //SessionQueue.DispatchAsync(() => { _captureSession?.StopRunning(); });
         }
         
         

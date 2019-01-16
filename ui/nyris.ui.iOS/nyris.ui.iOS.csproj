@@ -55,6 +55,7 @@
     <Folder Include="Controller" />
     <Folder Include="Resources\" />
     <Folder Include="Crop\" />
+    <Folder Include="ImageOperations\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera\CameraConfiguration.cs" />
@@ -69,6 +70,11 @@
       <DependentUpon>CameraController.cs</DependentUpon>
     </Compile>
     <Compile Include="Crop\CropOverlayView.cs" />
+    <Compile Include="ImageOperations\ImageHelper.cs" />
+    <Compile Include="CropController.cs" />
+    <Compile Include="CropController.designer.cs">
+      <DependentUpon>CropController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\sdk\nyris.sdk\nyris.sdk.csproj">

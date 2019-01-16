@@ -17,12 +17,32 @@ namespace Nyris.UI.iOS
 {
     public partial class CameraController : UIViewController
     {
-		private CameraManager _cameraManager;
+	    [Outlet]
+	    protected UIKit.UIActivityIndicatorView activityIndicator { get; set; }
+
+	    [Outlet]
+	    protected UIKit.UIView cameraView { get; set; }
+
+	    [Outlet]
+	    protected UIKit.UIButton captureButton { get; set; }
+
+	    [Outlet]
+	    protected UIKit.UILabel captureLable { get; set; }
+
+	    [Outlet]
+	    protected UIKit.UIButton CloseButton { get; set; }
+
+	    [Outlet]
+	    protected UIKit.UIView darkView { get; set; }
+
+	    [Outlet]
+	    protected UIKit.UILabel networkStatusLable { get; set; }
+	    
+		protected CameraManager _cameraManager;
         [Weak]
 		private CVImageBuffer _videoFramePixelBuffer;
 
-        CropOverlayView cropBoundingBox;
-
+		public UIButton CaptureButton => this.captureButton;
         public CameraController (IntPtr handle) : base (handle)
         {
         }
@@ -34,17 +54,6 @@ namespace Nyris.UI.iOS
 			_cameraManager = new CameraManager();
             _cameraManager.OnAuthorizationChange += CameraManagerOnOnAuthorizationChange;
             _cameraManager.OnFrameCapture += CameraManagerOnOnFrameCapture;
-
-            if (cropBoundingBox == null) {
-                var boxHeight = View.Frame.Height / 2;
-                var boxY = (boxHeight) - (boxHeight / 2);
-                var frame = new CGRect(15, boxY, View.Frame.Width - 30, boxHeight);
-                cropBoundingBox = new CropOverlayView(frame);
-                cropBoundingBox.IsMovable = true;
-                cropBoundingBox.IsResizable = true;
-                View.AddSubview(cropBoundingBox);
-            }
-            cropBoundingBox.Hidden = true;
         }
 
 		public override void ViewDidAppear(bool animated)
@@ -153,7 +162,7 @@ namespace Nyris.UI.iOS
             imageView = null;
             preview = null;
             ciImage = null;
-            GC.Collect();
+            //GC.Collect();
             return image;
 
         }
@@ -255,32 +264,44 @@ namespace Nyris.UI.iOS
 			Console.WriteLine (@"Capture session interruption ended");
 		}
 		
-		void ApplicationActivated(NSNotification notification) {
+		protected virtual void ApplicationActivated(NSNotification notification) {
             if (!_cameraManager.IsRunning && _cameraManager.SetupResult == SessionSetupResult.Success)
             {
                 _cameraManager.CheckCameraPermission();
             }
 
         }
-    
-		/// properly shutdown/stop camera service when the app is in the background or will be terminated
-		void ApplicationSuspended(NSNotification notification) {
+
+        /// properly shutdown/stop camera service when the app is in the background or will be terminated
+        protected virtual void ApplicationSuspended(NSNotification notification) {
         
 			if (_cameraManager.IsRunning ) {
 				_cameraManager.Stop();
 			}
         }
 
-        public virtual void ProcessImage(UIImage image)
+		protected virtual void ProcessImage(UIImage image)
         {
 
-            cropBoundingBox.Hidden = false;
         }
 
         partial void CaptureTapped(UIButton sender)
         {
-	        var image = GetScreenshoot();
-            ProcessImage(image);
+        }
+
+        protected void captureFrameAction(UIButton sender)
+        {
+	        if (_cameraManager.AuthorizationResult != CameraAuthorizationResult.Authorized)
+	        {
+		        _cameraManager.CheckCameraPermission();
+		        return;
+	        }
+
+	        // saving the picture may take some time, lock to avoid spam the button
+	        sender.Enabled = false;
+
+	        var screenshot = GetScreenshoot();
+	        ProcessImage(image: screenshot);
         }
 
         partial void CloseTapped(UIButton sender)
