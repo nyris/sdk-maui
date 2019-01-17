@@ -223,8 +223,6 @@ namespace Nyris.UI.iOS
                     var offerResponse = new OfferResponse(offer);
                     offerEventArgs = new OfferResponseEventArgs(offerResponse);
                 }
-                OnOfferAvailable(this, offerEventArgs);
-                Dismiss();
 
             }
             catch (Exception e)
@@ -233,13 +231,16 @@ namespace Nyris.UI.iOS
                 {
                     SetCaptureState();
                 });
+                return;
             }
             finally
             {
                 image?.Dispose();
                 bytes = null;
             }
-           
+            OnOfferAvailable(this, offerEventArgs);
+            Dismiss();
+
         }
 
         protected override void ProcessImage(UIImage image)
@@ -272,11 +273,6 @@ namespace Nyris.UI.iOS
             _screenshotImage.Dispose();
             croppedImage.Dispose();
             _screenshotImage = null;
-            resizedCroppedImage.SaveToPhotosAlbum((image, error) =>
-            {
-                Console.WriteLine(1);
-            });
-            
             SetFetchState(resizedCroppedImage);
         }
 
