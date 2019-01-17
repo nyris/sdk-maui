@@ -69,7 +69,7 @@ namespace Nyris.UI.iOS.ImageOperations
 
             // the cropping views rect displayed on the screen
             var cropRect = new CGRect(x: originalRect.X,
-                                  y: originalRect.Y - 20,
+                                  y: originalRect.Y,
                                   width: originalRect.Width,
                                   height: originalRect.Height);
 
