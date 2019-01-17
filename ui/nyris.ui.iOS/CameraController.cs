@@ -6,6 +6,7 @@ using CoreGraphics;
 using CoreImage;
 using CoreMedia;
 using CoreVideo;
+using Nyris.UI.Common;
 using Nyris.UI.iOS.Camera;
 using Nyris.UI.iOS.Camera.Enum;
 using Nyris.UI.iOS.Camera.EventArgs;
@@ -18,32 +19,34 @@ namespace Nyris.UI.iOS
     public partial class CameraController : UIViewController
     {
 	    [Outlet]
-	    protected UIKit.UIActivityIndicatorView activityIndicator { get; set; }
+	    protected UIKit.UIActivityIndicatorView ActivityIndicator { get; set; }
 
 	    [Outlet]
-	    protected UIKit.UIView cameraView { get; set; }
+	    protected UIKit.UIView CameraView { get; set; }
 
 	    [Outlet]
-	    protected UIKit.UIButton captureButton { get; set; }
+	    protected UIKit.UIButton CaptureButton { get; set; }
 
 	    [Outlet]
-	    protected UIKit.UILabel captureLable { get; set; }
+	    protected UIKit.UILabel CaptureLabel { get; set; }
 
 	    [Outlet]
 	    protected UIKit.UIButton CloseButton { get; set; }
 
 	    [Outlet]
-	    protected UIKit.UIView darkView { get; set; }
+	    protected UIKit.UIView DarkView { get; set; }
 
 	    [Outlet]
-	    protected UIKit.UILabel networkStatusLable { get; set; }
+	    protected UIKit.UILabel NetworkStatusLabel { get; set; }
 	    
-		protected CameraManager _cameraManager;
+		protected CameraManager CameraManager;
+		
         [Weak]
 		private CVImageBuffer _videoFramePixelBuffer;
 
-		public UIButton CaptureButton => this.captureButton;
-        public CameraController (IntPtr handle) : base (handle)
+		public NyrisSearcherConfig Config { get; private set; }
+
+		public CameraController (IntPtr handle) : base (handle)
         {
         }
         
@@ -51,16 +54,25 @@ namespace Nyris.UI.iOS
 		{
 			base.ViewDidLoad ();
 
-			_cameraManager = new CameraManager();
-            _cameraManager.OnAuthorizationChange += CameraManagerOnOnAuthorizationChange;
-            _cameraManager.OnFrameCapture += CameraManagerOnOnFrameCapture;
+			CameraManager = new CameraManager();
+            CameraManager.OnAuthorizationChange += CameraManagerOnOnAuthorizationChange;
+            CameraManager.OnFrameCapture += CameraManagerOnOnFrameCapture;
+            if(Config != null)
+            {
+                CaptureLabel.Text = Config.CaptureLabelText;
+            }
         }
 
+		public virtual void Configure(NyrisSearcherConfig config)
+		{
+			Config = config;
+		}
+		
 		public override void ViewDidAppear(bool animated)
 		{
 
 			base.ViewDidAppear(animated);
-			_cameraManager.CheckCameraPermission();
+			CameraManager.CheckCameraPermission();
 			AddObservers();
 		}
 
@@ -76,62 +88,74 @@ namespace Nyris.UI.iOS
             _videoFramePixelBuffer?.Dispose();
             _videoFramePixelBuffer = e.FrameBuffer;
 		}
+
+		protected void ShowError(string errorTitle, string message, string okTitle, string cancelTitle, Action<UIAlertAction> okAction)
+		{
+			DispatchQueue.MainQueue.DispatchAsync(() =>
+			{
+
+				var alertController = UIAlertController.Create(errorTitle, message, UIAlertControllerStyle.Alert);
+				if (!string.IsNullOrEmpty(cancelTitle))
+				{
+					var cancelAction = UIAlertAction.Create(cancelTitle, UIAlertActionStyle.Cancel, null);
+					alertController.AddAction(cancelAction);
+				}
+
+				if (!string.IsNullOrEmpty(okTitle))
+				{
+					
+					var settingsAction = UIAlertAction.Create(okTitle, UIAlertActionStyle.Default, okAction);
+					alertController.AddAction(settingsAction);
+				}
+				PresentViewController(alertController, true, null);
+			});
+		}
 		
 		private void CameraManagerOnOnAuthorizationChange(object sender, CameraAuthorizationEventArgs e)
 		{
             if (e.Authorization != CameraAuthorizationResult.Authorized)
             {
-                DispatchQueue.MainQueue.DispatchAsync(() =>
-                {
-                    const string errorTitle = "Authorization Error";
-                    const string message = "Please authorize camera access to use this app";
-                    const string okTitle = "Cancel";
-                    var settingsTitle = NSBundle.MainBundle.GetLocalizedString(@"Settings", @"Settings");
-                    var alertController = UIAlertController.Create(errorTitle, message, UIAlertControllerStyle.Alert);
-                    var cancelAction = UIAlertAction.Create(okTitle, UIAlertActionStyle.Cancel, null);
-                    alertController.AddAction(cancelAction);
-                    // Provide quick access to Settings.
-                    var settingsAction = UIAlertAction.Create(settingsTitle, UIAlertActionStyle.Default, (action) => {
-                        UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
-                    });
-                    alertController.AddAction(settingsAction);
-                    PresentViewController(alertController, true, null);
-                });
+	            var errorTitle = Config.DialogErrorTitle ??  "Authorization Error";
+	            var message = Config.CameraPermissionRequestIfDeniedMessage ?? "Please authorize camera access to use this app";
+	            var cancelTitle = Config.NegativeButtonText ?? "Cancel";
+	            var settingsTitle = NSBundle.MainBundle.GetLocalizedString(@"Settings", @"Settings");
+
+	            ShowError(errorTitle, message, settingsTitle, cancelTitle,
+		            (action) =>
+		            {
+			            UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+		            });
                 return;
             }
 
-            if (_cameraManager.SetupResult != SessionSetupResult.Success)
+            if (CameraManager.SetupResult != SessionSetupResult.Success)
             {
 	            try
 	            {
-		            _cameraManager.Setup();
+		            CameraManager.Setup();
 	            }
 	            catch(Exception ex) 
 	            {
 		            DispatchQueue.MainQueue.DispatchAsync(() =>
 		            {
-			            const string errorTitle = "Configuration Error";
-			            const string message = "Unable to capture media";
-			            const string okTitle = "Ok";
-                        Console.WriteLine(ex.Message);
-			            var alertController =
-				            UIAlertController.Create(errorTitle, message, UIAlertControllerStyle.Alert);
-			            var cancelAction = UIAlertAction.Create(okTitle, UIAlertActionStyle.Cancel, null);
-			            alertController.AddAction(cancelAction);
-			            PresentViewController(alertController, true, null);
+			            var errorTitle = Config.DialogErrorTitle ?? "Configuration Error";
+			            var message = Config.ConfigurationFailedErrorMessage ?? "Unable to capture media";
+			            var okTitle = Config.PositiveButtonText ?? "Ok";
+			            
+			            ShowError(errorTitle, message, okTitle, null,null);
 		            });
 	            }
             }
             
             
-            if (!_cameraManager.IsRunning)
+            if (!CameraManager.IsRunning)
             {
-	            _cameraManager.Show(cameraView);
+	            CameraManager.Show(CameraView);
             }
 	            
         }
 
-		public UIImage GetScreenshoot()
+		private UIImage GetScreenshot()
 		{
 
             if (_videoFramePixelBuffer == null)
@@ -144,8 +168,10 @@ namespace Nyris.UI.iOS
 
             var ciImage = new CIImage(pixelBuffer);
             var preview = new UIImage(ciImage: ciImage);
-            var imageView = new UIImageView(frame: bounds) { Image = preview };
-            imageView.ContentMode = UIViewContentMode.ScaleAspectFit;
+            var imageView = new UIImageView(frame: bounds)
+            {
+	            Image = preview, ContentMode = UIViewContentMode.ScaleAspectFit
+            };
             View.AddSubview(imageView);
             View.DrawViewHierarchy(bounds, true);
             var image = UIGraphics.GetImageFromCurrentImageContext();
@@ -158,49 +184,11 @@ namespace Nyris.UI.iOS
             _videoFramePixelBuffer.Dispose();
             pixelBuffer.Dispose();
             _videoFramePixelBuffer = null;
-            pixelBuffer = null;
-            imageView = null;
-            preview = null;
-            ciImage = null;
             //GC.Collect();
             return image;
 
         }
 		
-		private UIImage GetImageFromSampleBuffer(CMSampleBuffer sampleBuffer) {
-
-			// Get a pixel buffer from the sample buffer
-			using (var pixelBuffer = sampleBuffer.GetImageBuffer () as CVPixelBuffer) {
-				// Lock the base address
-				pixelBuffer.Lock (CVOptionFlags.None);
-
-				// Prepare to decode buffer
-				var flags = CGBitmapFlags.PremultipliedFirst | CGBitmapFlags.ByteOrder32Little;
-
-				// Decode buffer - Create a new colorspace
-				using (var cs = CGColorSpace.CreateDeviceRGB ()) {
-
-					// Create new context from buffer
-					using (var context = new CGBitmapContext (pixelBuffer.BaseAddress,
-						pixelBuffer.Width,
-						pixelBuffer.Height,
-						8,
-						pixelBuffer.BytesPerRow,
-						cs,
-						(CGImageAlphaInfo)flags)) {
-
-						// Get the image from the context
-						using (var cgImage = context.ToImage ()) {
-
-							// Unlock and return image
-							pixelBuffer.Unlock (CVOptionFlags.None);
-							return UIImage.FromImage (cgImage);
-						}
-					}
-				}
-			}
-		}
-
         private void AddObservers ()
 		{
 			NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.RuntimeErrorNotification, SessionRuntimeError, this);
@@ -222,7 +210,7 @@ namespace Nyris.UI.iOS
 		private void RemoveObservers ()
 		{
 			NSNotificationCenter.DefaultCenter.RemoveObserver(this);
-			_cameraManager.OnAuthorizationChange -= CameraManagerOnOnAuthorizationChange;
+			CameraManager.OnAuthorizationChange -= CameraManagerOnOnAuthorizationChange;
 		}
 
 		void SessionRuntimeError (NSNotification notification)
@@ -240,7 +228,7 @@ namespace Nyris.UI.iOS
 			*/
 			if (error.Code == (int)AVError.MediaServicesWereReset)
 			{
-				_cameraManager.SessionQueue.DispatchAsync (() => {
+				CameraManager.SessionQueue.DispatchAsync (() => {
 					
 				} );
 			}
@@ -265,9 +253,9 @@ namespace Nyris.UI.iOS
 		}
 		
 		protected virtual void ApplicationActivated(NSNotification notification) {
-            if (!_cameraManager.IsRunning && _cameraManager.SetupResult == SessionSetupResult.Success)
+            if (!CameraManager.IsRunning && CameraManager.SetupResult == SessionSetupResult.Success)
             {
-                _cameraManager.CheckCameraPermission();
+                CameraManager.CheckCameraPermission();
             }
 
         }
@@ -275,8 +263,8 @@ namespace Nyris.UI.iOS
         /// properly shutdown/stop camera service when the app is in the background or will be terminated
         protected virtual void ApplicationSuspended(NSNotification notification) {
         
-			if (_cameraManager.IsRunning ) {
-				_cameraManager.Stop();
+			if (CameraManager.IsRunning ) {
+				CameraManager.Stop();
 			}
         }
 
@@ -291,16 +279,16 @@ namespace Nyris.UI.iOS
 
         protected void captureFrameAction(UIButton sender)
         {
-	        if (_cameraManager.AuthorizationResult != CameraAuthorizationResult.Authorized)
+	        if (CameraManager.AuthorizationResult != CameraAuthorizationResult.Authorized)
 	        {
-		        _cameraManager.CheckCameraPermission();
+		        CameraManager.CheckCameraPermission();
 		        return;
 	        }
 
 	        // saving the picture may take some time, lock to avoid spam the button
 	        sender.Enabled = false;
 
-	        var screenshot = GetScreenshoot();
+	        var screenshot = GetScreenshot();
 	        ProcessImage(image: screenshot);
         }
 

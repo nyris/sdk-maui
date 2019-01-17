@@ -293,60 +293,15 @@ namespace Nyris.UI.iOS.Camera
 	        }
         }
 
-        private UIImage GetImageFromSampleBuffer(CMSampleBuffer sampleBuffer)
-        {
-
-            // Get a pixel buffer from the sample buffer
-            using (var pixelBuffer = sampleBuffer.GetImageBuffer() as CVPixelBuffer)
-            {
-                // Lock the base address
-                pixelBuffer.Lock(CVOptionFlags.None);
-
-                // Prepare to decode buffer
-                var flags = CGBitmapFlags.PremultipliedFirst | CGBitmapFlags.ByteOrder32Little;
-
-                // Decode buffer - Create a new colorspace
-                using (var cs = CGColorSpace.CreateDeviceRGB())
-                {
-
-                    // Create new context from buffer
-                    using (var context = new CGBitmapContext(pixelBuffer.BaseAddress,
-                        pixelBuffer.Width,
-                        pixelBuffer.Height,
-                        8,
-                        pixelBuffer.BytesPerRow,
-                        cs,
-                        (CGImageAlphaInfo)flags))
-                    {
-
-                        // Get the image from the context
-                        using (var cgImage = context.ToImage())
-                        {
-
-                            // Unlock and return image
-                            pixelBuffer.Unlock(CVOptionFlags.None);
-                            return UIImage.FromImage(cgImage);
-                        }
-                    }
-                }
-            }
-        }
-
         public override void DidOutputSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection)
         {
 
             try
             {
-                //previousFrameSample?.Dispose();
-                //previousFrameSample = sampleBuffer;
-                //var image = GetImageFromSampleBuffer(sampleBuffer);
+
                 var buffer = sampleBuffer.GetImageBuffer();
-                // since we want to keep the managed `pixelBuffer` alive outside the execution 
-                // of the callback we need to create our own (managed) instance from the handle
-                //var buffer = sampleBuffer.GetImageBuffer();
-                //pixelBuffer = Runtime.GetINativeObject<CVPixelBuffer>(buffer.Handle, false);
                 var frameEventArgs = new FrameCaptureEventArgs(buffer);
-                this.OnFrameCapture?.Invoke(this, frameEventArgs);
+                OnFrameCapture?.Invoke(this, frameEventArgs);
 
                 sampleBuffer.Dispose();
             }

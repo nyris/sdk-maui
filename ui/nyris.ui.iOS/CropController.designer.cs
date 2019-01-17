@@ -24,24 +24,24 @@ namespace Nyris.UI.iOS
 
         void ReleaseDesignerOutlets ()
         {
-            if (activityIndicator != null) {
-                activityIndicator.Dispose ();
-                activityIndicator = null;
+            if (ActivityIndicator != null) {
+                ActivityIndicator.Dispose ();
+                ActivityIndicator = null;
             }
 
-            if (cameraView != null) {
-                cameraView.Dispose ();
-                cameraView = null;
+            if (CameraView != null) {
+                CameraView.Dispose ();
+                CameraView = null;
             }
 
-            if (captureButton != null) {
-                captureButton.Dispose ();
-                captureButton = null;
+            if (CaptureButton != null) {
+                CaptureButton.Dispose ();
+                CaptureButton = null;
             }
 
-            if (captureLable != null) {
-                captureLable.Dispose ();
-                captureLable = null;
+            if (CaptureLabel != null) {
+                CaptureLabel.Dispose ();
+                CaptureLabel = null;
             }
 
             if (CloseButton != null) {
@@ -49,14 +49,14 @@ namespace Nyris.UI.iOS
                 CloseButton = null;
             }
 
-            if (darkView != null) {
-                darkView.Dispose ();
-                darkView = null;
+            if (DarkView != null) {
+                DarkView.Dispose ();
+                DarkView = null;
             }
 
-            if (networkStatusLable != null) {
-                networkStatusLable.Dispose ();
-                networkStatusLable = null;
+            if (NetworkStatusLabel != null) {
+                NetworkStatusLabel.Dispose ();
+                NetworkStatusLabel = null;
             }
         }
     }
