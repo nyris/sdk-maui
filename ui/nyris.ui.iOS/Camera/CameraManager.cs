@@ -26,9 +26,6 @@ namespace Nyris.UI.iOS.Camera
         [Weak]
         private UIView _displayView;
         private CameraConfiguration _cameraConfiguration;
-        private CMSampleBuffer previousFrameSample;
-        private CVPixelBuffer pixelBuffer;
-
         public AVCaptureStillImageOutput StillImageOutput { get; set; }
         
         public SessionSetupResult SetupResult { get; private set; } = SessionSetupResult.NotAuthorized;
@@ -179,15 +176,15 @@ namespace Nyris.UI.iOS.Camera
         
         public void Start()
         {
-            _captureSession?.StartRunning();
+            //_captureSession?.StartRunning();
 
-            //SessionQueue.DispatchAsync(() => { _captureSession?.StartRunning(); });
+            SessionQueue.DispatchAsync(() => { _captureSession?.StartRunning(); });
         }
     
         public void Stop()
         {
-            _captureSession?.StopRunning();
-            //SessionQueue.DispatchAsync(() => { _captureSession?.StopRunning(); });
+            //_captureSession?.StopRunning();
+            SessionQueue.DispatchAsync(() => { _captureSession?.StopRunning(); });
         }
         
         
@@ -274,11 +271,11 @@ namespace Nyris.UI.iOS.Camera
 				        Note that audio access will be implicitly requested when we
 				        create an AVCaptureDeviceInput for audio during session setup.
 			        */
-			        //SessionQueue.Suspend ();
+			        SessionQueue.Suspend ();
 			        AVCaptureDevice.RequestAccessForMediaType (AVMediaType.Video, (bool granted) => {
 				        this.AuthorizationResult = !granted ? CameraAuthorizationResult.NotAuthorized : CameraAuthorizationResult.Authorized;
                         
-				        //SessionQueue.Resume ();
+				        SessionQueue.Resume ();
 			        });
 			        break;
 		        case AVAuthorizationStatus.Restricted:

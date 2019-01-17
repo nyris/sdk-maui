@@ -72,11 +72,15 @@ namespace Nyris.UI.iOS
 		{
 
 			base.ViewDidAppear(animated);
-			CameraManager.CheckCameraPermission();
 			AddObservers();
 		}
 
-		public override void ViewDidDisappear(bool animated)
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            CameraManager.CheckCameraPermission();
+        }
+        public override void ViewDidDisappear(bool animated)
 		{
 			base.ViewDidDisappear(animated);
 			RemoveObservers();
