@@ -12,7 +12,6 @@ public interface INyrisSearcher : Nyris.UI.Common.INyrisSearcher<INyrisSearcher>
 {
 
     event EventHandler<OfferResponseEventArgs> OfferAvailable;
-    event EventHandler<Exception> RequestFailed;
         
     INyrisSearcher DialogErrorTitle(string title);
 
