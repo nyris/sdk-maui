@@ -301,10 +301,9 @@ namespace Nyris.UI.iOS
             Dismiss();
         }
 
-        private void Dismiss()
+        protected override void Dismiss()
         {
-            
-            this.PresentingViewController?.DismissViewController(true, null);
+            base.Dismiss();
 
             //_cropBoundingBox?.Dispose();
             //_cropBoundingBox = null;

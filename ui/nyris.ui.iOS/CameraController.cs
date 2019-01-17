@@ -89,7 +89,8 @@ namespace Nyris.UI.iOS
             _videoFramePixelBuffer = e.FrameBuffer;
 		}
 
-		protected void ShowError(string errorTitle, string message, string okTitle, string cancelTitle, Action<UIAlertAction> okAction)
+		protected void ShowError(string errorTitle, string message, string okTitle, string cancelTitle, Action<UIAlertAction> okAction , Action<UIAlertAction> cancelAction = null
+		)
 		{
 			DispatchQueue.MainQueue.DispatchAsync(() =>
 			{
@@ -97,8 +98,8 @@ namespace Nyris.UI.iOS
 				var alertController = UIAlertController.Create(errorTitle, message, UIAlertControllerStyle.Alert);
 				if (!string.IsNullOrEmpty(cancelTitle))
 				{
-					var cancelAction = UIAlertAction.Create(cancelTitle, UIAlertActionStyle.Cancel, null);
-					alertController.AddAction(cancelAction);
+					var cancelActionButton = UIAlertAction.Create(cancelTitle, UIAlertActionStyle.Cancel, cancelAction);
+					alertController.AddAction(cancelActionButton);
 				}
 
 				if (!string.IsNullOrEmpty(okTitle))
@@ -124,6 +125,9 @@ namespace Nyris.UI.iOS
 		            (action) =>
 		            {
 			            UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+		            },(action) =>
+		            {
+			            Dismiss();
 		            });
                 return;
             }
@@ -142,7 +146,10 @@ namespace Nyris.UI.iOS
 			            var message = Config.ConfigurationFailedErrorMessage ?? "Unable to capture media";
 			            var okTitle = Config.PositiveButtonText ?? "Ok";
 			            
-			            ShowError(errorTitle, message, okTitle, null,null);
+			            ShowError(errorTitle, message, okTitle, null,(action) =>
+			            {
+				            Dismiss();
+			            });
 		            });
 	            }
             }
@@ -295,6 +302,11 @@ namespace Nyris.UI.iOS
         partial void CloseTapped(UIButton sender)
         {
             this.PresentingViewController?.DismissViewController(true, null);
+        }
+        
+        protected virtual void Dismiss()
+        { 
+	        PresentingViewController?.DismissViewController(true, null);
         }
     }
 }
