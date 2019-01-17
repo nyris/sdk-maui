@@ -1,5 +1,4 @@
 ﻿using Android.Support.Annotation;
-using Nyris.Ui.Android.Mvp;
 using IO.Nyris.Camera;
 using System.Reactive.Disposables;
 using Android.Graphics;
@@ -8,16 +7,17 @@ using Android.Content;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System;
-using Nyris.Ui.Android.Resources.layout;
+using Nyris.UI.Android.Resources.layout;
 using Android.OS;
-using Nyris.Ui.Android.Custom;
-using Nyris.Ui.Android.Models;
 using Nyris.Api;
 using Nyris.Api.Model;
 using System.Collections.Generic;
 using Android;
+using Nyris.UI.Android.Custom;
+using Nyris.UI.Android.Models;
+using Nyris.UI.Android.Mvp;
 
-namespace Nyris.Ui.Android
+namespace Nyris.UI.Android
 {
     internal class NyrisSearcherPresenter : Java.Lang.Object, SearcherContract.IPresenter, ICallback
     {

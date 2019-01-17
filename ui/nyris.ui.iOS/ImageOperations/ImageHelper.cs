@@ -2,7 +2,7 @@
 using CoreGraphics;
 using UIKit;
 
-namespace Nyris.Ui.iOS.ImageOperations
+namespace Nyris.UI.iOS.ImageOperations
 {
     public static class ImageHelper
     {

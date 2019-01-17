@@ -9,7 +9,7 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace Nyris.Ui.iOS
+namespace Nyris.UI.iOS
 {
     [Register ("CropController")]
     partial class CropController

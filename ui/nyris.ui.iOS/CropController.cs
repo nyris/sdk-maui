@@ -1,14 +1,14 @@
 using Foundation;
 using System;
 using CoreGraphics;
-using Nyris.Ui.iOS.Crop;
-using Nyris.Ui.iOS.ImageOperations;
 using Nyris.UI.iOS;
 using ObjCRuntime;
 using UIKit;
 using Nyris.UI.iOS.Camera.Enum;
+using Nyris.UI.iOS.Crop;
+using Nyris.UI.iOS.ImageOperations;
 
-namespace Nyris.Ui.iOS
+namespace Nyris.UI.iOS
 {
     enum CameraControllerState
     {

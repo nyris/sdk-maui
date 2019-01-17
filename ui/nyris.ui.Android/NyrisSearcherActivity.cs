@@ -14,14 +14,14 @@ using IO.Nyris.Camera;
 using IO.Nyris.Croppingview;
 using Java.Interop;
 using Newtonsoft.Json;
-using Nyris.Ui.Android.Custom;
-using Nyris.Ui.Android.Extensions;
-using Nyris.Ui.Android.Models;
-using Nyris.Ui.Android.Mvp;
+using Nyris.UI.Android.Extensions;
+using Nyris.UI.Android.Custom;
+using Nyris.UI.Android.Models;
+using Nyris.UI.Android.Mvp;
 using Pub.Devrel.Easypermissions;
 using AlertDialog = Android.App.AlertDialog;
 
-namespace Nyris.Ui.Android
+namespace Nyris.UI.Android
 {
     [Activity(Label = "NyrisSearcherActivity", Theme = "@style/NyrisSearcherTheme")]
     internal sealed class NyrisSearcherActivity : AppCompatActivity, SearcherContract.IView,

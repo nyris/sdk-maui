@@ -1,7 +1,7 @@
 ﻿using System;
 using Android.Views;
 
-namespace Nyris.Ui.Android.Extensions
+namespace Nyris.UI.Android.Extensions
 {
     internal static class ViewExtensions
     {

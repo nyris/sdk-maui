@@ -11,7 +11,7 @@ using Nyris.UI.iOS.Camera.Enum;
 using Nyris.UI.iOS.Camera.EventArgs;
 using UIKit;
 using ObjCRuntime;
-using Nyris.Ui.iOS.Crop;
+using Nyris.UI.iOS.Crop;
 
 namespace Nyris.UI.iOS
 {

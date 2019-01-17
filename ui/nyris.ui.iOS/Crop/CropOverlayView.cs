@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CoreGraphics;
 using UIKit;
 
-namespace Nyris.Ui.iOS.Crop
+namespace Nyris.UI.iOS.Crop
 {
     public class CropOverlayView : UIView
     {

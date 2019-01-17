@@ -4,7 +4,7 @@ using Android.Runtime;
 using Java.Interop;
 using JavaClass = Java.Lang.Class;
 
-namespace Nyris.Ui.Android.Models
+namespace Nyris.UI.Android.Models
 {
     public class Offer : Java.Lang.Object, IParcelable
     {

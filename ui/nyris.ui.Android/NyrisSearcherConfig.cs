@@ -4,7 +4,7 @@ using Nyris.Api.Api.RequestOptions;
 using Nyris.Api.Model;
 using Nyris.Api.Utils;
 
-namespace Nyris.Ui.Android
+namespace Nyris.UI.Android
 {
     internal class NyrisSearcherConfig
     {

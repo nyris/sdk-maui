@@ -5,7 +5,7 @@ using Android.Runtime;
 using Java.Interop;
 using Nyris.Api.Model;
 
-namespace Nyris.Ui.Android.Models
+namespace Nyris.UI.Android.Models
 {
     public class OfferResponse : Java.Lang.Object, IParcelable
     {

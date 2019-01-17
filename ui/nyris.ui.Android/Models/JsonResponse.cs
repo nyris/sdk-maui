@@ -3,7 +3,7 @@ using Android.OS;
 using Android.Runtime;
 using Java.Interop;
 
-namespace Nyris.Ui.Android.Models
+namespace Nyris.UI.Android.Models
 {
     public class JsonResponse : Java.Lang.Object, IParcelable
     {

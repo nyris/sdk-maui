@@ -2,9 +2,9 @@
 using Android.Graphics;
 using Android.Support.Annotation;
 using IO.Nyris.Camera;
-using Nyris.Ui.Android.Models;
+using Nyris.UI.Android.Models;
 
-namespace Nyris.Ui.Android.Mvp
+namespace Nyris.UI.Android.Mvp
 {
     internal class SearcherContract
     {
