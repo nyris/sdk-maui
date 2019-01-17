@@ -36,5 +36,11 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
+
+	<key>NSCameraUsageDescription</key>
+	<string>Allow Visualize to use camera to track and identify objects</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Allow Visualize to use camera to track and identify objects</string>
+	
 </dict>
 </plist>

@@ -1,6 +1,9 @@
 ﻿using System;
 
 using UIKit;
+using Foundation;
+using Nyris.UI.iOS.Camera;
+
 
 namespace Nyris.UI.iOS.Demo
 {
@@ -14,7 +17,18 @@ namespace Nyris.UI.iOS.Demo
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            // Perform any additional setup after loading the view, typically from a nib.
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            var bundle = NSBundle.FromClass(new ObjCRuntime.Class(typeof(CameraManager)));
+            var storyboard = UIStoryboard.FromName("CameraController", bundle);
+            var cameraController = storyboard.InstantiateInitialViewController();
+            if (cameraController != null)
+            {
+                this.PresentViewController(cameraController, true, null);
+            }
         }
 
         public override void DidReceiveMemoryWarning()
