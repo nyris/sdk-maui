@@ -13,8 +13,20 @@ namespace Nyris.UI.iOS.Demo
     [Register ("ViewController")]
     partial class ViewController
     {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel OfferNumberLabel { get; set; }
+
+        [Action ("OpenTaped:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void OpenTaped (UIKit.UIButton sender);
+
         void ReleaseDesignerOutlets ()
         {
+            if (OfferNumberLabel != null) {
+                OfferNumberLabel.Dispose ();
+                OfferNumberLabel = null;
+            }
         }
     }
 }
