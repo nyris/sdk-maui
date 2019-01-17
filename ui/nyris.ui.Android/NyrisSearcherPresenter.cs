@@ -16,6 +16,7 @@ using Android;
 using Nyris.UI.Android.Custom;
 using Nyris.UI.Android.Models;
 using Nyris.UI.Android.Mvp;
+using Nyris.UI.Common;
 
 namespace Nyris.UI.Android
 {

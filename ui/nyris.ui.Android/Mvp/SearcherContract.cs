@@ -3,6 +3,7 @@ using Android.Graphics;
 using Android.Support.Annotation;
 using IO.Nyris.Camera;
 using Nyris.UI.Android.Models;
+using Nyris.UI.Common;
 
 namespace Nyris.UI.Android.Mvp
 {
