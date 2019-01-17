@@ -193,6 +193,7 @@ namespace Nyris.UI.iOS
             ActivityIndicator.StartAnimating();
             ActivityIndicator.Hidden = false;
             DarkView.Hidden = false;
+            _cropBoundingBox.Hidden = true;
             
             // check for network first ?
             
@@ -228,9 +229,10 @@ namespace Nyris.UI.iOS
             }
             catch (Exception e)
             {
-                // ShowError(Config.DialogErrorTitle, e.Message, Config.PositiveButtonText, null, null);
-                OnRequestFailed(this, e);
-                SetCaptureState();
+                ShowError(Config.DialogErrorTitle, e.Message, Config.PositiveButtonText, null, (action) =>
+                {
+                    SetCaptureState();
+                });
             }
             finally
             {
@@ -319,14 +321,7 @@ namespace Nyris.UI.iOS
         
         private void OnRequestFailed(object sender, Exception exception)
         {
-            try
-            {
-                RequestFailed?.Invoke(this, exception);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+            RequestFailed?.Invoke(this, exception);
         }
         
         private void OnOfferAvailable(object sender, OfferResponseEventArgs offerArgs)
