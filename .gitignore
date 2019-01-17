@@ -1,6 +1,6 @@
 /packages/*
 /.idea/*
 /.vs/*
-/bin
-/obj
+bin
+obj
 *.DS_Store
