@@ -231,14 +231,14 @@ namespace Nyris.UI.iOS
                 {
                     SetCaptureState();
                 });
-                return;
-            }
-            finally
-            {
+
                 image?.Dispose();
                 bytes = null;
+                return;
             }
             OnOfferAvailable(this, offerEventArgs);
+            image?.Dispose();
+            bytes = null;
             Dismiss();
 
         }
