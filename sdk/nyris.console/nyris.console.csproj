@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{3E10D7AE-421C-4FD9-8CCD-E0F277EBB518}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>nyris.console</RootNamespace>
-    <AssemblyName>nyris.console</AssemblyName>
+    <RootNamespace>Nyris.Console</RootNamespace>
+    <AssemblyName>Nyris.Console</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
@@ -67,7 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\nyris.sdk\nyris.sdk.csproj">
+    <ProjectReference Include="..\nyris.api\nyris.api.csproj">
       <Project>{292e48e6-c9b5-4c52-997f-8d662727c623}</Project>
       <Name>nyris.sdk</Name>
     </ProjectReference>

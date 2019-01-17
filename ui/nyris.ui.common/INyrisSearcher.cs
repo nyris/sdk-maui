@@ -1,32 +1,19 @@
-﻿using System;
-using Nyris.Sdk.Network.API.XOptions;
+﻿using JetBrains.Annotations;
+using Nyris.Api.Api;
 
 namespace Nyris.UI.Common
 {
-    public interface INyrisSearcher
+    public interface INyrisSearcher<out T> : IMatchResultFormat<T>, IImageMatching<T>
+        where T : class
     {
-        INyrisSearcher OutputFormat(string outputFormat);
+        T ApiKey([NotNull] string apiKey);
 
-        INyrisSearcher Language(string language);
+        [NotNull]
+        T ResultAsJson();
 
-        INyrisSearcher Exact(Action<ExactOptions> options = null);
+        [NotNull]
+        T ResultAsObject();
 
-        INyrisSearcher Similarity(Action<SimilarityOptions> options = null);
-
-        INyrisSearcher Ocr(Action<OcrOptions> options = null);
-
-        INyrisSearcher Limit(int limit);
-
-        INyrisSearcher Regroup(Action<RegroupOptions> options = null);
-
-        INyrisSearcher Recommendation(Action<RecommendationOptions> options = null);
-
-        INyrisSearcher CategoryPrediction(Action<CategoryPredictionOptions> options = null);
-
-        INyrisSearcher ResultAsJson();
-
-        INyrisSearcher ResultAsObject();
-
-        void Show();
+        void Start();
     }
 }
