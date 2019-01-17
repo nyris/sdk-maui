@@ -11,6 +11,8 @@ namespace Nyris.UI.iOS.Demo
     public partial class ViewController : UIViewController
     {
         private INyrisSearcher searchService;
+        private int offerCount = 0;
+
         protected ViewController(IntPtr handle) : base(handle)
         {
             // Note: this .ctor should not contain any initialization logic.
@@ -30,29 +32,37 @@ namespace Nyris.UI.iOS.Demo
                 .CancelButtonTitle("Cancel")
                 .CategoryPrediction();
             searchService.OfferAvailable += SearchServiceOnOfferAvailable;
-            searchService.RequestFailed += SearchServiceOnRequestFailed;
-        }
-
-        private void SearchServiceOnRequestFailed(object sender, Exception e)
-        {
-            throw new NotImplementedException();
         }
 
         private void SearchServiceOnOfferAvailable(object sender, OfferResponseEventArgs e)
         {
-            throw new NotImplementedException();
+            if (e == null || (e.OfferResponse == null && e.OfferJson == null) )
+            {
+                OfferNumberLabel.Text = "No offers found";
+                return;
+            }
+
+            if (e.OfferResponse != null)
+            {
+                OfferNumberLabel.Text = $"Offers found {e.OfferResponse.Offers.Count}";
+                return;
+            }
+            
+            if (e.OfferJson != null)
+            {
+                OfferNumberLabel.Text = $"Offers found as Json content";
+            }
         }
 
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            searchService.Start();
+            OfferNumberLabel.Hidden = false;
         }
 
-        public override void DidReceiveMemoryWarning()
+        partial void OpenTaped(UIButton sender)
         {
-            base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
+            searchService.Start();
         }
     }
 }
