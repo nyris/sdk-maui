@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace Nyris.Ui.iOS.Demo
+namespace Nyris.UI.iOS.Demo
 {
     public class Application
     {

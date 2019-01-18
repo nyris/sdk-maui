@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0</TargetFrameworks>
-        <AssemblyName>Nyris.Ui.Common</AssemblyName>
-        <RootNamespace>Nyris.Ui.Common</RootNamespace>
+        <AssemblyName>Nyris.UI.Common</AssemblyName>
+        <RootNamespace>Nyris.UI.Common</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

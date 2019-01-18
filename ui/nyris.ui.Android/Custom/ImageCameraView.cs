@@ -4,7 +4,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 
-namespace Nyris.Ui.Android.Custom
+namespace Nyris.UI.Android.Custom
 {
     [Register("io.nyris.customs.ImageCameraView")]
     public class ImageCameraView : View

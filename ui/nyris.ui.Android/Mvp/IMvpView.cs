@@ -1,4 +1,4 @@
-﻿namespace Nyris.Ui.Android.Mvp
+﻿namespace Nyris.UI.Android.Mvp
 {
     internal interface IMvpView<Presenter>
     {

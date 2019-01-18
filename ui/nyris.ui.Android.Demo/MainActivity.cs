@@ -6,9 +6,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Java.Interop;
-using Nyris.Ui.Android.Models;
+using Nyris.UI.Android.Models;
 
-namespace Nyris.Ui.Android.Demo
+namespace Nyris.UI.Android.Demo
 {
     [Activity(Label = "demo", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity

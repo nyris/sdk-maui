@@ -7,7 +7,7 @@ using Android.Util;
 using Android.Views;
 using Android.Views.Animations;
 
-namespace Nyris.Ui.Android.Custom
+namespace Nyris.UI.Android.Custom
 {
     [Register("io.nyris.customs.CircleView")]
     public class CircleView : View

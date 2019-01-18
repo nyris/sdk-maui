@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reactive.Disposables;
 
-namespace Nyris.Ui.Android.Resources.layout
+namespace Nyris.UI.Android.Resources.layout
 {
     internal static class PresenterExtensions
     {

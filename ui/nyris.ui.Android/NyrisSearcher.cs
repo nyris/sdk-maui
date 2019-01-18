@@ -4,12 +4,12 @@ using Android.Content;
 using Android.Support.Annotation;
 using Newtonsoft.Json;
 using Nyris.Api.Api.RequestOptions;
-using Nyris.Ui.Android.Models;
-using Nyris.Ui.Common;
+using Nyris.UI.Android.Models;
+using Nyris.UI.Common;
 using FragmentOld = Android.App.Fragment;
 using FragmentV4 = Android.Support.V4.App.Fragment;
 
-namespace Nyris.Ui.Android
+namespace Nyris.UI.Android
 {
     public interface INyrisSearcher : INyrisSearcher<INyrisSearcher>
     {

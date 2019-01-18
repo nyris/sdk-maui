@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Nyris.Api.Api;
 
-namespace Nyris.Ui.Common
+namespace Nyris.UI.Common
 {
     public interface INyrisSearcher<out T> : IMatchResultFormat<T>, IImageMatching<T>
         where T : class

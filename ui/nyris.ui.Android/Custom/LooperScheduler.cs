@@ -3,7 +3,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using Android.OS;
 
-namespace Nyris.Ui.Android.Custom
+namespace Nyris.UI.Android.Custom
 {
     public class LooperScheduler : IScheduler
     {

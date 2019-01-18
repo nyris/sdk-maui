@@ -1,14 +1,3 @@
-/nyris.ui.Android/bin/*
-/nyris.ui.Android/obj/*
-/nyris.ui.Android.Demo/bin/*
-/nyris.ui.Android.Demo/obj/*
-/nyris.ui.iOS/bin/*
-/nyris.ui.iOS/obj/*
-/nyris.ui.iOS.Demo/bin/*
-/nyris.ui.iOS.Demo/obj/*
-/nyris.ui.common/bin/*
-/nyris.ui.common/obj/*
-/nyris.ui.Android.Camera/bin/*
-/nyris.ui.Android.Camera/obj/*
-/nyris.ui.Android.Cropping/bin/*
-/nyris.ui.Android.Cropping/obj/*
+bin
+obj
+*.DS_Store
