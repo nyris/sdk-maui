@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("Nyris.Ui.Android.Demo.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("Nyris.UI.Android.Demo.Resource", IsApplication=true)]
 
 namespace Nyris.UI.Android.Demo
 {

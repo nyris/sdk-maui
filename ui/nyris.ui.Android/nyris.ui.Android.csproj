@@ -6,7 +6,7 @@
     <ProjectGuid>{2D110D8B-9693-4437-A37D-23542CB84A33}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Nyris.Ui.Android</RootNamespace>
+    <RootNamespace>Nyris.UI.Android</RootNamespace>
     <AssemblyName>Nyris.Ui.Android</AssemblyName>
     <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
@@ -184,8 +184,8 @@
     <AndroidResource Include="Resources\values\Strings.xml" />
     <AndroidResource Include="Resources\values\Styles.xml" />
     <AndroidResource Include="Resources\values\Colors.xml" />
-    <AndroidResource Include="Resources\layout\SearcherLayout.axml" />
     <AndroidResource Include="Resources\drawable\ic_done.xml" />
+    <AndroidResource Include="Resources\layout\SearcherLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AboutAssets.txt" />
