@@ -7,6 +7,8 @@ namespace Nyris.UI.Android.Models
 {
     public class JsonResponse : Java.Lang.Object, IParcelable
     {
+        public string TakenImagePath { get; set; }
+
         public string Content { get; set; }
 
         [ExportField("CREATOR")]
@@ -17,6 +19,7 @@ namespace Nyris.UI.Android.Models
 
         public void WriteToParcel(Parcel dest, [GeneratedEnum] ParcelableWriteFlags flags)
         {
+            dest.WriteString(TakenImagePath);
             dest.WriteString(Content);
         }
 
@@ -31,6 +34,7 @@ namespace Nyris.UI.Android.Models
             {
                 return new JsonResponse
                 {
+                    TakenImagePath = source.ReadString(),
                     Content = source.ReadString()
                 };
             }

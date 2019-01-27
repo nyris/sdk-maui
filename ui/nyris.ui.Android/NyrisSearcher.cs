@@ -19,9 +19,11 @@ namespace Nyris.UI.Android
 
         INyrisSearcher CameraPermissionDeniedErrorMessage([NonNull] string message);
 
+        INyrisSearcher ExternalStoragePermissionDeniedErrorMessage([NonNull] string message);
+
         INyrisSearcher CaptureLabelText([NonNull] string label);
 
-        INyrisSearcher ShouldShowCameraPermissionMessage([NonNull] string message);
+        INyrisSearcher ShouldShowPermissionMessage([NonNull] string message);
     }
 
     public class NyrisSearcher : INyrisSearcher
@@ -76,9 +78,15 @@ namespace Nyris.UI.Android
             return new NyrisSearcher(apiKey, fragmentOld, debug);
         }
 
-        public INyrisSearcher CameraPermissionDeniedErrorMessage([NonNull] string message = "")
+        public INyrisSearcher CameraPermissionDeniedErrorMessage([NonNull] string message)
         {
             _config.CameraPermissionDeniedErrorMessage = message;
+            return this;
+        }
+
+        public INyrisSearcher ExternalStoragePermissionDeniedErrorMessage([NonNull] string message)
+        {
+            _config.ExternalStoragePermissionDeniedErrorMessage = message;
             return this;
         }
 
@@ -100,9 +108,9 @@ namespace Nyris.UI.Android
             return this;
         }
 
-        public INyrisSearcher ShouldShowCameraPermissionMessage([NonNull] string message)
+        public INyrisSearcher ShouldShowPermissionMessage([NonNull] string message)
         {
-            _config.ShouldShowCameraPermissionMessage = message;
+            _config.ShouldShowPermissionMessage = message;
             return this;
         }
 
@@ -208,8 +216,9 @@ namespace Nyris.UI.Android
             return this;
         }
 
-        public void Start()
+        public void Start(bool loadLastState = false)
         {
+            _config.LoadLastState = loadLastState;
             var configJson = JsonConvert.SerializeObject(_config);
             if (_fromActivity != null)
             {

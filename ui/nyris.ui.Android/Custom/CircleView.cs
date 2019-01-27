@@ -1,4 +1,5 @@
-﻿using Android.Animation;
+﻿using System;
+using Android.Animation;
 using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
@@ -22,6 +23,7 @@ namespace Nyris.UI.Android.Custom
         private Paint _containerPaint;
         private Paint _circlePaint;
 
+        public event EventHandler AnimationEnd;
         public CircleView(Context context) : base(context)
         {
             Init();
@@ -98,6 +100,12 @@ namespace Nyris.UI.Android.Custom
                 Invalidate();
                 RequestLayout();
             };
+
+            valueAnimator.AnimationEnd += delegate
+            {
+                AnimationEnd?.Invoke(this, null);
+            };
+
             valueAnimator.Start();
         }
 

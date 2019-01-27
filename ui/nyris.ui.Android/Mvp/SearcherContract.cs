@@ -14,7 +14,8 @@ namespace Nyris.UI.Android.Mvp
             void OnSearchConfig([NonNull] NyrisSearcherConfig config);
             void OnResume();
             void OnPause();
-            void OnCircleVieClickw();
+            void OnCircleViewClick();
+            void OnCircleViewAnimationEnd();
             void OnImageCrop(RectF rectF);
             void OnBackPressed();
             void OnOkErrorClick();
@@ -42,10 +43,12 @@ namespace Nyris.UI.Android.Mvp
             void TakePicture();
             void SetImPreviewBitmap([NonNull] Bitmap bitmap);
             void ResetViewCropper();
+            void ResetViewCropper(RectF defaultRect);
             void HideViewCropper();
             void ShowViewCropper();
-            void SenResult(OfferResponse offerResponse);
-            void SenResult(JsonResponse jsonResponse);
+            void SaveLastCroppingRegion(float left, float top, float right, float bottom);
+            void SendResult(OfferResponse offerResponse);
+            void SendResult(JsonResponse jsonResponse);
             void Close();
         }
     }

@@ -22,7 +22,7 @@ namespace Nyris.UI.Android
 {
     internal class NyrisSearcherPresenter : Java.Lang.Object, SearcherContract.IPresenter, ICallback
     {
-        private enum PresenterStatus { CamerListening, Cropping, Searching }
+        private enum PresenterStatus { CameraListening, Cropping, Searching }
         private SearcherContract.IView _view;
         private INyrisApi _nyrisApi;
         private NyrisSearcherConfig _config;
@@ -30,6 +30,7 @@ namespace Nyris.UI.Android
         private Bitmap _bitmapForCropping;
         private Size _imageSize;
         private PresenterStatus _presenterStatus;
+        private RectF _newRectF;
 
         public void OnAtach(SearcherContract.IView view)
         {
@@ -55,7 +56,33 @@ namespace Nyris.UI.Android
         public void OnResume()
         {
             _view.AddCameraCallback(this);
-            _view?.StartCamera();
+            if (_presenterStatus == PresenterStatus.Cropping)
+            {
+                return;
+            }
+
+            if (_config.LoadLastState)
+            {
+                var bitmap = BitmapFactory.DecodeFile(_config.LastTakenPicturePath);
+                var region = _config.LastCroppingRegion;
+                _config.LastCroppingRegion = null;
+                _config.LoadLastState = false;
+
+                if (bitmap == null)
+                {
+                    // fall back
+                    _view?.StartCamera();
+                }
+                else
+                {
+                    StartCroppingMode(bitmap, region);
+                    _view?.HideValidateView();
+                }
+            }
+            else
+            {
+                _view?.StartCamera();
+            }
         }
 
         public void OnSearchConfig([NonNull]NyrisSearcherConfig config)
@@ -65,9 +92,17 @@ namespace Nyris.UI.Android
             MapConfig();
         }
 
-        public void OnCircleVieClickw()
+        public void OnCircleViewClick()
         {
             _view?.TakePicture();
+        }
+
+        public void OnCircleViewAnimationEnd()
+        {
+            if (_presenterStatus == PresenterStatus.Cropping)
+            {
+                _view?.ShowValidateView();
+            }
         }
 
         public void OnError(string message)
@@ -78,26 +113,20 @@ namespace Nyris.UI.Android
         public void OnPictureTakenOriginal(BaseCameraView cameraView, byte[] image)
         {
             _view?.StopCamera();
-            _bitmapForCropping = BitmapFactory.DecodeByteArray(image, 0, image.Length);
-            _imageSize = new Size(_bitmapForCropping.Width, _bitmapForCropping.Height);
-            _view?.SetImPreviewBitmap(_bitmapForCropping);
-
-            _view?.ShowImageCameraPreview();
-            _view?.ShowViewCropper();
-            _view?.ShowValidateView();
-            _view?.ResetViewCropper();
-            _presenterStatus = PresenterStatus.Cropping;
+            var bitmap = BitmapFactory.DecodeByteArray(image, 0, image.Length);
+            StartCroppingMode(bitmap);
         }
 
         public void OnImageCrop(RectF rectF)
         {
-            var newRectF = NormalizeRectF(rectF);
+            _presenterStatus = PresenterStatus.Searching;
+            _newRectF = NormalizeRectF(rectF);
 
             var croppedBitmap = Bitmap.CreateBitmap(_bitmapForCropping,
-                (int)newRectF.Left,
-                (int)newRectF.Top,
-                (int)newRectF.Width(),
-                (int)newRectF.Height());
+                (int)_newRectF.Left,
+                (int)_newRectF.Top,
+                (int)_newRectF.Width(),
+                (int)_newRectF.Height());
 
             var stream = new MemoryStream();
             croppedBitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
@@ -109,6 +138,7 @@ namespace Nyris.UI.Android
             _view?.HideValidateView();
             _view?.ShowLoading();
             _view?.HideViewCropper();
+            _view?.SaveLastCroppingRegion(_newRectF.Left, _newRectF.Top, _newRectF.Right, _newRectF.Bottom);
 
             if (_config.ResponseType == typeof(JsonResponse))
             {
@@ -119,13 +149,13 @@ namespace Nyris.UI.Android
                     .ObserveOn(new LooperScheduler(Looper.MainLooper))
                     .Subscribe(response =>
                     {
-                        _view?.SenResult(new JsonResponse
+                        _view?.SendResult(new JsonResponse
                         {
-                            Content = response.Content
+                            Content = response.Content,
+                            TakenImagePath = _config.LastTakenPicturePath
                         });
                     }, throwable => _view?.ShowError(throwable.Message))
                     .AdToCompositeDisposable(_compositeDisposable);
-
             }
             else
             {
@@ -136,11 +166,13 @@ namespace Nyris.UI.Android
                     .ObserveOn(new LooperScheduler(Looper.MainLooper))
                     .Subscribe(response =>
                     {
-                        _view?.SenResult(new OfferResponse(response));
+                        _view?.SendResult(new OfferResponse(response)
+                        {
+                            TakenImagePath = _config.LastTakenPicturePath
+                        });
                     }, throwable => _view?.ShowError(throwable.Message))
                     .AdToCompositeDisposable(_compositeDisposable);
             }
-            _presenterStatus = PresenterStatus.Searching;
         }
 
         public void OnBackPressed()
@@ -165,7 +197,7 @@ namespace Nyris.UI.Android
                 _view?.ShowCircleView();
                 _view?.ShowLabelCapture();
                 _view?.StartCamera();
-                _presenterStatus = PresenterStatus.CamerListening;
+                _presenterStatus = PresenterStatus.CameraListening;
             }
             else
             {
@@ -175,7 +207,7 @@ namespace Nyris.UI.Android
 
         public void OnOkErrorClick()
         {
-            if (_presenterStatus == PresenterStatus.CamerListening)
+            if (_presenterStatus == PresenterStatus.CameraListening)
             {
                 _view?.Close();
                 return;
@@ -187,7 +219,55 @@ namespace Nyris.UI.Android
             _view?.ShowCircleView();
             _view?.ShowValidateView();
             _view?.ShowViewCropper();
-            _view?.ResetViewCropper();
+            if (_newRectF == null)
+            {
+                _view?.ResetViewCropper();
+            }
+            else
+            {
+                _view?.ResetViewCropper(_newRectF);
+            }
+        }
+
+        public void OnPermissionsDenied(IList<string> permissions)
+        {
+            foreach (var permission in permissions)
+            {
+                if (permission == Manifest.Permission.Camera)
+                {
+                    _view.ShowError(_config.CameraPermissionDeniedErrorMessage);
+                }
+                if (permission == Manifest.Permission.WriteExternalStorage)
+                {
+                    _view.ShowError(_config.ExternalStoragePermissionDeniedErrorMessage);
+                }
+            }
+        }
+
+        private void StartCroppingMode(Bitmap bitmap, Common.Region region = null)
+        {
+            _presenterStatus = PresenterStatus.Cropping;
+            _bitmapForCropping = bitmap;
+            _imageSize = new Size(_bitmapForCropping.Width, _bitmapForCropping.Height);
+            _view?.SetImPreviewBitmap(_bitmapForCropping);
+
+            _view?.ShowImageCameraPreview();
+            _view?.ShowViewCropper();
+            _view?.ShowValidateView();
+            if (region != null && region.IsValid)
+            {
+                _view?.ResetViewCropper(new RectF
+                {
+                    Left = region.Left,
+                    Top = region.Top,
+                    Right = region.Right,
+                    Bottom = region.Bottom
+                });
+            }
+            else
+            {
+                _view?.ResetViewCropper();
+            }
         }
 
         private void ClearDisposables()
@@ -269,18 +349,6 @@ namespace Nyris.UI.Android
                     obj.Threshold = _config.CategoryPredictionOptions.Threshold;
                 });
             }
-        }
-
-        public void OnPermissionsDenied(IList<string> permissions)
-        {
-            foreach (var permission in permissions)
-            {
-                if (permission != Manifest.Permission.Camera)
-                {
-                    continue;
-                }
-            }
-            _view.ShowError(_config.CameraPermissionDeniedErrorMessage);
         }
 
         #region Ignore

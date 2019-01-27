@@ -18,7 +18,7 @@
             app:imageHeight="512"
             app:imageWidth="512"
             app:recognition="none"
-            app:saveImage="false"/>
+            app:saveImage="true"/>
 
     <TextView
             android:id="@+id/tvCaptureLabel"

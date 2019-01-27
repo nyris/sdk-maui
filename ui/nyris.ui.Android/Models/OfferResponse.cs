@@ -9,6 +9,8 @@ namespace Nyris.UI.Android.Models
 {
     public class OfferResponse : Java.Lang.Object, IParcelable
     {
+        public string TakenImagePath { get; set; }
+
         public string RequestCode { get; set; }
 
         public List<Offer> Offers { get; set; }
@@ -74,6 +76,7 @@ namespace Nyris.UI.Android.Models
 
         public void WriteToParcel(Parcel dest, [GeneratedEnum] ParcelableWriteFlags flags)
         {
+            dest.WriteString(TakenImagePath);
             dest.WriteString(RequestCode);
             dest.WriteTypedList(Offers);
             dest.WriteTypedList(PredictedCategories);
@@ -90,6 +93,7 @@ namespace Nyris.UI.Android.Models
             {
                 var searcherOfferResponse = new OfferResponse
                 {
+                    TakenImagePath = source.ReadString(),
                     RequestCode = source.ReadString(),
                     Offers = new List<Offer>(),
                     PredictedCategories = new List<PredictedCategory>()

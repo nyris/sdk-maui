@@ -34,8 +34,8 @@ namespace Nyris.UI.Android.Demo
                 .PositiveButtonText("My OK")
                 .CategoryPrediction()
                 //.ResultAsJson()
-                .Start(loadLastState: true);
-            //.Start();
+                //.Start(loadLastState: true);
+                .Start();
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)

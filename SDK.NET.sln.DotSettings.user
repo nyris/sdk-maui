@@ -11,10 +11,10 @@
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=PrivateConstants/@EntryIndexedValue">&lt;Policy Inspect="False" Prefix="DEFAULT_" Suffix="" Style="AA_BB" /&gt;</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/AutoDetectedNamingRules/=EnumMember/@EntryIndexedValue">&lt;Policy Inspect="False" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/Naming/CSharpAutoNaming/IsNamingAutoDetectionCompleted/@EntryValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=1fc7bfd5_002Dd8b1_002D4cfc_002D8cea_002D71ab651ca6da_0023nyris_002Eui_002EAndroid_002EDemo/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=2d110d8b_002D9693_002D4437_002Da37d_002D23542cb84a33_0023nyris_002Eui_002EAndroid/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=3336a3ed_002Dae3e_002D4f28_002D90db_002D3ad6555ad90a_0023nyris_002Eui_002EiOS_002EDemo/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=9e324d2b_002D6e88_002D4fc3_002Dae3d_002D19a1b6934129_0023nyris_002Eui_002EiOS/@EntryIndexedValue">True</s:Boolean>
+	
+	
+	
+	
 	
 	
 	
