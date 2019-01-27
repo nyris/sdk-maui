@@ -8,7 +8,7 @@
 for retail and industry applications. For more information please visit us at [nyris.io](https://nyris.io/).
 
 This repo provides a [C#](https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2012/kx37x362(v%3dvs.110)) SDK
-to use our system, including error handling, as well as reactive and asynchronous programming support. Specifically, we provide
+to use our system, including error handling, as well as reactive and asynchronous programming support. Specifically, we provide:
 
 * Support for all nyris services,
 * Support of Reactive/Asynchronous programming paradigms,
@@ -18,10 +18,10 @@ to use our system, including error handling, as well as reactive and asynchronou
 
 To the following nyris services:
 
-* Exact visual search
-* Visual similarity search
-* Object detection
-* Text search
+* Exact visual search,
+* Visual similarity search,
+* Object detection,
+* Text search.
 
 ### Requirements
 
@@ -45,10 +45,13 @@ The current solution is composed of multiple projects:
 * **nyris ui iOS**: The nyris searcher components for iOS.
 * **nyris ui iOS Demo**: An iOS demo app that shows how to use nyris searcher component(s).
 
+# Get Started
+* [Get Started with nyris SDK](#get-started-with-nyris-sdk)
+* [Get Started with nyris Xamarin Searcher](#get-started-with-nyris-xamarin-searcher)
+
 ## Get Started with nyris SDK
 
 ### Jump To
-
 * [Getting an instance](#getting-an-instance)
 * [Match your first image](#match-your-first-image)
 * [Extract objects from your image](#extract-objects-from-your-image)
@@ -177,7 +180,7 @@ Each object has:
 It may happen that our service can't recognize or match an image. This is why we provide you a service to notify us
 about any unsuccessful matches.
 
-Before you mark an image as "not found", you will need to have the `RequestId`. For more details please check this [section](#match-your-first-image).
+Before you mark an image as **"not successful"**, you will need to have the `RequestId`. For more details please check this [section](#match-your-first-image).
 
 After getting the `RequestId` you can mark the image as not found.
 
@@ -208,8 +211,16 @@ You can use the text search service the same way as the [image matching service]
 
 ## Get Started with nyris Xamarin Searcher
 
-To start using image matching component, you will need to refence the project `nyris.ui.Android` for Android and the project `nyris.ui.iOS`for iOS and include all the required dependencies with it.
+To start using image matching component, you will need to reference the project `nyris.ui.Android` for Android and the project `nyris.ui.iOS`for iOS and include all the required dependencies with it.
 
+### Jump To
+* [Starting the component](#starting-the-component)
+* [Setting image matching options](#starting-the-component)
+* [Handling returned results](#handling-returned-results)
+* [Handling JSON results](#handling-json-results)
+* [Customizing the text of the component](#customizing-the-text-of-the-component)
+* [Customizing the color of the component](#customizing-the-color-of-the-component)
+* [Load last session state](#load-last-session-state)
 
 ### Starting the component
 #### For Android
@@ -256,7 +267,6 @@ For more details about image matching options please check [this section](#match
 ```
 
 ### Handling returned results
-
 
 #### For Android
 ```csharp
@@ -321,7 +331,7 @@ If you specified a custom output format, you should use this call to get respons
         .Start();
 ```
 
-#### Customizing the text of the component
+### Customizing the text of the component
 
 You can change text of the coponent by using:
 
@@ -330,15 +340,17 @@ You can change text of the coponent by using:
         .Builder("Your API Key Here", this)
         .CaptureLabelText("My Capture label.")
         .CameraPermissionDeniedErrorMessage("You can not use this componenet until you activate the camera permission!")
-        .ShouldShowCameraPermissionMessage("Should show message after second permission request")
+        .ExternalStoragePermissionDeniedErrorMessage("You can not use this componenet until you activate the access to external storage permission!")
+        .ShouldShowPermissionMessage("Should show message after second permission request")
         .DialogErrorTitle("Error Title")
         .PositiveButtonText("My OK")
         .Start();
 ```
 See `NyrisSearcherConfig.cs` for full list of configuration.
 
-### Customizing the color of the component (Android Only)
+### Customizing the color of the component
 
+#### For Android
 To customize the color of the coponent you will need to override the defined colors:
 
 ```xml
@@ -351,7 +363,15 @@ To customize the color of the coponent you will need to override the defined col
 </resources>
 ```
 
+### Load last session state
 
+To load last session state of the `NyrisSearcher` you will need : 
+```csharp
+    NyrisSearcher
+        .Builder("Your API Key Here", presenterController)
+        .Start(loadLastState: true);
+```
+In case of an unknown error or un saved state the parameter will fallback to default mode. 
 
 License
 =======
