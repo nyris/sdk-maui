@@ -28,12 +28,14 @@ namespace Nyris.UI.Android.Demo
                 .Builder("Your API Key Here", this)
                 .CaptureLabelText("My Capture label.")
                 .CameraPermissionDeniedErrorMessage("You can not use this componenet until you activate the camera permission!")
-                .ShouldShowCameraPermissionMessage("Should show message after second permission request")
+                .ExternalStoragePermissionDeniedErrorMessage("You can not use this componenet until you activate the access to external storage permission!")
+                .ShouldShowPermissionMessage("Should show message after second permission request")
                 .DialogErrorTitle("Error Title")
                 .PositiveButtonText("My OK")
                 .CategoryPrediction()
                 //.ResultAsJson()
-                .Start();
+                .Start(loadLastState: true);
+            //.Start();
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -47,12 +49,14 @@ namespace Nyris.UI.Android.Demo
                     try
                     {
                         var offerResponse = data.GetParcelableExtra(NyrisSearcher.SEARCH_RESULT_KEY) as OfferResponse;
-                        _tvResult.Text = $"Found ({offerResponse.Offers.Count}) offers, Categories : ({offerResponse.PredictedCategories.Count})";
+                        _tvResult.Text = $"Image Path = {offerResponse.TakenImagePath} \n" +
+                            $"Found ({offerResponse.Offers.Count}) offers, Categories : ({offerResponse.PredictedCategories.Count})";
                     }
                     catch
                     {
                         var offerResponse = data.GetParcelableExtra(NyrisSearcher.SEARCH_RESULT_KEY) as JsonResponse;
-                        _tvResult.Text = $"Response : {offerResponse.Content}";
+                        _tvResult.Text = $"Image Path = {offerResponse.TakenImagePath} \n" +
+                            $"Response : {offerResponse.Content}";
                     }
                 }
             }

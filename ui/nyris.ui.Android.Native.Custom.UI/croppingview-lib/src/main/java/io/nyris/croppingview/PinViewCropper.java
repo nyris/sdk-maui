@@ -183,6 +183,13 @@ public class PinViewCropper extends FrameLayout {
         });
     }
 
+    public void Reset(RectF rectF){
+        extractedObjects = new ArrayList<>();
+        selectedObjectProposal = rectF;
+        extractedObjects.add(rectF);
+        initCropWindow(rectF);
+    }
+
     public void setExtractedObjects(final List<RectF> extractedObjects) {
         this.extractedObjects = extractedObjects;
         if (extractedObjects.size() != 0) {

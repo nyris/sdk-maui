@@ -54,7 +54,7 @@
     <TransformFile Include="Transforms\Metadata.xml" />
   </ItemGroup>
   <ItemGroup>
-    <LibraryProjectZip Include="Jars\croppingview-xamarin.custom-1.0.aar" />
+    <LibraryProjectZip Include="Jars\croppingview-xamarin.custom-1.1.aar" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
 </Project>
