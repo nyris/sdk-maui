@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Nyris.Api.Model;
@@ -29,6 +30,18 @@ namespace Nyris.Api.Api
         protected static T CastToNyrisResponse<T>([NotNull] ApiResponse<string> apiResponse)
             where T : INyrisResponse
         {
+            if (!apiResponse.IsSuccessStatusCode)
+            {
+                var definition = new
+                {
+                    fault = new
+                    {
+                        faultstring = ""
+                    }
+                };
+                var error = JsonConvert.DeserializeAnonymousType(apiResponse.Content, definition);
+                throw new ApiException($"{error.fault.faultstring} \nHTTP Error code: {(int)apiResponse.StatusCode}");
+            }
             // When default output format is applied and client want to cast OfferResponseDto.
             var requestCode = apiResponse.Headers.ToDictionary(l => l.Key, k => k.Value)["X-Matching-Request"]
                 .FirstOrDefault();
@@ -39,7 +52,7 @@ namespace Nyris.Api.Api
                 offerResponse.RequestCode = requestCode;
                 if (typeof(T) == typeof(OfferResponseDto))
                 {
-                    return (T) Convert.ChangeType(offerResponse, typeof(T));
+                    return (T)Convert.ChangeType(offerResponse, typeof(T));
                 }
             }
             catch
@@ -58,7 +71,7 @@ namespace Nyris.Api.Api
             if (offerResponse != null && typeof(T) == typeof(JsonResponseDto))
             {
                 var json = JsonConvert.SerializeObject(offerResponse);
-                return (T) Convert.ChangeType(new JsonResponseDto(json), typeof(T));
+                return (T)Convert.ChangeType(new JsonResponseDto(json), typeof(T));
             }
 
             // When default output format is not applied and client want to cast to JsonResponseDto.
@@ -68,7 +81,7 @@ namespace Nyris.Api.Api
                 Result = apiResponse.Content
             };
             var jsonObj = JsonConvert.SerializeObject(response);
-            return (T) Convert.ChangeType(new JsonResponseDto(jsonObj), typeof(T));
+            return (T)Convert.ChangeType(new JsonResponseDto(jsonObj), typeof(T));
         }
     }
 }
