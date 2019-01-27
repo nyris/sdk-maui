@@ -18,18 +18,30 @@ namespace Nyris.UI.Common
 
         public int Limit { get; set; } = OptionDefaults.DefaultLimit;
 
+        public bool LoadLastState { get; set; } = false;
+
+        public string LastTakenPicturePath { get; set; }
+
+        public Region LastCroppingRegion { get; set; }
+
         public string DialogErrorTitle { get; set; } = "Error";
 
         public string PositiveButtonText { get; set; } = "OK";
+
         public string NegativeButtonText { get; set; } = "Cancel";
 
         public string CaptureLabelText { get; set; } = "Capture your product";
 
         public string ConfigurationFailedErrorMessage { get; set; } = "Camera setup failed!";
+
         public string CameraPermissionDeniedErrorMessage { get; set; } = "Camera permission denied!";
+
+        public string ExternalStoragePermissionDeniedErrorMessage { get; set; } = "Access External Storage permission denied!";
+
         public string CameraPermissionRequestIfDeniedMessage { get; set; } = "Please authorize camera access";
 
-        public string ShouldShowCameraPermissionMessage { get; set; } = "You need to activate camera permission to perform camera search.";
+        public string ShouldShowPermissionMessage { get; set; } = "You need to activate camera " +
+            "permission or access to external storage to perform search.";
 
         public Type ResponseType { set; get; } = typeof(OfferResponseDto);
 

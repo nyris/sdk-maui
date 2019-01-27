@@ -14,6 +14,6 @@ namespace Nyris.UI.Common
         [NotNull]
         T ResultAsObject();
 
-        void Start();
+        void Start(bool loadLastState = false);
     }
 }
