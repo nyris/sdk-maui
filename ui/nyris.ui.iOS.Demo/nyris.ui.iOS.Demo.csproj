@@ -106,10 +106,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Contents.json" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
@@ -130,10 +126,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\nyris.ui.iOS\nyris.ui.iOS.csproj">
-      <Project>{9e324d2b-6e88-4fc3-ae3d-19a1b6934129}</Project>
-      <Name>nyris.ui.iOS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\nyris.ui.common\nyris.ui.common.csproj">
       <Project>{81DB1CE0-3384-462C-953B-F40393C18FA9}</Project>
       <Name>nyris.ui.common</Name>
@@ -142,6 +134,43 @@
       <Project>{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}</Project>
       <Name>nyris.api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\nyris.ui.iOS\nyris.ui.iOS.csproj">
+      <Project>{9e324d2b-6e88-4fc3-ae3d-19a1b6934129}</Project>
+      <Name>nyris.ui.iOS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-57x57%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-57x57%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-60x60%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-60x60%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-72x72%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-72x72%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-83.5x83.5%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%401x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ItunesArtwork%402x.png" />
+    <ImageAsset Include="Assets.xcassets\capture_icon_demo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\capture_icon_demo.imageset\capture_icon.png" />
+    <ImageAsset Include="Assets.xcassets\capture_icon_demo.imageset\capture_icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\capture_icon_demo.imageset\capture_icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\crop_image_demo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\crop_image_demo.imageset\validate_icon.png" />
+    <ImageAsset Include="Assets.xcassets\crop_image_demo.imageset\validate_icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\crop_image_demo.imageset\validate_icon%403x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\packages\Refit.4.6.58\build\netstandard1.4\refit.targets" Condition="Exists('..\..\packages\Refit.4.6.58\build\netstandard1.4\refit.targets')" />

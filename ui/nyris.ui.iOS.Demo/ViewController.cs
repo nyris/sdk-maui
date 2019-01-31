@@ -2,15 +2,17 @@
 
 using UIKit;
 using Foundation;
-using Nyris.UI.iOS;
 using Nyris.UI.iOS.EventArgs;
-
+using Nyris.UI.iOS;
 
 namespace Nyris.UI.iOS.Demo
 {
     public partial class ViewController : UIViewController
     {
         private INyrisSearcher searchService;
+
+        private UIImage _captureButtonImage;
+        private UIImage _cropButtonImage;
 
         protected ViewController(IntPtr handle) : base(handle)
         {
@@ -20,8 +22,22 @@ namespace Nyris.UI.iOS.Demo
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+  
+            _captureButtonImage = UIImage.FromBundle("capture_icon_demo");
+            _cropButtonImage = UIImage.FromBundle("crop_image_demo");
+            var theme = new AppearanceConfiguration
+            {
+                CaptureLabelColor = UIColor.Red,
+                CropButtonTint = UIColor.Yellow,
+                BackButtonTinte = UIColor.Red,
+                CaptureButtonTint = UIColor.Green,
+                CaptureButtonImage = _captureButtonImage,
+                CropButtonImage = _cropButtonImage,
+            };
+
             searchService = NyrisSearcher
                 .Builder("API-KEY", this)
+                .Theme(theme)
                 .CaptureLabelText("My Capture label.")
                 .CameraPermissionDeniedErrorMessage("You can not use this component until you activate the camera permission!")
                 .CameraPermissionRequestIfDeniedMessage("Please authorize camera usage in settings.")
@@ -31,6 +47,7 @@ namespace Nyris.UI.iOS.Demo
                 .CancelButtonTitle("Cancel")
                 .CategoryPrediction();
             searchService.OfferAvailable += SearchServiceOnOfferAvailable;
+
         }
 
         private void SearchServiceOnOfferAvailable(object sender, OfferResponseEventArgs e)
