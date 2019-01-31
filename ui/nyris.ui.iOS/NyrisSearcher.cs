@@ -38,6 +38,7 @@ namespace Nyris.UI.iOS
         }
 
         [Weak] UIViewController _presenterController;
+        [Weak] CropController _cropController;
         private CaptureSessionParametres _previousSessionParametres;
         private NyrisSearcherConfig _config;
 
@@ -207,6 +208,7 @@ namespace Nyris.UI.iOS
 
         public void Start(bool loadLastState = false)
         {
+            _cropController?.Dispose();
             var bundle = NSBundle.FromClass(new ObjCRuntime.Class(typeof(CameraController)));
             var storyboard = UIStoryboard.FromName("CameraController", bundle);
 
@@ -215,22 +217,34 @@ namespace Nyris.UI.iOS
                 throw new ArgumentNullException(nameof(_presenterController), "Presenter view controller is null");
             }
 
-            if (!(storyboard.InstantiateInitialViewController() is CropController cropController))
+
+            var controller = storyboard.InstantiateInitialViewController();
+            if (!(controller is CropController))
             {
-                throw new ArgumentNullException(nameof(cropController), "Crop controller is null");
+                throw new ArgumentNullException(nameof(controller), "Controller is not a type of CropController");
+            }
+            else
+            {
+                _cropController = controller as CropController;
             }
 
             _config.LoadLastState = loadLastState;
-            cropController.Configure(_config);
-            cropController.OfferAvailable += OnOfferAvailable;
-            cropController.RequestFailed += (sender, exception) => RequestFailed?.Invoke(this, exception);
+            _cropController.Configure(_config);
+            _cropController.OfferAvailable += OnOfferAvailable;
+            _cropController.RequestFailed += (sender, exception) => RequestFailed?.Invoke(this, exception);
 
             if (loadLastState)
             {
-                cropController.ScreenshotImage = _previousSessionParametres.Screenshot;
-                cropController.CroppingFrame = _previousSessionParametres.CroppingFrame;
+                _cropController.ScreenshotImage = _previousSessionParametres.Screenshot;
+                _cropController.CroppingFrame = _previousSessionParametres.CroppingFrame;
             }
-            _presenterController.PresentViewController(cropController, true, null);
+            else
+            {
+                _cropController.ScreenshotImage?.Dispose();
+                _cropController.ScreenshotImage = null;
+                GC.Collect();
+            }
+            _presenterController.PresentViewController(_cropController, true, null);
         }
 
         void OnOfferAvailable(object sender, OfferResponseEventArgs e)

@@ -62,6 +62,15 @@ namespace Nyris.UI.iOS
             }
         }
 
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            if(Config.LoadLastState && _currentState != CameraControllerState.Capture)
+            {
+                CameraManager.Stop();
+            }
+        }
+
         public override void Configure(NyrisSearcherConfig config)
         {
             base.Configure(config);
@@ -137,7 +146,7 @@ namespace Nyris.UI.iOS
             _cropButtonImage = UIImage.FromBundle("validate_icon", bundle, null);
         }
 
-        private void SetCaptureState()
+        public void SetCaptureState()
         {
             ScreenshotImage = null;
             ActivityIndicator.StopAnimating();
@@ -278,6 +287,7 @@ namespace Nyris.UI.iOS
         protected override void ProcessImage(UIImage image)
         {
             base.ProcessImage(image);
+            ScreenshotImage?.Dispose();
             ScreenshotImage = image;
         }
 
@@ -342,17 +352,30 @@ namespace Nyris.UI.iOS
         protected override void Dismiss()
         {
             base.Dismiss();
+            Dispose();
+            GC.Collect();
+        }
 
-            //_cropBoundingBox?.Dispose();
-            //_cropBoundingBox = null;
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (!disposing)
+            {
+                return;
+            }
+
+            _cropBoundingBox?.Dispose();
+            _cropBoundingBox = null;
+            CameraManager.Stop();
             _captureButtonImage?.Dispose();
             _captureButtonImage = null;
             _cropButtonImage?.Dispose();
             _cropButtonImage = null;
             ScreenshotImage?.Dispose();
             ScreenshotImage = null;
+            ReleaseDesignerOutlets();
         }
-        
+
         private void OnRequestFailed(object sender, Exception exception)
         {
             RequestFailed?.Invoke(this, exception);
