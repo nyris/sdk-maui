@@ -182,7 +182,7 @@ namespace Nyris.UI.iOS
             DarkView.Hidden = true;
         }
 
-        private async Task SetFetchState(UIImage image)
+        private async Task SetFetchState(UIImage screenshot, UIImage croppedImage)
         {
             _currentState = CameraControllerState.Fetch;
             CaptureButton.Enabled = false;
@@ -198,7 +198,7 @@ namespace Nyris.UI.iOS
             // check for network first ?
             
             // get image bytes
-            var bytes = image.AsJPEG().ToArray();
+            var bytes = croppedImage.AsJPEG().ToArray();
             //_cropBoundingBox.Hidden = false;
             var responseType = Config.ResponseType == typeof(JsonResponse)
                 ? typeof(JsonResponseDto)
@@ -215,13 +215,13 @@ namespace Nyris.UI.iOS
                     {
                         Content =  jsonOfferDto.Content
                     };
-                    offerEventArgs = new OfferResponseEventArgs(offerResponse);
+                    offerEventArgs = new OfferResponseEventArgs(screenshot, offerResponse);
                 }
                 else
                 {
                     var offer = await matchingService.MatchAsync(bytes);
                     var offerResponse = new OfferResponse(offer);
-                    offerEventArgs = new OfferResponseEventArgs(offerResponse);
+                    offerEventArgs = new OfferResponseEventArgs(screenshot, offerResponse);
                 }
 
             }
@@ -232,13 +232,16 @@ namespace Nyris.UI.iOS
                     SetCaptureState();
                 });
 
-                image?.Dispose();
+                croppedImage?.Dispose();
+                screenshot?.Dispose();
                 bytes = null;
                 return;
             }
+
             OnOfferAvailable(this, offerEventArgs);
-            image?.Dispose();
+            croppedImage?.Dispose();
             bytes = null;
+            this._screenshotImage = null;
             Dismiss();
 
         }
@@ -270,10 +273,8 @@ namespace Nyris.UI.iOS
             }
 
             var resizedCroppedImage = ImageHelper.ResizeWithRatio(croppedImage, new CGSize(512, 512));
-            _screenshotImage.Dispose();
             croppedImage.Dispose();
-            _screenshotImage = null;
-            SetFetchState(resizedCroppedImage);
+            SetFetchState(_screenshotImage, resizedCroppedImage);
         }
 
         protected override void ApplicationActivated(NSNotification notification)
@@ -296,7 +297,17 @@ namespace Nyris.UI.iOS
 
         partial void CloseTapped(UIButton sender)
         {
-            Dismiss();
+            switch(_currentState)
+            {
+                case CameraControllerState.Capture:
+                    Dismiss();
+                    break;
+                case CameraControllerState.Crop:
+                    SetCaptureState();
+                    break;
+                case CameraControllerState.Fetch:
+                    break;
+            }
         }
 
         protected override void Dismiss()
@@ -311,8 +322,8 @@ namespace Nyris.UI.iOS
             _cropButtonImage = null;
             _screenshotImageView?.Dispose();
             _screenshotImageView = null;
-            _screenshotImage?.Dispose();
-            _screenshotImage = null;
+            //_screenshotImage?.Dispose();
+            //_screenshotImage = null;
         }
         
         private void OnRequestFailed(object sender, Exception exception)

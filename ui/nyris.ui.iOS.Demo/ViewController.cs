@@ -11,7 +11,6 @@ namespace Nyris.UI.iOS.Demo
     public partial class ViewController : UIViewController
     {
         private INyrisSearcher searchService;
-        private int offerCount = 0;
 
         protected ViewController(IntPtr handle) : base(handle)
         {

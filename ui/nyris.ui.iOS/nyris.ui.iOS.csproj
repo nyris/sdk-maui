@@ -142,8 +142,10 @@
     <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\point_icon.png" />
     <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\point_icon%402x.png" />
     <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\point_icon%403x.png" />
-    <ImageAsset Include="assets.xcassets\close_icon.imageset\close_icon.png" />
     <ImageAsset Include="assets.xcassets\close_icon.imageset\Contents.json" />
+    <ImageAsset Include="assets.xcassets\close_icon.imageset\Arrow.png" />
+    <ImageAsset Include="assets.xcassets\close_icon.imageset\Arrow%402x.png" />
+    <ImageAsset Include="assets.xcassets\close_icon.imageset\Arrow%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
