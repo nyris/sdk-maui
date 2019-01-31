@@ -44,13 +44,23 @@ namespace Nyris.UI.iOS.Demo
             if (e.OfferResponse != null)
             {
                 OfferNumberLabel.Text = $"Offers found {e.OfferResponse.Offers.Count}";
-                return;
             }
             
             if (e.OfferJson != null)
             {
                 OfferNumberLabel.Text = $"Offers found as Json content";
             }
+            screenshotImageView.Image = e.Screenshot;
+        }
+
+        partial void RestoreSearcherSession(UIButton sender)
+        {
+            searchService.Start(true);
+        }
+
+        partial void OpenNewSearcherSession(UIButton sender)
+        {
+            searchService.Start();
         }
 
         public override void ViewDidAppear(bool animated)
@@ -59,9 +69,5 @@ namespace Nyris.UI.iOS.Demo
             OfferNumberLabel.Hidden = false;
         }
 
-        partial void OpenTaped(UIButton sender)
-        {
-            searchService.Start();
-        }
     }
 }
