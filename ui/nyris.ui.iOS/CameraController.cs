@@ -195,7 +195,7 @@ namespace Nyris.UI.iOS
             _videoFramePixelBuffer?.Dispose();
             pixelBuffer?.Dispose();
             _videoFramePixelBuffer = null;
-            //GC.Collect();
+            GC.Collect();
             return image;
 
         }
