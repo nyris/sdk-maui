@@ -232,7 +232,7 @@ namespace Nyris.UI.Android
 
         public void ResetViewCropper(RectF defaultRect)
         {
-            _viewCropper?.Reset(defaultRect);
+            _viewCropper?.Reset();
         }
 
         public void ResetViewCropper()

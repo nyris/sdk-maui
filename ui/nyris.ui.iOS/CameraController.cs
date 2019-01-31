@@ -189,11 +189,11 @@ namespace Nyris.UI.iOS
             UIGraphics.EndImageContext();
             imageView.RemoveFromSuperview();
 
-            ciImage.Dispose();
-            imageView.Dispose();
-            preview.Dispose();
-            _videoFramePixelBuffer.Dispose();
-            pixelBuffer.Dispose();
+            ciImage?.Dispose();
+            imageView?.Dispose();
+            preview?.Dispose();
+            _videoFramePixelBuffer?.Dispose();
+            pixelBuffer?.Dispose();
             _videoFramePixelBuffer = null;
             //GC.Collect();
             return image;

@@ -1,5 +1,7 @@
 using System;
+using CoreGraphics;
 using Nyris.UI.iOS.Models;
+using UIKit;
 
 namespace Nyris.UI.iOS.EventArgs
 {
@@ -9,14 +11,22 @@ namespace Nyris.UI.iOS.EventArgs
         
         public JsonResponse OfferJson;
 
-        public OfferResponseEventArgs(OfferResponse offerResponse)
+        public UIImage Screenshot;
+
+        public CGRect CroppingFrame;
+
+        public OfferResponseEventArgs(UIImage screenshot, CGRect croppingFrame, OfferResponse offerResponse)
         {
             OfferResponse = offerResponse;
+            Screenshot = screenshot;
+            CroppingFrame = croppingFrame;
         }
         
-        public OfferResponseEventArgs(JsonResponse offerJson)
+        public OfferResponseEventArgs(UIImage screenshot, CGRect croppingFrame, JsonResponse offerJson)
         {
             OfferJson = offerJson;
+            Screenshot = screenshot;
+            CroppingFrame = croppingFrame;
         }
     }
 }
