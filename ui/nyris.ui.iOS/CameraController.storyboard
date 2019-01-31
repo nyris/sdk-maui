@@ -56,11 +56,11 @@
                                     <constraint firstAttribute="width" constant="30" id="p4r-Zl-87l"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="close_icon"/>
                                 <connections>
                                     <action selector="CloseTapped:" destination="B6q-Ke-dIa" id="755"/>
                                     <action selector="CloseTapped:" destination="B6q-Ke-dIa" eventType="touchUpInside" id="1685"/>
                                 </connections>
+                                <state key="normal" image="close_icon.png"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yX5-oX-1p5">
                                 <rect key="frame" x="152.5" y="548" width="70" height="70"/>
@@ -123,7 +123,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="capture_icon" width="140" height="140"/>
-        <image name="close_icon" width="12" height="21"/>
+        <image name="close_icon.png" width="12" height="21"/>
     </resources>
 </document>

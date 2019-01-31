@@ -27,6 +27,8 @@ namespace Nyris.UI.iOS
         INyrisSearcher ConfigurationFailedErrorMessage(string message);
 
         INyrisSearcher CaptureLabelText(string label);
+
+        INyrisSearcher Theme(AppearanceConfiguration theme);
     }
 
     public class NyrisSearcher : INyrisSearcher
@@ -41,6 +43,7 @@ namespace Nyris.UI.iOS
         [Weak] CropController _cropController;
         private CaptureSessionParametres _previousSessionParametres;
         private NyrisSearcherConfig _config;
+        private AppearanceConfiguration _controllerAppearance;
 
         public event EventHandler<OfferResponseEventArgs> OfferAvailable;
         public event EventHandler<Exception> RequestFailed;
@@ -206,6 +209,12 @@ namespace Nyris.UI.iOS
             return this;
         }
 
+        public INyrisSearcher Theme(AppearanceConfiguration theme)
+        {
+            _controllerAppearance = theme;
+            return this;
+        }
+
         public void Start(bool loadLastState = false)
         {
             _cropController?.Dispose();
@@ -229,7 +238,7 @@ namespace Nyris.UI.iOS
             }
 
             _config.LoadLastState = loadLastState;
-            _cropController.Configure(_config);
+            _cropController.Configure(_config, _controllerAppearance);
             _cropController.OfferAvailable += OnOfferAvailable;
             _cropController.RequestFailed += (sender, exception) => RequestFailed?.Invoke(this, exception);
 

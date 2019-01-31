@@ -47,7 +47,7 @@ namespace Nyris.UI.iOS
         {
             base.ViewDidLoad();
             ActivityIndicator.HidesWhenStopped = true;
-            LoadImages();
+            SetupTheme();
 
             ScreenshotImageView.ContentMode = UIViewContentMode.ScaleAspectFit;
 
@@ -62,6 +62,25 @@ namespace Nyris.UI.iOS
             }
         }
 
+        void SetupTheme()
+        {
+            if (_theme == null)
+            {
+                LoadImages();
+                return;
+            }
+
+
+            _captureButtonImage = _theme.CaptureButtonImage;
+            _cropButtonImage = _theme.CropButtonImage;
+            if (_theme.BackButtonImage != null)
+            {
+                CloseButton.SetImage(_theme.BackButtonImage, UIControlState.Normal);
+            }
+            CloseButton.TintColor = _theme.BackButtonTinte;
+            CaptureLabel.TextColor = _theme.CaptureLabelColor;
+        }
+
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
@@ -71,9 +90,9 @@ namespace Nyris.UI.iOS
             }
         }
 
-        public override void Configure(NyrisSearcherConfig config)
+        public override void Configure(NyrisSearcherConfig config, AppearanceConfiguration theme)
         {
-            base.Configure(config);
+            base.Configure(config, theme);
             _nyrisApi = NyrisApi.CreateInstance(Config.ApiKey, Platform.iOS, Config.IsDebug);
             MapConfig();
         }
@@ -142,8 +161,8 @@ namespace Nyris.UI.iOS
         {
             
             var bundle = NSBundle.FromClass(new ObjCRuntime.Class(typeof(CropController)));
-            _captureButtonImage = UIImage.FromBundle("capture_icon", bundle, null);
-            _cropButtonImage = UIImage.FromBundle("validate_icon", bundle, null);
+            _captureButtonImage = UIImage.FromBundle("capture_icon.png", bundle, null);
+            _cropButtonImage = UIImage.FromBundle("validate_icon.png", bundle, null);
         }
 
         public void SetCaptureState()
@@ -160,6 +179,13 @@ namespace Nyris.UI.iOS
             CaptureButton.SetImage(_captureButtonImage, UIControlState.Normal);
             CaptureButton.TouchUpInside -= OnCropTapped;
             CaptureButton.TouchUpInside += OnCaptureTapped;
+
+            if (_theme != null && _theme.CaptureButtonTint != null)
+            {
+                CaptureButton.TintColor = _theme.CaptureButtonTint;
+            }
+
+
             if (_cropBoundingBox != null)
             {
                 _cropBoundingBox.Hidden = true;
@@ -182,10 +208,15 @@ namespace Nyris.UI.iOS
             ScreenshotImageView.Hidden = false;
             CaptureButton.Enabled = true;
             CaptureButton.Hidden = false;
-            CaptureLabel.Hidden = false;
+            CaptureLabel.Hidden = true;
             CaptureButton.SetImage(_cropButtonImage, UIControlState.Normal);
             CaptureButton.TouchUpInside -= OnCaptureTapped;
             CaptureButton.TouchUpInside += OnCropTapped;
+            if (_theme != null && _theme.CropButtonTint != null)
+            {
+                CaptureButton.TintColor = _theme.CropButtonTint;
+            }
+
             _cropBoundingBox.Hidden = false;
             DarkView.Hidden = true;
         }

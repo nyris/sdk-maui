@@ -14,7 +14,6 @@ namespace Nyris.UI.iOS
     [Register ("CropController")]
     partial class CropController
     {
-
         [Action ("CaptureTapped:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void CaptureTapped (UIKit.UIButton sender);
@@ -25,11 +24,6 @@ namespace Nyris.UI.iOS
 
         void ReleaseDesignerOutlets ()
         {
-            if (ScreenshotImageView != null) {
-                ScreenshotImageView.Dispose ();
-                ScreenshotImageView = null;
-            }
-
             if (ActivityIndicator != null) {
                 ActivityIndicator.Dispose ();
                 ActivityIndicator = null;
@@ -63,6 +57,11 @@ namespace Nyris.UI.iOS
             if (NetworkStatusLabel != null) {
                 NetworkStatusLabel.Dispose ();
                 NetworkStatusLabel = null;
+            }
+
+            if (ScreenshotImageView != null) {
+                ScreenshotImageView.Dispose ();
+                ScreenshotImageView = null;
             }
         }
     }

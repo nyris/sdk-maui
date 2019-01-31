@@ -13,6 +13,7 @@ using Nyris.UI.iOS.Camera.EventArgs;
 using UIKit;
 using ObjCRuntime;
 using Nyris.UI.iOS.Crop;
+using Nyris.UI.iOS;
 
 namespace Nyris.UI.iOS
 {
@@ -44,7 +45,9 @@ namespace Nyris.UI.iOS
         [Weak]
 		private CVImageBuffer _videoFramePixelBuffer;
 
-		public NyrisSearcherConfig Config { get; private set; }
+        protected AppearanceConfiguration _theme;
+
+        public NyrisSearcherConfig Config { get; private set; }
 
 		public CameraController (IntPtr handle) : base (handle)
         {
@@ -63,10 +66,11 @@ namespace Nyris.UI.iOS
             }
         }
 
-		public virtual void Configure(NyrisSearcherConfig config)
+		public virtual void Configure(NyrisSearcherConfig config, AppearanceConfiguration theme)
 		{
 			Config = config;
-		}
+            _theme = theme;
+        }
 		
 		public override void ViewDidAppear(bool animated)
 		{
