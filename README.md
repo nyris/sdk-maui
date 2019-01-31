@@ -376,7 +376,7 @@ To customize the color or image of different views of the Searcher controller, c
     {
         CaptureLabelColor = UIColor.Red,
         CropButtonTint = UIColor.Yellow,
-        BackButtonTinte = UIColor.Red,
+        BackButtonTint = UIColor.Red,
         CaptureButtonTint = UIColor.Green,
         CaptureButtonImage = UIImage,
         CropButtonImage = UIImage,

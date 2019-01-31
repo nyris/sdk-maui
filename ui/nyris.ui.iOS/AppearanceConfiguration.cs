@@ -11,7 +11,7 @@ namespace Nyris.UI.iOS
 
         public UIColor CaptureButtonTint;
         public UIColor CropButtonTint;
-        public UIColor BackButtonTinte;
+        public UIColor BackButtonTint;
 
         public UIColor CaptureLabelColor;
 

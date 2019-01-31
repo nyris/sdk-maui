@@ -25,11 +25,11 @@ namespace Nyris.UI.iOS.Demo
   
             _captureButtonImage = UIImage.FromBundle("capture_icon_demo");
             _cropButtonImage = UIImage.FromBundle("crop_image_demo");
-            var theme = new AppearanceConfiguration
+             var theme = new AppearanceConfiguration
             {
                 CaptureLabelColor = UIColor.Red,
                 CropButtonTint = UIColor.Yellow,
-                BackButtonTinte = UIColor.Red,
+                BackButtonTint = UIColor.Red,
                 CaptureButtonTint = UIColor.Green,
                 CaptureButtonImage = _captureButtonImage,
                 CropButtonImage = _cropButtonImage,

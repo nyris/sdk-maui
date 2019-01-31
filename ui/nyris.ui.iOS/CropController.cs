@@ -31,7 +31,7 @@ namespace Nyris.UI.iOS
         private CropOverlayView _cropBoundingBox;
         private UIImage _captureButtonImage;
         private UIImage _cropButtonImage;
-        [Outlet] protected UIImageView ScreenshotImageView { get; set; }
+        [Outlet] private UIImageView ScreenshotImageView { get; set; }
         private INyrisApi _nyrisApi;
 
         public CGRect CroppingFrame = CGRect.Empty;
@@ -77,7 +77,7 @@ namespace Nyris.UI.iOS
             {
                 CloseButton.SetImage(_theme.BackButtonImage, UIControlState.Normal);
             }
-            CloseButton.TintColor = _theme.BackButtonTinte;
+            CloseButton.TintColor = _theme.BackButtonTint;
             CaptureLabel.TextColor = _theme.CaptureLabelColor;
         }
 
@@ -165,7 +165,7 @@ namespace Nyris.UI.iOS
             _cropButtonImage = UIImage.FromBundle("validate_icon.png", bundle, null);
         }
 
-        public void SetCaptureState()
+        private void SetCaptureState()
         {
             ScreenshotImage = null;
             ActivityIndicator.StopAnimating();
@@ -180,7 +180,7 @@ namespace Nyris.UI.iOS
             CaptureButton.TouchUpInside -= OnCropTapped;
             CaptureButton.TouchUpInside += OnCaptureTapped;
 
-            if (_theme != null && _theme.CaptureButtonTint != null)
+            if (_theme?.CaptureButtonTint != null)
             {
                 CaptureButton.TintColor = _theme.CaptureButtonTint;
             }
@@ -212,7 +212,7 @@ namespace Nyris.UI.iOS
             CaptureButton.SetImage(_cropButtonImage, UIControlState.Normal);
             CaptureButton.TouchUpInside -= OnCaptureTapped;
             CaptureButton.TouchUpInside += OnCropTapped;
-            if (_theme != null && _theme.CropButtonTint != null)
+            if (_theme?.CropButtonTint != null)
             {
                 CaptureButton.TintColor = _theme.CropButtonTint;
             }
@@ -223,7 +223,7 @@ namespace Nyris.UI.iOS
 
         void LoadBoundingBox()
         {
-            var frame = CGRect.Empty;
+            CGRect frame;
             if(CroppingFrame.IsEmpty)
             {
                 var boxHeight = View.Frame.Height / 2;
@@ -269,9 +269,6 @@ namespace Nyris.UI.iOS
             // get image bytes
             var bytes = croppedImage.AsJPEG().ToArray();
             //_cropBoundingBox.Hidden = false;
-            var responseType = Config.ResponseType == typeof(JsonResponse)
-                ? typeof(JsonResponseDto)
-                : typeof(OfferResponseDto);
 
             var matchingService = _nyrisApi.ImageMatching.Limit(Config.Limit);
             OfferResponseEventArgs offerEventArgs;
@@ -310,7 +307,7 @@ namespace Nyris.UI.iOS
             OnOfferAvailable(this, offerEventArgs);
             croppedImage?.Dispose();
             bytes = null;
-            this.ScreenshotImage = null;
+            ScreenshotImage = null;
             Dismiss();
 
         }
