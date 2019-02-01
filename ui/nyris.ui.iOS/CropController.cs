@@ -404,14 +404,9 @@ namespace Nyris.UI.iOS
             ReleaseDesignerOutlets();
         }
 
-        private void OnRequestFailed(object sender, Exception exception)
-        {
-            RequestFailed?.Invoke(this, exception);
-        }
-        
-        private void OnOfferAvailable(object sender, OfferResponseEventArgs offerArgs)
-        {
-            OfferAvailable?.Invoke(this, offerArgs);
-        }
+        private void OnRequestFailed(object sender, Exception exception) => RequestFailed?.Invoke(this, exception);
+                
+        private void OnOfferAvailable(object sender, OfferResponseEventArgs offerArgs) => OfferAvailable?.Invoke(this, offerArgs);
+
     }
 }
