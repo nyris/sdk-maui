@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="B6q-Ke-dIa">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
@@ -6,6 +6,8 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Camera-->
@@ -24,6 +26,9 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pWT-gH-v9w">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
                             <label hidden="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2cJ-xs-Vj7">
                                 <rect key="frame" x="0.0" y="313.5" width="375" height="40"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.87" colorSpace="calibratedWhite"/>
@@ -32,7 +37,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Capture your product" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xeT-KT-Fbe">
-                                <rect key="frame" x="125" y="508" width="125" height="16"/>
+                                <rect key="frame" x="122.5" y="508" width="130" height="16"/>
                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="13"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -51,11 +56,11 @@
                                     <constraint firstAttribute="width" constant="30" id="p4r-Zl-87l"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="close_icon"/>
                                 <connections>
                                     <action selector="CloseTapped:" destination="B6q-Ke-dIa" id="755"/>
                                     <action selector="CloseTapped:" destination="B6q-Ke-dIa" eventType="touchUpInside" id="1685"/>
                                 </connections>
+                                <state key="normal" image="close_icon.png"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yX5-oX-1p5">
                                 <rect key="frame" x="152.5" y="548" width="70" height="70"/>
@@ -83,13 +88,17 @@
                             <constraint firstItem="ewh-R4-h0C" firstAttribute="top" secondItem="OeZ-9G-nLa" secondAttribute="bottom" id="GSP-Iv-cbJ"/>
                             <constraint firstItem="2cJ-xs-Vj7" firstAttribute="width" secondItem="X6d-aY-5iW" secondAttribute="width" id="Gyb-8f-pUz"/>
                             <constraint firstItem="N3E-eZ-u0F" firstAttribute="centerY" secondItem="X6d-aY-5iW" secondAttribute="centerY" id="Kuw-0A-kbw"/>
+                            <constraint firstItem="pWT-gH-v9w" firstAttribute="centerY" secondItem="OeZ-9G-nLa" secondAttribute="centerY" id="Pky-NP-Tee"/>
                             <constraint firstItem="yX5-oX-1p5" firstAttribute="top" secondItem="xeT-KT-Fbe" secondAttribute="bottom" constant="24" id="Ps4-hG-j6S"/>
+                            <constraint firstItem="pWT-gH-v9w" firstAttribute="height" secondItem="OeZ-9G-nLa" secondAttribute="height" id="TsT-bM-a7Z"/>
                             <constraint firstItem="xeT-KT-Fbe" firstAttribute="centerX" secondItem="yX5-oX-1p5" secondAttribute="centerX" id="Up7-Up-SAf"/>
                             <constraint firstAttribute="trailing" secondItem="OeZ-9G-nLa" secondAttribute="trailing" id="YKf-z6-nCe"/>
                             <constraint firstItem="ewh-R4-h0C" firstAttribute="top" secondItem="yX5-oX-1p5" secondAttribute="bottom" constant="49" id="a9v-gB-60u"/>
                             <constraint firstItem="Y0Q-aO-CoX" firstAttribute="centerY" secondItem="X6d-aY-5iW" secondAttribute="centerY" id="bOs-cq-7S8"/>
                             <constraint firstItem="Y0Q-aO-CoX" firstAttribute="centerX" secondItem="X6d-aY-5iW" secondAttribute="centerX" id="cOk-ih-5qv"/>
+                            <constraint firstItem="pWT-gH-v9w" firstAttribute="centerX" secondItem="OeZ-9G-nLa" secondAttribute="centerX" id="d0q-0e-PGl"/>
                             <constraint firstItem="499" firstAttribute="top" secondItem="HVc-ga-hko" secondAttribute="bottom" constant="16" id="eIk-qG-ENT"/>
+                            <constraint firstItem="pWT-gH-v9w" firstAttribute="width" secondItem="OeZ-9G-nLa" secondAttribute="width" id="kfQ-Xq-bBQ"/>
                             <constraint firstItem="499" firstAttribute="leading" secondItem="X6d-aY-5iW" secondAttribute="leading" constant="16" id="mZh-wc-j7E"/>
                             <constraint firstItem="OeZ-9G-nLa" firstAttribute="top" secondItem="X6d-aY-5iW" secondAttribute="top" id="oNq-Mp-vEj"/>
                         </constraints>
@@ -105,6 +114,7 @@
                         <outlet property="CloseButton" destination="499" id="name-outlet-499"/>
                         <outlet property="DarkView" destination="N3E-eZ-u0F" id="8Vq-Wc-Uwz"/>
                         <outlet property="NetworkStatusLabel" destination="2cJ-xs-Vj7" id="1ON-3G-Ije"/>
+                        <outlet property="ScreenshotImageView" destination="pWT-gH-v9w" id="name-outlet-pWT-gH-v9w"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jvL-66-L57" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -113,7 +123,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="capture_icon" width="140" height="140"/>
-        <image name="close_icon" width="90" height="90"/>
+        <image name="close_icon.png" width="12" height="21"/>
     </resources>
 </document>

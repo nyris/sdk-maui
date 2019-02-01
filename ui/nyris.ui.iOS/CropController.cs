@@ -31,10 +31,11 @@ namespace Nyris.UI.iOS
         private CropOverlayView _cropBoundingBox;
         private UIImage _captureButtonImage;
         private UIImage _cropButtonImage;
-        private UIImageView _screenshotImageView;
-        private UIImage _screenshotImage;
+        [Outlet] private UIImageView ScreenshotImageView { get; set; }
         private INyrisApi _nyrisApi;
 
+        public CGRect CroppingFrame = CGRect.Empty;
+        public UIImage ScreenshotImage;
         public EventHandler<OfferResponseEventArgs> OfferAvailable ;
         public EventHandler<Exception> RequestFailed ;
 
@@ -46,15 +47,52 @@ namespace Nyris.UI.iOS
         {
             base.ViewDidLoad();
             ActivityIndicator.HidesWhenStopped = true;
-            LoadImages();
-            SetCaptureState();
-            _screenshotImageView = new UIImageView(frame: View.Bounds);
-            _screenshotImageView.ContentMode = UIViewContentMode.ScaleAspectFit;
+            SetupTheme();
+
+            ScreenshotImageView.ContentMode = UIViewContentMode.ScaleAspectFit;
+
+            if (Config.LoadLastState && ScreenshotImage != null)
+            {
+                ScreenshotImageView.Image = ScreenshotImage;
+                SetCropState();
+            }
+            else
+            {
+                SetCaptureState();
+            }
         }
 
-        public override void Configure(NyrisSearcherConfig config)
+        void SetupTheme()
         {
-            base.Configure(config);
+            if (_theme == null)
+            {
+                LoadImages();
+                return;
+            }
+
+
+            _captureButtonImage = _theme.CaptureButtonImage;
+            _cropButtonImage = _theme.CropButtonImage;
+            if (_theme.BackButtonImage != null)
+            {
+                CloseButton.SetImage(_theme.BackButtonImage, UIControlState.Normal);
+            }
+            CloseButton.TintColor = _theme.BackButtonTint;
+            CaptureLabel.TextColor = _theme.CaptureLabelColor;
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            if(Config.LoadLastState && _currentState != CameraControllerState.Capture)
+            {
+                CameraManager.Stop();
+            }
+        }
+
+        public override void Configure(NyrisSearcherConfig config, AppearanceConfiguration theme)
+        {
+            base.Configure(config, theme);
             _nyrisApi = NyrisApi.CreateInstance(Config.ApiKey, Platform.iOS, Config.IsDebug);
             MapConfig();
         }
@@ -123,28 +161,35 @@ namespace Nyris.UI.iOS
         {
             
             var bundle = NSBundle.FromClass(new ObjCRuntime.Class(typeof(CropController)));
-            _captureButtonImage = UIImage.FromBundle("capture_icon", bundle, null);
-            _cropButtonImage = UIImage.FromBundle("validate_icon", bundle, null);
+            _captureButtonImage = UIImage.FromBundle("capture_icon.png", bundle, null);
+            _cropButtonImage = UIImage.FromBundle("validate_icon.png", bundle, null);
         }
 
         private void SetCaptureState()
         {
+            ScreenshotImage = null;
             ActivityIndicator.StopAnimating();
             DarkView.Hidden = true;
             _currentState = CameraControllerState.Capture;
+            ScreenshotImageView.Image = null;
+            ScreenshotImageView.Hidden = true;
             CaptureButton.Enabled = true;
             CaptureButton.Hidden = false;
             CaptureLabel.Hidden = false;
             CaptureButton.SetImage(_captureButtonImage, UIControlState.Normal);
             CaptureButton.TouchUpInside -= OnCropTapped;
             CaptureButton.TouchUpInside += OnCaptureTapped;
+
+            if (_theme?.CaptureButtonTint != null)
+            {
+                CaptureButton.TintColor = _theme.CaptureButtonTint;
+            }
+
+
             if (_cropBoundingBox != null)
             {
                 _cropBoundingBox.Hidden = true;
             }
-            _screenshotImageView?.RemoveFromSuperview();
-            _screenshotImage?.Dispose();
-            _screenshotImage = null;
 
             if (CameraManager.SetupResult == SessionSetupResult.Success &&
              CameraManager.AuthorizationResult == CameraAuthorizationResult.Authorized &&
@@ -156,13 +201,46 @@ namespace Nyris.UI.iOS
 
         private void SetCropState()
         {
-            var boxHeight = View.Frame.Height / 2;
-            var boxY = (boxHeight) - (boxHeight / 2);
-            var frame = new CGRect(15, boxY, View.Frame.Width - 30, boxHeight);
-            if (_cropBoundingBox == null) {
+
+            CameraManager.Stop();
+            LoadBoundingBox();
+            _currentState = CameraControllerState.Crop;
+            ScreenshotImageView.Hidden = false;
+            CaptureButton.Enabled = true;
+            CaptureButton.Hidden = false;
+            CaptureLabel.Hidden = true;
+            CaptureButton.SetImage(_cropButtonImage, UIControlState.Normal);
+            CaptureButton.TouchUpInside -= OnCaptureTapped;
+            CaptureButton.TouchUpInside += OnCropTapped;
+            if (_theme?.CropButtonTint != null)
+            {
+                CaptureButton.TintColor = _theme.CropButtonTint;
+            }
+
+            _cropBoundingBox.Hidden = false;
+            DarkView.Hidden = true;
+        }
+
+        void LoadBoundingBox()
+        {
+            CGRect frame;
+            if(CroppingFrame.IsEmpty)
+            {
+                var boxHeight = View.Frame.Height / 2;
+                var boxY = (boxHeight) - (boxHeight / 2);
+                frame = new CGRect(15, boxY, View.Frame.Width - 30, boxHeight);
+            }
+            else
+            {
+                frame = CroppingFrame;
+            }
+
+            if (_cropBoundingBox == null)
+            {
                 _cropBoundingBox = new CropOverlayView(frame)
                 {
-                    IsMovable = true, IsResizable = true
+                    IsMovable = true,
+                    IsResizable = true
                 };
                 View.AddSubview(_cropBoundingBox);
                 View.InsertSubviewBelow(_cropBoundingBox, CaptureButton);
@@ -171,18 +249,9 @@ namespace Nyris.UI.iOS
             {
                 _cropBoundingBox.Frame = frame;
             }
-            _currentState = CameraControllerState.Crop;
-            CaptureButton.Enabled = true;
-            CaptureButton.Hidden = false;
-            CaptureLabel.Hidden = false;
-            CaptureButton.SetImage(_cropButtonImage, UIControlState.Normal);
-            CaptureButton.TouchUpInside -= OnCaptureTapped;
-            CaptureButton.TouchUpInside += OnCropTapped;
-            _cropBoundingBox.Hidden = false;
-            DarkView.Hidden = true;
         }
 
-        private async Task SetFetchState(UIImage image)
+        private async Task SetFetchState(UIImage screenshot, UIImage croppedImage)
         {
             _currentState = CameraControllerState.Fetch;
             CaptureButton.Enabled = false;
@@ -198,11 +267,8 @@ namespace Nyris.UI.iOS
             // check for network first ?
             
             // get image bytes
-            var bytes = image.AsJPEG().ToArray();
+            var bytes = croppedImage.AsJPEG().ToArray();
             //_cropBoundingBox.Hidden = false;
-            var responseType = Config.ResponseType == typeof(JsonResponse)
-                ? typeof(JsonResponseDto)
-                : typeof(OfferResponseDto);
 
             var matchingService = _nyrisApi.ImageMatching.Limit(Config.Limit);
             OfferResponseEventArgs offerEventArgs;
@@ -215,13 +281,13 @@ namespace Nyris.UI.iOS
                     {
                         Content =  jsonOfferDto.Content
                     };
-                    offerEventArgs = new OfferResponseEventArgs(offerResponse);
+                    offerEventArgs = new OfferResponseEventArgs(screenshot, _cropBoundingBox.Frame, offerResponse);
                 }
                 else
                 {
                     var offer = await matchingService.MatchAsync(bytes);
                     var offerResponse = new OfferResponse(offer);
-                    offerEventArgs = new OfferResponseEventArgs(offerResponse);
+                    offerEventArgs = new OfferResponseEventArgs(screenshot, _cropBoundingBox.Frame, offerResponse);
                 }
 
             }
@@ -232,13 +298,16 @@ namespace Nyris.UI.iOS
                     SetCaptureState();
                 });
 
-                image?.Dispose();
+                croppedImage?.Dispose();
+                screenshot?.Dispose();
                 bytes = null;
                 return;
             }
+
             OnOfferAvailable(this, offerEventArgs);
-            image?.Dispose();
+            croppedImage?.Dispose();
             bytes = null;
+            ScreenshotImage = null;
             Dismiss();
 
         }
@@ -246,7 +315,8 @@ namespace Nyris.UI.iOS
         protected override void ProcessImage(UIImage image)
         {
             base.ProcessImage(image);
-            _screenshotImage = image;
+            ScreenshotImage?.Dispose();
+            ScreenshotImage = image;
         }
 
         private void OnCaptureTapped(object sender, System.EventArgs e)
@@ -258,22 +328,20 @@ namespace Nyris.UI.iOS
         
         private void OnCropTapped(object sender, System.EventArgs e)
         {
-            if (_screenshotImage == null || _cropBoundingBox?.Frame == null)
+            if (ScreenshotImage == null || _cropBoundingBox?.Frame == null)
             {
                 return;
             }
 
-            var croppedImage = ImageHelper.Crop(_screenshotImage, _cropBoundingBox.Frame, View.Frame);
+            var croppedImage = ImageHelper.Crop(ScreenshotImage, _cropBoundingBox.Frame, View.Frame);
             if (croppedImage == null)
             {
                 return;
             }
 
             var resizedCroppedImage = ImageHelper.ResizeWithRatio(croppedImage, new CGSize(512, 512));
-            _screenshotImage.Dispose();
             croppedImage.Dispose();
-            _screenshotImage = null;
-            SetFetchState(resizedCroppedImage);
+            SetFetchState(ScreenshotImage, resizedCroppedImage);
         }
 
         protected override void ApplicationActivated(NSNotification notification)
@@ -296,33 +364,49 @@ namespace Nyris.UI.iOS
 
         partial void CloseTapped(UIButton sender)
         {
-            Dismiss();
+            switch(_currentState)
+            {
+                case CameraControllerState.Capture:
+                    Dismiss();
+                    break;
+                case CameraControllerState.Crop:
+                    SetCaptureState();
+                    break;
+                case CameraControllerState.Fetch:
+                    break;
+            }
         }
 
         protected override void Dismiss()
         {
             base.Dismiss();
+            Dispose();
+            GC.Collect();
+        }
 
-            //_cropBoundingBox?.Dispose();
-            //_cropBoundingBox = null;
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (!disposing)
+            {
+                return;
+            }
+
+            _cropBoundingBox?.Dispose();
+            _cropBoundingBox = null;
+            CameraManager.Stop();
             _captureButtonImage?.Dispose();
             _captureButtonImage = null;
             _cropButtonImage?.Dispose();
             _cropButtonImage = null;
-            _screenshotImageView?.Dispose();
-            _screenshotImageView = null;
-            _screenshotImage?.Dispose();
-            _screenshotImage = null;
+            ScreenshotImage?.Dispose();
+            ScreenshotImage = null;
+            ReleaseDesignerOutlets();
         }
-        
-        private void OnRequestFailed(object sender, Exception exception)
-        {
-            RequestFailed?.Invoke(this, exception);
-        }
-        
-        private void OnOfferAvailable(object sender, OfferResponseEventArgs offerArgs)
-        {
-            OfferAvailable?.Invoke(this, offerArgs);
-        }
+
+        private void OnRequestFailed(object sender, Exception exception) => RequestFailed?.Invoke(this, exception);
+                
+        private void OnOfferAvailable(object sender, OfferResponseEventArgs offerArgs) => OfferAvailable?.Invoke(this, offerArgs);
+
     }
 }

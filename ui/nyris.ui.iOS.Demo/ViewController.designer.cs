@@ -17,15 +17,28 @@ namespace Nyris.UI.iOS.Demo
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel OfferNumberLabel { get; set; }
 
-        [Action ("OpenTaped:")]
+        [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        partial void OpenTaped (UIKit.UIButton sender);
+        UIKit.UIImageView screenshotImageView { get; set; }
+
+        [Action ("OpenNewSearcherSession:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void OpenNewSearcherSession (UIKit.UIButton sender);
+
+        [Action ("RestoreSearcherSession:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void RestoreSearcherSession (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {
             if (OfferNumberLabel != null) {
                 OfferNumberLabel.Dispose ();
                 OfferNumberLabel = null;
+            }
+
+            if (screenshotImageView != null) {
+                screenshotImageView.Dispose ();
+                screenshotImageView = null;
             }
         }
     }

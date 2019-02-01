@@ -6,8 +6,8 @@
     <ProjectGuid>{9E324D2B-6E88-4FC3-AE3D-19A1B6934129}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Nyris.Ui.iOS</RootNamespace>
-    <AssemblyName>Nyris.Ui.iOS</AssemblyName>
+    <RootNamespace>Nyris.UI.iOS</RootNamespace>
+    <AssemblyName>Nyris.UI.iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -69,7 +69,6 @@
     <Folder Include="Resources\" />
     <Folder Include="Crop\" />
     <Folder Include="ImageOperations\" />
-    <Folder Include="assets.xcassets\close_icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera\CameraConfiguration.cs" />
@@ -96,57 +95,53 @@
     <Compile Include="CropController.designer.cs">
       <DependentUpon>CropController.cs</DependentUpon>
     </Compile>
+    <Compile Include="AppearanceConfiguration.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\nyris.ui.common\nyris.ui.common.csproj">
-      <Project>{81db1ce0-3384-462c-953b-f40393c18fa9}</Project>
-      <Name>nyris.ui.common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\sdk\nyris.api\nyris.api.csproj">
-      <Project>{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}</Project>
-      <Name>nyris.api</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="images.xcassets\capture\capture_icon.imageset\capture_icon.png" />
-    <Content Include="images.xcassets\capture\capture_icon.imageset\capture_icon@2x.png" />
-    <Content Include="images.xcassets\capture\capture_icon.imageset\capture_icon@3x.png" />
-    <Content Include="images.xcassets\capture\capture_icon.imageset\Contents.json" />
-    <Content Include="images.xcassets\capture\Contents.json" />
-    <Content Include="images.xcassets\capture\validate_icon.imageset\Contents.json" />
-    <Content Include="images.xcassets\capture\validate_icon.imageset\validate_icon.png" />
-    <Content Include="images.xcassets\capture\validate_icon.imageset\validate_icon@2x.png" />
-    <Content Include="images.xcassets\capture\validate_icon.imageset\validate_icon@3x.png" />
-    <Content Include="images.xcassets\objects_proposal\Contents.json" />
-    <Content Include="images.xcassets\objects_proposal\point_icon.imageset\Contents.json" />
-    <Content Include="images.xcassets\objects_proposal\point_icon.imageset\point_icon.png" />
-    <Content Include="images.xcassets\objects_proposal\point_icon.imageset\point_icon@2x.png" />
-    <Content Include="images.xcassets\objects_proposal\point_icon.imageset\point_icon@3x.png" />
-  </ItemGroup>
+
   <ItemGroup>
     <InterfaceDefinition Include="CameraController.storyboard" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="assets.xcassets\Contents.json" />
-    <ImageAsset Include="assets.xcassets\capture\Contents.json" />
-    <ImageAsset Include="assets.xcassets\capture\capture_icon.imageset\Contents.json" />
-    <ImageAsset Include="assets.xcassets\capture\capture_icon.imageset\capture_icon.png" />
-    <ImageAsset Include="assets.xcassets\capture\capture_icon.imageset\capture_icon%402x.png" />
-    <ImageAsset Include="assets.xcassets\capture\capture_icon.imageset\capture_icon%403x.png" />
-    <ImageAsset Include="assets.xcassets\capture\validate_icon.imageset\Contents.json" />
-    <ImageAsset Include="assets.xcassets\capture\validate_icon.imageset\validate_icon.png" />
-    <ImageAsset Include="assets.xcassets\capture\validate_icon.imageset\validate_icon%402x.png" />
-    <ImageAsset Include="assets.xcassets\capture\validate_icon.imageset\validate_icon%403x.png" />
-    <ImageAsset Include="assets.xcassets\objects_proposal\Contents.json" />
-    <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\Contents.json" />
-    <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\point_icon.png" />
-    <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\point_icon%402x.png" />
-    <ImageAsset Include="assets.xcassets\objects_proposal\point_icon.imageset\point_icon%403x.png" />
-    <ImageAsset Include="assets.xcassets\close_icon.imageset\close_icon.png" />
-    <ImageAsset Include="assets.xcassets\close_icon.imageset\Contents.json" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\sdk\nyris.api\nyris.api.csproj">
+      <Project>{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}</Project>
+      <Name>nyris.api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nyris.ui.common\nyris.ui.common.csproj">
+      <Project>{81DB1CE0-3384-462C-953B-F40393C18FA9}</Project>
+      <Name>nyris.ui.common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\capture_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\capture_icon%402x.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\capture_icon%403x.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\validate_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\validate_icon%402x.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\validate_icon%403x.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\close_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\close_icon%402x.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\close_icon%403x.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />

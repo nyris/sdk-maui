@@ -20,30 +20,46 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSb-Le-drw">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="197">
-                                <rect key="frame" x="136" y="597" width="103" height="30"/>
-                                <state key="normal" title="Open Searcher"/>
+                                <rect key="frame" x="100.5" y="597" width="174" height="30"/>
+                                <state key="normal" title="Restore Searcher session"/>
                                 <connections>
-                                    <action selector="OpenTaped:" destination="BYZ-38-t0r" id="607" eventType="touchUpInside"/>
+                                    <action selector="RestoreSearcherSession:" destination="BYZ-38-t0r" id="828" eventType="touchUpInside"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number of offers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oc7-Lx-oGX">
-                                <rect key="frame" x="122" y="323" width="131" height="21"/>
+                                <rect key="frame" x="122" y="509" width="131" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="0.2041163444519043" green="0.47271108627319336" blue="0.96475440263748169" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s0D-Sa-xbo">
+                                <rect key="frame" x="90" y="540" width="195" height="30"/>
+                                <state key="normal" title="Open new Searcher session "/>
+                                <connections>
+                                    <action selector="OpenNewSearcherSession:" destination="BYZ-38-t0r" id="827" eventType="touchUpInside"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" customColorSpace="sRGB" colorSpace="calibratedWhite" white="1" alpha="1"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="197" secondAttribute="bottom" constant="40" id="8hL-us-G7s"/>
+                            <constraint firstItem="sSb-Le-drw" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="90h-PV-cJl"/>
                             <constraint firstItem="oc7-Lx-oGX" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Cpa-61-wxS"/>
-                            <constraint firstItem="oc7-Lx-oGX" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="D7P-qH-wo4"/>
+                            <constraint firstItem="s0D-Sa-xbo" firstAttribute="top" secondItem="oc7-Lx-oGX" secondAttribute="bottom" constant="10" id="D66-tg-CpB"/>
+                            <constraint firstItem="sSb-Le-drw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EJM-eO-LPO"/>
+                            <constraint firstItem="sSb-Le-drw" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="N1l-Jf-4OI"/>
                             <constraint firstItem="197" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SSd-NO-VTG"/>
+                            <constraint firstItem="197" firstAttribute="top" secondItem="s0D-Sa-xbo" secondAttribute="bottom" constant="27" id="ToL-l8-NTm"/>
+                            <constraint firstItem="s0D-Sa-xbo" firstAttribute="centerX" secondItem="197" secondAttribute="centerX" id="rNv-v8-DWj"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="OfferNumberLabel" destination="oc7-Lx-oGX" id="name-outlet-oc7-Lx-oGX"/>
+                        <outlet property="screenshotImageView" destination="sSb-Le-drw" id="name-outlet-sSb-Le-drw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

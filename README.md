@@ -312,10 +312,16 @@ void SearchServiceOnOfferAvailable(object sender, OfferResponseEventArgs e)
 {
     var offers = e.OfferResponse;
     var json = e.OfferJson;
-    Console.WriteLine(0);
 }
 ```
-Only one response type is available in `OfferResponseEventArgs` at a time.
+Only one response type is available in `OfferResponseEventArgs` at a time. You can access the  screenshot and the cropping frame by using :
+```csharp
+void SearchServiceOnOfferAvailable(object sender, OfferResponseEventArgs e)
+{
+    var screenshot = e.Screenshot;
+    var croppingFrame = e.Screenshot;
+}
+```
 
 
 ### Handling JSON results
@@ -363,15 +369,33 @@ To customize the color of the coponent you will need to override the defined col
 </resources>
 ```
 
+#### For iOS
+To customize the color or image of different views of the Searcher controller, create an instance of `AppearanceConfiguration` and assign it to the builder as follow:
+```csharp
+    var theme = new AppearanceConfiguration
+    {
+        CaptureLabelColor = UIColor.Red,
+        CropButtonTint = UIColor.Yellow,
+        BackButtonTint = UIColor.Red,
+        CaptureButtonTint = UIColor.Green,
+        CaptureButtonImage = UIImage,
+        CropButtonImage = UIImage,
+    };
+
+    searchService = NyrisSearcher
+        .Builder("Your API Key Here", this)
+        .Theme(theme)
+```
+
 ### Load last session state
 
-To load last session state of the `NyrisSearcher` you will need : 
+To load last session state of the `NyrisSearcher` you will need :
 ```csharp
     NyrisSearcher
         .Builder("Your API Key Here", presenterController)
         .Start(loadLastState: true);
 ```
-In case of an unknown error or un saved state the parameter will fallback to default mode. 
+In case of an unknown error or un saved state the parameter will fallback to default mode.
 
 License
 =======

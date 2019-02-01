@@ -1,4 +1,5 @@
 using System;
+using CoreGraphics;
 using Foundation;
 using Nyris.Api.Api.RequestOptions;
 using Nyris.UI.Common;
@@ -8,31 +9,41 @@ using UIKit;
 
 namespace Nyris.UI.iOS
 {
-public interface INyrisSearcher : Nyris.UI.Common.INyrisSearcher<INyrisSearcher>
-{
+    public interface INyrisSearcher : Nyris.UI.Common.INyrisSearcher<INyrisSearcher>
+    {
 
-    event EventHandler<OfferResponseEventArgs> OfferAvailable;
-        
-    INyrisSearcher DialogErrorTitle(string title);
+        event EventHandler<OfferResponseEventArgs> OfferAvailable;
 
-    INyrisSearcher AgreeButtonTitle(string title);
+        INyrisSearcher DialogErrorTitle(string title);
 
-    INyrisSearcher CancelButtonTitle(string title);
+        INyrisSearcher AgreeButtonTitle(string title);
 
-    INyrisSearcher CameraPermissionDeniedErrorMessage(string message);
-        
-    INyrisSearcher CameraPermissionRequestIfDeniedMessage(string message);
+        INyrisSearcher CancelButtonTitle(string title);
 
-    INyrisSearcher ConfigurationFailedErrorMessage(string message);
+        INyrisSearcher CameraPermissionDeniedErrorMessage(string message);
 
-    INyrisSearcher CaptureLabelText(string label);
+        INyrisSearcher CameraPermissionRequestIfDeniedMessage(string message);
+
+        INyrisSearcher ConfigurationFailedErrorMessage(string message);
+
+        INyrisSearcher CaptureLabelText(string label);
+
+        INyrisSearcher Theme(AppearanceConfiguration theme);
     }
 
     public class NyrisSearcher : INyrisSearcher
     {
+        internal class CaptureSessionParametres
+        {
+            public UIImage Screenshot;
+            public CGRect CroppingFrame;
+        }
 
         [Weak] UIViewController _presenterController;
+        [Weak] CropController _cropController;
+        private CaptureSessionParametres _previousSessionParametres;
         private NyrisSearcherConfig _config;
+        private AppearanceConfiguration _controllerAppearance;
 
         public event EventHandler<OfferResponseEventArgs> OfferAvailable;
         public event EventHandler<Exception> RequestFailed;
@@ -45,6 +56,7 @@ public interface INyrisSearcher : Nyris.UI.Common.INyrisSearcher<INyrisSearcher>
                 IsDebug = debug
             };
             this._presenterController = presenterController;
+            _previousSessionParametres = new CaptureSessionParametres();
         }
 
         public static INyrisSearcher Builder(string apiKey, UIViewController presenterController, bool debug = false)
@@ -109,7 +121,7 @@ public interface INyrisSearcher : Nyris.UI.Common.INyrisSearcher<INyrisSearcher>
 
         public INyrisSearcher Language(string language)
         {
-            _config.Language = language ?? throw new ArgumentException("language is null"); ;
+            _config.Language = language ?? throw new ArgumentException("language is null");
             return this;
         }
 
@@ -197,27 +209,61 @@ public interface INyrisSearcher : Nyris.UI.Common.INyrisSearcher<INyrisSearcher>
             return this;
         }
 
-        public void Start()
+        public INyrisSearcher Theme(AppearanceConfiguration theme)
         {
+            _controllerAppearance = theme;
+            return this;
+        }
+
+        public void Start(bool loadLastState = false)
+        {
+            _cropController?.Dispose();
             var bundle = NSBundle.FromClass(new ObjCRuntime.Class(typeof(CameraController)));
             var storyboard = UIStoryboard.FromName("CameraController", bundle);
-            var cropController = storyboard.InstantiateInitialViewController() as CropController;
-            
+
             if (_presenterController == null)
             {
                 throw new ArgumentNullException(nameof(_presenterController), "Presenter view controller is null");
             }
-            
-            if (cropController == null)
+
+
+            var controller = storyboard.InstantiateInitialViewController();
+            if (!(controller is CropController))
             {
-                throw new ArgumentNullException(nameof(cropController), "Crop controller is null");
+                throw new ArgumentNullException(nameof(controller), "Controller is not a type of CropController");
             }
-            
-            cropController.Configure(_config);
-            cropController.OfferAvailable += (sender, e) => OfferAvailable?.Invoke(this, e);
-            cropController.RequestFailed += (sender, exception) => RequestFailed?.Invoke(this, exception);
-            
-            _presenterController.PresentViewController(cropController, true, null);
+            else
+            {
+                _cropController = controller as CropController;
+            }
+
+            _config.LoadLastState = loadLastState;
+            _cropController.Configure(_config, _controllerAppearance);
+            _cropController.OfferAvailable += OnOfferAvailable;
+            _cropController.RequestFailed += (sender, exception) => RequestFailed?.Invoke(this, exception);
+
+            if (loadLastState)
+            {
+                _cropController.ScreenshotImage = _previousSessionParametres.Screenshot;
+                _cropController.CroppingFrame = _previousSessionParametres.CroppingFrame;
+            }
+            else
+            {
+                _cropController.ScreenshotImage?.Dispose();
+                _cropController.ScreenshotImage = null;
+                GC.Collect();
+            }
+            _presenterController.PresentViewController(_cropController, true, null);
         }
+
+        void OnOfferAvailable(object sender, OfferResponseEventArgs e)
+        {
+            OfferAvailable?.Invoke(this, e);
+            _previousSessionParametres.Screenshot = e.Screenshot;
+            _previousSessionParametres.CroppingFrame = e.CroppingFrame;
+            e.Screenshot = null;
+
+        }
+
     }
 }

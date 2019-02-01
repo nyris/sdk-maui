@@ -58,6 +58,11 @@ namespace Nyris.UI.iOS
                 NetworkStatusLabel.Dispose ();
                 NetworkStatusLabel = null;
             }
+
+            if (ScreenshotImageView != null) {
+                ScreenshotImageView.Dispose ();
+                ScreenshotImageView = null;
+            }
         }
     }
 }
