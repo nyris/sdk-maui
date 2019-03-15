@@ -200,10 +200,6 @@ namespace Nyris.UI.iOS
             pixelBuffer?.Dispose();
             _videoFramePixelBuffer = null;
             GC.Collect();
-            image.SaveToPhotosAlbum((images, error) =>
-            {
-                Console.WriteLine('s');
-            });
             return image;
 
         }
