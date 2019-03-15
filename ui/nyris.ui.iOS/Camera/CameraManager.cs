@@ -40,7 +40,7 @@ namespace Nyris.UI.iOS.Camera
 	        }
         }
         private AVCaptureDevice CaptureDevice { get; set; }
-        private readonly CameraOrientation orientation = new CameraOrientation();
+        private readonly CameraOrientation cameraOrientation = new CameraOrientation();
 
         public event EventHandler<DidTapCameraPreviewLayerEventArgs> DidTapCameraPreview ;
         public event EventHandler<CameraAuthorizationEventArgs> OnAuthorizationChange ;
@@ -52,11 +52,11 @@ namespace Nyris.UI.iOS.Camera
         {
             get
             {
-                return orientation.ShouldUseDeviceOrientation;
+                return cameraOrientation.ShouldUseDeviceOrientation;
             }
-            set
+            private set
             {
-                orientation.ShouldUseDeviceOrientation = value;
+                cameraOrientation.ShouldUseDeviceOrientation = value;
             }
 
         }
@@ -132,7 +132,7 @@ namespace Nyris.UI.iOS.Camera
                     _captureSession.CommitConfiguration();
                     throw new Exception(message: "Video connection doesn't support orientation.");
                 }
-                videoOutputConnection.VideoOrientation = orientation.GetVideoOrientation();
+                videoOutputConnection.VideoOrientation = cameraOrientation.GetVideoOrientation();
             }
 
             _videoPreviewLayer = AVCaptureVideoPreviewLayer.FromSession(_captureSession);
@@ -175,7 +175,7 @@ namespace Nyris.UI.iOS.Camera
                 _videoPreviewLayer.RemoveFromSuperLayer();
                 if (_videoPreviewLayer.Connection.SupportsVideoOrientation)
                 {
-                    _videoPreviewLayer.Connection.VideoOrientation = orientation.GetPreviewLayerOrientation();
+                    _videoPreviewLayer.Connection.VideoOrientation = cameraOrientation.GetPreviewLayerOrientation();
                 }
                 _displayView.Layer.AddSublayer(_videoPreviewLayer);
 
@@ -336,7 +336,7 @@ namespace Nyris.UI.iOS.Camera
                 return;
             }
             NSNotificationCenter.DefaultCenter.AddObserver(UIDevice.OrientationDidChangeNotification, DeviceOrientationDidChange);
-            orientation.Start();
+            cameraOrientation.Start();
         }
 
         private void DeviceOrientationDidChange(NSNotification notification)
@@ -352,7 +352,7 @@ namespace Nyris.UI.iOS.Camera
             {
                 return;
             }
-            videoOutputConnection.VideoOrientation = orientation.GetVideoOrientation();
+            videoOutputConnection.VideoOrientation = cameraOrientation.GetVideoOrientation();
             var deviceOrientation = UIDevice.CurrentDevice.Orientation;
             switch (deviceOrientation)
             {
@@ -398,7 +398,7 @@ namespace Nyris.UI.iOS.Camera
             {
                 return;
             }
-            orientation.Stop();
+            cameraOrientation.Stop();
             NSNotificationCenter.DefaultCenter.RemoveObserver(this);
         }
     }
