@@ -144,7 +144,7 @@ namespace Nyris.UI.iOS
             {
 	            try
 	            {
-		            CameraManager.Setup();
+		            CameraManager.Setup(useDeviceOrientation: true);
 	            }
 	            catch(Exception ex) 
 	            {

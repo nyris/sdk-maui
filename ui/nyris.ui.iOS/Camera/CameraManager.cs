@@ -40,12 +40,26 @@ namespace Nyris.UI.iOS.Camera
 	        }
         }
         private AVCaptureDevice CaptureDevice { get; set; }
+        private readonly CameraOrientation cameraOrientation = new CameraOrientation();
 
         public event EventHandler<DidTapCameraPreviewLayerEventArgs> DidTapCameraPreview ;
         public event EventHandler<CameraAuthorizationEventArgs> OnAuthorizationChange ;
         public event EventHandler<FrameCaptureEventArgs> OnFrameCapture ;
 
         public bool IsRunning => _captureSession?.Running ?? false;
+
+        public bool ShouldUseDeviceOrientation
+        {
+            get
+            {
+                return cameraOrientation.ShouldUseDeviceOrientation;
+            }
+            private set
+            {
+                cameraOrientation.ShouldUseDeviceOrientation = value;
+            }
+
+        }
 
         public CameraManager()
         {
@@ -56,10 +70,12 @@ namespace Nyris.UI.iOS.Camera
             StillImageOutput = new AVCaptureStillImageOutput ();
         }
 
-        public void Setup()
+        public void Setup(bool useDeviceOrientation = false)
         {
             var config = new CameraConfiguration { Preset = AVCaptureSession.PresetHigh, AllowTapToFocus = true };
             ConfigureSession(config);
+            ShouldUseDeviceOrientation = useDeviceOrientation;
+            SubscribeToDeviceOrientation();
         }
         
         void ConfigureSession (CameraConfiguration configuration)
@@ -116,7 +132,7 @@ namespace Nyris.UI.iOS.Camera
                     _captureSession.CommitConfiguration();
                     throw new Exception(message: "Video connection doesn't support orientation.");
                 }
-                videoOutputConnection.VideoOrientation = AVCaptureVideoOrientation.Portrait;
+                videoOutputConnection.VideoOrientation = cameraOrientation.GetVideoOrientation();
             }
 
             _videoPreviewLayer = AVCaptureVideoPreviewLayer.FromSession(_captureSession);
@@ -157,6 +173,10 @@ namespace Nyris.UI.iOS.Camera
                 _videoPreviewLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
                 _videoPreviewLayer.Frame = UIScreen.MainScreen.Bounds;
                 _videoPreviewLayer.RemoveFromSuperLayer();
+                if (_videoPreviewLayer.Connection.SupportsVideoOrientation)
+                {
+                    _videoPreviewLayer.Connection.VideoOrientation = cameraOrientation.GetPreviewLayerOrientation();
+                }
                 _displayView.Layer.AddSublayer(_videoPreviewLayer);
 
                 if (_displayView.GestureRecognizers == null || !_displayView.GestureRecognizers.Contains(_focusTapGesture))
@@ -306,6 +326,80 @@ namespace Nyris.UI.iOS.Camera
             {
                 Console.WriteLine(e);
             }
+        }
+
+
+        private void SubscribeToDeviceOrientation()
+        {
+            if (ShouldUseDeviceOrientation == false)
+            {
+                return;
+            }
+            NSNotificationCenter.DefaultCenter.AddObserver(UIDevice.OrientationDidChangeNotification, DeviceOrientationDidChange);
+            cameraOrientation.Start();
+        }
+
+        private void DeviceOrientationDidChange(NSNotification notification)
+        {
+            if (_videoPreviewLayer == null || 
+                _videoPreviewLayer.Connection == null || 
+                _videoPreviewLayer.Connection.SupportsVideoOrientation == false)
+            {
+                return;
+            }
+            var videoOutputConnection = _videoOutput.ConnectionFromMediaType(AVMediaType.Video);
+            if (videoOutputConnection == null)
+            {
+                return;
+            }
+            videoOutputConnection.VideoOrientation = cameraOrientation.GetVideoOrientation();
+            var deviceOrientation = UIDevice.CurrentDevice.Orientation;
+            switch (deviceOrientation)
+            {
+                case UIDeviceOrientation.Portrait:
+                    updatePreviewLayer(_videoPreviewLayer.Connection, AVCaptureVideoOrientation.Portrait);
+                    break;
+                case UIDeviceOrientation.LandscapeRight:
+                    updatePreviewLayer(_videoPreviewLayer.Connection, AVCaptureVideoOrientation.LandscapeLeft);
+                    break;
+                case UIDeviceOrientation.LandscapeLeft:
+                    updatePreviewLayer(_videoPreviewLayer.Connection, AVCaptureVideoOrientation.LandscapeRight);
+                    break;
+                case UIDeviceOrientation.PortraitUpsideDown:
+                    updatePreviewLayer(_videoPreviewLayer.Connection, AVCaptureVideoOrientation.PortraitUpsideDown);
+                    break;
+                default:
+                    updatePreviewLayer(_videoPreviewLayer.Connection, AVCaptureVideoOrientation.Portrait);
+                    break;
+            }
+        }
+
+        private void updatePreviewLayer(AVCaptureConnection layer, AVCaptureVideoOrientation newOrientation)
+        {
+            if (_displayView == null || _videoPreviewLayer == null )
+            {
+                return;
+            }
+
+            if(layer.SupportsVideoOrientation == false)
+            {
+                layer.VideoOrientation = AVCaptureVideoOrientation.Portrait;
+            }
+            else
+            {
+                layer.VideoOrientation = newOrientation;
+            }
+            _videoPreviewLayer.Frame = _displayView.Bounds;
+        }
+
+        private void UnsubscribeFromDeviceOrientation()
+        {
+            if (ShouldUseDeviceOrientation == false)
+            {
+                return;
+            }
+            cameraOrientation.Stop();
+            NSNotificationCenter.DefaultCenter.RemoveObserver(this);
         }
     }
 }
