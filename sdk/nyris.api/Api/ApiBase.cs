@@ -40,11 +40,11 @@ namespace Nyris.Api.Api
                     }
                 };
                 var error = JsonConvert.DeserializeAnonymousType(apiResponse.Content, definition);
-                throw new ApiException($"{error.fault.faultstring} \nHTTP Error code: {(int)apiResponse.StatusCode}");
+                throw new ApiException($"{error?.fault.faultstring} \nHTTP Error code: {(int)apiResponse.StatusCode}");
             }
-            // When default output format is applied and client want to cast OfferResponseDto.
-            var requestCode = apiResponse.Headers.ToDictionary(l => l.Key, k => k.Value)["X-Matching-Request"]
-                .FirstOrDefault();
+            // When default output format is applied and client wants to cast OfferResponseDto.
+            // Note that according to RFC 2616, HTTP headers are case insensitive.
+            var requestCode = apiResponse.Headers?.GetValues("X-Matching-Request")?.FirstOrDefault();
             OfferResponseDto offerResponse = null;
             try
             {
