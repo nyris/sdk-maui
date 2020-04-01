@@ -161,8 +161,13 @@ namespace Nyris.UI.iOS
         {
             
             var bundle = NSBundle.FromClass(new ObjCRuntime.Class(typeof(CropController)));
-            _captureButtonImage = UIImage.FromBundle("capture_icon.png", bundle, null);
-            _cropButtonImage = UIImage.FromBundle("validate_icon.png", bundle, null);
+            // If we pass null directly to UIImage.FromBundle it will raise an ambiguous error
+            // in ios 13 sdk there is a new overload which take image configuration.
+            // the compiler can't decide which UIImage.FromBundle to call as it can't infer type of null
+            // hence decraling an explicit UITraitCollection variable and setting it to null to help the compiler.
+            UITraitCollection trait = null;
+            _captureButtonImage = UIImage.FromBundle("capture_icon.png", bundle, trait);
+            _cropButtonImage = UIImage.FromBundle("validate_icon.png", bundle, trait);
         }
 
         private void SetCaptureState()
@@ -395,9 +400,7 @@ namespace Nyris.UI.iOS
             _cropBoundingBox?.Dispose();
             _cropBoundingBox = null;
             CameraManager.Stop();
-            _captureButtonImage?.Dispose();
             _captureButtonImage = null;
-            _cropButtonImage?.Dispose();
             _cropButtonImage = null;
             ScreenshotImage?.Dispose();
             ScreenshotImage = null;
