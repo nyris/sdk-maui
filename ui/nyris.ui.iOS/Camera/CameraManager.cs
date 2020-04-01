@@ -40,7 +40,7 @@ namespace Nyris.UI.iOS.Camera
 	        }
         }
         private AVCaptureDevice CaptureDevice { get; set; }
-        private readonly CameraOrientation cameraOrientation = new CameraOrientation();
+        private readonly CameraOrientation cameraOrientationService = new CameraOrientation();
 
         public event EventHandler<DidTapCameraPreviewLayerEventArgs> DidTapCameraPreview ;
         public event EventHandler<CameraAuthorizationEventArgs> OnAuthorizationChange ;
@@ -52,11 +52,11 @@ namespace Nyris.UI.iOS.Camera
         {
             get
             {
-                return cameraOrientation.ShouldUseDeviceOrientation;
+                return cameraOrientationService.ShouldUseDeviceOrientation;
             }
             private set
             {
-                cameraOrientation.ShouldUseDeviceOrientation = value;
+                cameraOrientationService.ShouldUseDeviceOrientation = value;
             }
 
         }
@@ -132,7 +132,7 @@ namespace Nyris.UI.iOS.Camera
                     _captureSession.CommitConfiguration();
                     throw new Exception(message: "Video connection doesn't support orientation.");
                 }
-                videoOutputConnection.VideoOrientation = cameraOrientation.GetVideoOrientation();
+                videoOutputConnection.VideoOrientation = cameraOrientationService.GetVideoOrientation();
             }
 
             _videoPreviewLayer = AVCaptureVideoPreviewLayer.FromSession(_captureSession);
@@ -175,7 +175,7 @@ namespace Nyris.UI.iOS.Camera
                 _videoPreviewLayer.RemoveFromSuperLayer();
                 if (_videoPreviewLayer.Connection.SupportsVideoOrientation)
                 {
-                    _videoPreviewLayer.Connection.VideoOrientation = cameraOrientation.GetPreviewLayerOrientation();
+                    _videoPreviewLayer.Connection.VideoOrientation = cameraOrientationService.GetPreviewLayerOrientation();
                 }
                 _displayView.Layer.AddSublayer(_videoPreviewLayer);
 
@@ -336,7 +336,7 @@ namespace Nyris.UI.iOS.Camera
                 return;
             }
             NSNotificationCenter.DefaultCenter.AddObserver(UIDevice.OrientationDidChangeNotification, DeviceOrientationDidChange);
-            cameraOrientation.Start();
+            cameraOrientationService.Start();
         }
 
         private void DeviceOrientationDidChange(NSNotification notification)
@@ -352,7 +352,7 @@ namespace Nyris.UI.iOS.Camera
             {
                 return;
             }
-            videoOutputConnection.VideoOrientation = cameraOrientation.GetVideoOrientation();
+            videoOutputConnection.VideoOrientation = cameraOrientationService.GetVideoOrientation();
             var deviceOrientation = UIDevice.CurrentDevice.Orientation;
             switch (deviceOrientation)
             {
@@ -392,13 +392,13 @@ namespace Nyris.UI.iOS.Camera
             _videoPreviewLayer.Frame = _displayView.Bounds;
         }
 
-        private void UnsubscribeFromDeviceOrientation()
+        public void UnsubscribeFromDeviceOrientation()
         {
             if (ShouldUseDeviceOrientation == false)
             {
                 return;
             }
-            cameraOrientation.Stop();
+            cameraOrientationService.Stop();
             NSNotificationCenter.DefaultCenter.RemoveObserver(this);
         }
     }

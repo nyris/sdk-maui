@@ -87,7 +87,7 @@ namespace Nyris.UI.iOS
         public override void ViewDidDisappear(bool animated)
 		{
 			base.ViewDidDisappear(animated);
-			RemoveObservers();
+            RemoveObservers();
 		}
 
 		
@@ -226,7 +226,8 @@ namespace Nyris.UI.iOS
 		{
 			NSNotificationCenter.DefaultCenter.RemoveObserver(this);
 			CameraManager.OnAuthorizationChange -= CameraManagerOnOnAuthorizationChange;
-		}
+            CameraManager.UnsubscribeFromDeviceOrientation();
+        }
 
 		void SessionRuntimeError (NSNotification notification)
 		{
