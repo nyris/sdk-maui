@@ -47,7 +47,7 @@ namespace Nyris.UI.iOS.Camera
         public event EventHandler<FrameCaptureEventArgs> OnFrameCapture ;
 
         public bool IsRunning => _captureSession?.Running ?? false;
-
+        public AVCaptureTorchMode IsTorchActive => CaptureDevice?.TorchMode ?? AVCaptureTorchMode.Off;
         public bool ShouldUseDeviceOrientation
         {
             get
@@ -196,14 +196,11 @@ namespace Nyris.UI.iOS.Camera
         
         public void Start()
         {
-            //_captureSession?.StartRunning();
-
             SessionQueue.DispatchAsync(() => { _captureSession?.StartRunning(); });
         }
     
         public void Stop()
         {
-            //_captureSession?.StopRunning();
             SessionQueue.DispatchAsync(() => { _captureSession?.StopRunning(); });
         }
         
@@ -309,6 +306,25 @@ namespace Nyris.UI.iOS.Camera
 		        }
 	        }
         }
+
+        public void ToggleTorch()
+        {
+            if (CaptureDevice == null)
+            {
+                return;
+            }
+
+            if ( !CaptureDevice.TorchAvailable)
+            {
+                // show error ?
+                return;
+            }
+            var error = new NSError();
+            CaptureDevice.LockForConfiguration(out error);
+            CaptureDevice.TorchMode = CaptureDevice.TorchActive ? AVCaptureTorchMode.Off : AVCaptureTorchMode.On;
+            CaptureDevice.UnlockForConfiguration();
+        }
+
 
         public override void DidOutputSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection)
         {

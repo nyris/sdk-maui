@@ -14,6 +14,14 @@ namespace Nyris.UI.iOS
     [Register ("CameraController")]
     partial class CameraController
     {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton FlashLightButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIImageView ScreenshotImageView { get; set; }
+
         [Action ("CaptureTapped:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void CaptureTapped (UIKit.UIButton sender);
@@ -22,41 +30,20 @@ namespace Nyris.UI.iOS
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void CloseTapped (UIKit.UIButton sender);
 
+        [Action ("FlashLightTaped:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void FlashLightTaped (UIKit.UIButton sender);
+
         void ReleaseDesignerOutlets ()
         {
-            if (ActivityIndicator != null) {
-                ActivityIndicator.Dispose ();
-                ActivityIndicator = null;
+            if (FlashLightButton != null) {
+                FlashLightButton.Dispose ();
+                FlashLightButton = null;
             }
 
-            if (CameraView != null) {
-                CameraView.Dispose ();
-                CameraView = null;
-            }
-
-            if (CaptureButton != null) {
-                CaptureButton.Dispose ();
-                CaptureButton = null;
-            }
-
-            if (CaptureLabel != null) {
-                CaptureLabel.Dispose ();
-                CaptureLabel = null;
-            }
-
-            if (CloseButton != null) {
-                CloseButton.Dispose ();
-                CloseButton = null;
-            }
-
-            if (DarkView != null) {
-                DarkView.Dispose ();
-                DarkView = null;
-            }
-
-            if (NetworkStatusLabel != null) {
-                NetworkStatusLabel.Dispose ();
-                NetworkStatusLabel = null;
+            if (ScreenshotImageView != null) {
+                ScreenshotImageView.Dispose ();
+                ScreenshotImageView = null;
             }
         }
     }

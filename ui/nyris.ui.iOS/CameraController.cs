@@ -317,5 +317,13 @@ namespace Nyris.UI.iOS
         { 
 	        PresentingViewController?.DismissViewController(true, null);
         }
+
+        partial void FlashLightTaped(UIButton sender)
+        {
+			var ww = CameraManager.IsTorchActive;
+			CameraManager.ToggleTorch();
+			FlashLightButton.TintColor = CameraManager.IsTorchActive == AVCaptureTorchMode.On ? UIColor.White : UIColor.Black;
+
+		}
     }
 }
