@@ -357,7 +357,7 @@ See `NyrisSearcherConfig.cs` for full list of configuration.
 ### Customizing the color of the component
 
 #### For Android
-To customize the color of the coponent you will need to override the defined colors:
+To customize the color of the component you will need to override the defined colors:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -387,6 +387,14 @@ To customize the color or image of different views of the Searcher controller, c
     searchService = NyrisSearcher
         .Builder("Your API Key Here", this)
         .Theme(theme)
+```
+
+If you want to change the back button text use :
+
+```csharp
+    NyrisSearcher
+        .Builder("Your API Key Here", this)
+        .BackLabelText("Back text")
 ```
 
 ### Load last session state
