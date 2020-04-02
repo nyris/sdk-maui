@@ -9,7 +9,6 @@ namespace Nyris.UI.iOS.Crop
     {
         nfloat _screenWidth = UIScreen.MainScreen.Bounds.Width;
         nfloat _screenHeight = UIScreen.MainScreen.Bounds.Height;
-        UIImage centerImage;
 
         List<UIView> _outerLines;
         List<UIView> _horizontalLines;
@@ -22,7 +21,6 @@ namespace Nyris.UI.iOS.Crop
         List<UIView> _bottomRightCornerLines;
 
         List<UIButton> _cornerButtons;
-        UIButton _centerButton;
 
         float _cornerLineDepth = 3.0f;
         float _cornerLineWidth = 22.5f;
@@ -34,9 +32,6 @@ namespace Nyris.UI.iOS.Crop
         public bool IsMovable = false;
         public CGSize MinimumSize = CGSize.Empty;
         public bool SelectionLock = false;
-
-        //var onSelected:(_ crop:CropOverlay) -> Void = {_ in }
-        //var onUnSelected:(_ crop:CropOverlay) -> Void = {_ in }
 
         public CropOverlayView(CGRect frame) : base(frame)
         {
@@ -115,20 +110,23 @@ namespace Nyris.UI.iOS.Crop
 
         }
 
-        UIView CreateLine()
+        UIView CreateLine(UIColor color = null)
         {
-            var line = new UIView();
-            line.BackgroundColor = UIColor.White;
+            var line = new UIView
+            {
+                BackgroundColor = color ?? UIColor.White
+            };
             AddSubview(line);
             return line;
         }
 
         UIButton CreateButton()
         {
-            var button = new UIButton();
-            button.BackgroundColor = UIColor.Clear;
-            var dragGesture = new UIPanGestureRecognizer(MoveCropOverlay);
-            button.AddGestureRecognizer(dragGesture);
+            var button = new UIButton
+            {
+                BackgroundColor = UIColor.Clear,
+            };
+            button.AddGestureRecognizer(new UIPanGestureRecognizer(MoveCropOverlay));
             AddSubview(button);
             return button;
         }
@@ -138,7 +136,7 @@ namespace Nyris.UI.iOS.Crop
             for (int i = 0; i < _outerLines.Count; i++)
             {
                 var line = _outerLines[i];
-                var lineFrame = CGRect.Empty;
+                CGRect lineFrame;
                 switch (i)
                 {
                     case 0:
@@ -323,11 +321,9 @@ namespace Nyris.UI.iOS.Crop
             base.LayoutSubviews();
             GenerateLineFrame();
             GenerateCorners();
-            // central button
-
             var lineThickness = _lineWidth / UIScreen.MainScreen.Scale;
-            var vPadding = (Bounds.Height - OutterGap * 2 - (lineThickness * _horizontalLines.Count)) / _horizontalLines.Count + 1;
-            var hPadding = (Bounds.Width - OutterGap * 2 - (lineThickness * _verticalLines.Count)) / _verticalLines.Count + 1;
+            var vPadding = Bounds.Height / ( _verticalLines.Count + 1 );
+            var hPadding = Bounds.Width / (_horizontalLines.Count + 1);
 
             for (int i = 0; i < _horizontalLines.Count; i++)
             {
