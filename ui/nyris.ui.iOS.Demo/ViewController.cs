@@ -33,7 +33,9 @@ namespace Nyris.UI.iOS.Demo
                 CaptureButtonTint = UIColor.Green,
                 CaptureButtonImage = _captureButtonImage,
                 CropButtonImage = _cropButtonImage,
-            };
+                FlashLightOffButtonImage = _captureButtonImage,
+                FlashLightOnButtonImage = _captureButtonImage,
+             };
 
             searchService = NyrisSearcher
                 .Builder("API-KEY", this)
