@@ -175,7 +175,7 @@ namespace Nyris.UI.iOS.Crop
                 var verticalFrame = CGRect.Empty;
                 var buttonFrame = CGRect.Empty;
                 var buttonSize = new CGSize(CornerButtonSize, CornerButtonSize);
-                const float buttonPadding = 10f;
+                const float buttonPadding = 16f;
 
                 switch (i)
                 {
@@ -334,12 +334,6 @@ namespace Nyris.UI.iOS.Crop
                 hLine.Frame = new CGRect(OuterGap, vSpacing + OuterGap, Bounds.Width - OuterGap * 2, lineThickness);
                 vLine.Frame = new CGRect(hSpacing + OuterGap, OuterGap, lineThickness, Bounds.Height - OuterGap * 2);
             }
-        }
-
-        public override UIView HitTest(CGPoint point, UIEvent uievent)
-        {
-            var currentView = base.HitTest(point, uievent);
-            return currentView;
         }
     }
 }
