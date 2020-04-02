@@ -50,12 +50,10 @@ namespace Nyris.UI.iOS.Crop
 
         void LoadImages()
         {
-
         }
 
         void CreateLines()
         {
-
             _outerLines = new List<UIView>
             {
                 CreateLine(),
@@ -107,7 +105,6 @@ namespace Nyris.UI.iOS.Crop
 
             var dragGesture = new UIPanGestureRecognizer(MoveCropOverlay);
             AddGestureRecognizer(dragGesture);
-
         }
 
         UIView CreateLine(UIColor color = null)
@@ -144,11 +141,13 @@ namespace Nyris.UI.iOS.Crop
                         break;
 
                     case 1:
-                        lineFrame = new CGRect(Bounds.Width - _lineWidth - OutterGap, OutterGap, _lineWidth, Bounds.Height);
+                        lineFrame = new CGRect(Bounds.Width - _lineWidth - OutterGap, OutterGap, _lineWidth,
+                            Bounds.Height);
                         break;
 
                     case 2:
-                        lineFrame = new CGRect(OutterGap, Bounds.Height - _lineWidth - OutterGap, Bounds.Width - OutterGap * 2, _lineWidth);
+                        lineFrame = new CGRect(OutterGap, Bounds.Height - _lineWidth - OutterGap,
+                            Bounds.Width - OutterGap * 2, _lineWidth);
                         break;
 
                     case 3:
@@ -158,6 +157,7 @@ namespace Nyris.UI.iOS.Crop
                         lineFrame = CGRect.Empty;
                         break;
                 }
+
                 line.Frame = lineFrame;
             }
         }
@@ -183,7 +183,6 @@ namespace Nyris.UI.iOS.Crop
 
                 switch (i)
                 {
-
                     case 0:
                         verticalFrame = new CGRect(OutterGap, OutterGap, _cornerLineDepth, _cornerLineWidth);
                         horizontalFrame = new CGRect(OutterGap, OutterGap, _cornerLineWidth, _cornerLineDepth);
@@ -191,14 +190,18 @@ namespace Nyris.UI.iOS.Crop
                         break;
 
                     case 1:
-                        verticalFrame = new CGRect(Bounds.Width - _cornerLineDepth - OutterGap, OutterGap, _cornerLineDepth, _cornerLineWidth);
-                        horizontalFrame = new CGRect(Bounds.Width - _cornerLineWidth - OutterGap, OutterGap, _cornerLineWidth, _cornerLineDepth);
+                        verticalFrame = new CGRect(Bounds.Width - _cornerLineDepth - OutterGap, OutterGap,
+                            _cornerLineDepth, _cornerLineWidth);
+                        horizontalFrame = new CGRect(Bounds.Width - _cornerLineWidth - OutterGap, OutterGap,
+                            _cornerLineWidth, _cornerLineDepth);
                         buttonFrame = new CGRect(new CGPoint(Bounds.Width - CornerButtonWidth, 0), buttonSize);
                         break;
 
                     case 2:
-                        verticalFrame = new CGRect(OutterGap, Bounds.Height - _cornerLineWidth - OutterGap, _cornerLineDepth, _cornerLineWidth);
-                        horizontalFrame = new CGRect(OutterGap, Bounds.Height - _cornerLineDepth - OutterGap, _cornerLineWidth, _cornerLineDepth);
+                        verticalFrame = new CGRect(OutterGap, Bounds.Height - _cornerLineWidth - OutterGap,
+                            _cornerLineDepth, _cornerLineWidth);
+                        horizontalFrame = new CGRect(OutterGap, Bounds.Height - _cornerLineDepth - OutterGap,
+                            _cornerLineWidth, _cornerLineDepth);
                         buttonFrame = new CGRect(new CGPoint(0, Bounds.Height - CornerButtonWidth), buttonSize);
                         break;
 
@@ -214,7 +217,7 @@ namespace Nyris.UI.iOS.Crop
                             Bounds.Height - _cornerLineDepth - OutterGap,
                             _cornerLineWidth,
                             _cornerLineDepth
-                            );
+                        );
                         buttonFrame = new CGRect(
                             new CGPoint(Bounds.Width - CornerButtonWidth, Bounds.Height - CornerButtonWidth),
                             buttonSize);
@@ -227,7 +230,6 @@ namespace Nyris.UI.iOS.Crop
                 corner[0].Frame = verticalFrame;
                 corner[1].Frame = horizontalFrame;
                 _cornerButtons[i].Frame = buttonFrame;
-
             }
         }
 
@@ -235,47 +237,48 @@ namespace Nyris.UI.iOS.Crop
         {
             if (IsResizable && (gestureRecognizer.View is UIButton))
             {
-                if (gestureRecognizer.State == UIGestureRecognizerState.Began || gestureRecognizer.State == UIGestureRecognizerState.Changed)
+                if (gestureRecognizer.State == UIGestureRecognizerState.Began ||
+                    gestureRecognizer.State == UIGestureRecognizerState.Changed)
                 {
                     var translation = gestureRecognizer.TranslationInView(this);
                     var newFrame = CGRect.Empty;
-                    var button = (UIButton)gestureRecognizer.View;
+                    var button = (UIButton) gestureRecognizer.View;
                     if (button == _cornerButtons[0])
                     {
                         newFrame = new CGRect(
-                        Frame.X + translation.X,
-                        Frame.Y + translation.Y,
-                        Frame.Width - translation.X,
-                        Frame.Height - translation.Y);
+                            Frame.X + translation.X,
+                            Frame.Y + translation.Y,
+                            Frame.Width - translation.X,
+                            Frame.Height - translation.Y);
                     }
                     else if (button == _cornerButtons[1])
                     {
                         newFrame = new CGRect(
-                        Frame.X,
-                        Frame.Y + translation.Y,
-                        Frame.Width + translation.X,
-                        Frame.Height - translation.Y);
+                            Frame.X,
+                            Frame.Y + translation.Y,
+                            Frame.Width + translation.X,
+                            Frame.Height - translation.Y);
                     }
                     else if (button == _cornerButtons[2])
                     {
                         newFrame = new CGRect(
-                        Frame.X + translation.X,
-                        Frame.Y,
-                        Frame.Width - translation.X,
-                        Frame.Height + translation.Y);
+                            Frame.X + translation.X,
+                            Frame.Y,
+                            Frame.Width - translation.X,
+                            Frame.Height + translation.Y);
                     }
                     else if (button == _cornerButtons[3])
                     {
                         newFrame = new CGRect(
-                        Frame.X,
-                        Frame.Y,
-                        Frame.Width + translation.X,
-                        Frame.Height + translation.Y);
+                            Frame.X,
+                            Frame.Y,
+                            Frame.Width + translation.X,
+                            Frame.Height + translation.Y);
                     }
 
                     var minimumFrame = new CGRect(newFrame.X, newFrame.Y,
-                    Math.Max(newFrame.Width, MinimumSize.Width + 2 * OutterGap),
-                    Math.Max(newFrame.Height, MinimumSize.Height + 2 * OutterGap));
+                        Math.Max(newFrame.Width, MinimumSize.Width + 2 * OutterGap),
+                        Math.Max(newFrame.Height, MinimumSize.Height + 2 * OutterGap));
                     Frame = minimumFrame;
                     LayoutSubviews();
                     gestureRecognizer.SetTranslation(CGPoint.Empty, this);
@@ -290,7 +293,8 @@ namespace Nyris.UI.iOS.Crop
 
         void Move(UIPanGestureRecognizer gestureRecognizer)
         {
-            if (gestureRecognizer.State == UIGestureRecognizerState.Began || gestureRecognizer.State == UIGestureRecognizerState.Changed)
+            if (gestureRecognizer.State == UIGestureRecognizerState.Began ||
+                gestureRecognizer.State == UIGestureRecognizerState.Changed)
             {
                 var translation = gestureRecognizer.TranslationInView(this);
                 var xMovement = gestureRecognizer.View.Center.X + translation.X;
@@ -322,7 +326,7 @@ namespace Nyris.UI.iOS.Crop
             GenerateLineFrame();
             GenerateCorners();
             var lineThickness = _lineWidth / UIScreen.MainScreen.Scale;
-            var vPadding = Bounds.Height / ( _verticalLines.Count + 1 );
+            var vPadding = Bounds.Height / (_verticalLines.Count + 1);
             var hPadding = Bounds.Width / (_horizontalLines.Count + 1);
 
             for (int i = 0; i < _horizontalLines.Count; i++)
@@ -343,11 +347,9 @@ namespace Nyris.UI.iOS.Crop
             var currentView = base.HitTest(point, uievent);
             if (currentView == null)
             {
-
             }
             else
             {
-
             }
 
 
