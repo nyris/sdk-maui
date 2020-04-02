@@ -33,7 +33,9 @@ namespace Nyris.UI.iOS.Demo
                 CaptureButtonTint = UIColor.Green,
                 CaptureButtonImage = _captureButtonImage,
                 CropButtonImage = _cropButtonImage,
-            };
+                //FlashLightOffButtonImage = _captureButtonImage,
+                //FlashLightOnButtonImage = _captureButtonImage,
+             };
 
             searchService = NyrisSearcher
                 .Builder("API-KEY", this)
@@ -42,6 +44,7 @@ namespace Nyris.UI.iOS.Demo
                 .CameraPermissionDeniedErrorMessage("You can not use this component until you activate the camera permission!")
                 .CameraPermissionRequestIfDeniedMessage("Please authorize camera usage in settings.")
                 .ConfigurationFailedErrorMessage("Camera setup failed")
+                .BackLabelText("go back")
                 .DialogErrorTitle("Error Title")
                 .AgreeButtonTitle("OK")
                 .CancelButtonTitle("Cancel")
