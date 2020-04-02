@@ -380,6 +380,8 @@ To customize the color or image of different views of the Searcher controller, c
         CaptureButtonTint = UIColor.Green,
         CaptureButtonImage = UIImage,
         CropButtonImage = UIImage,
+        FlashLightOffButtonImage = UIImage,
+        FlashLightOnButtonImage = UIImage,
     };
 
     searchService = NyrisSearcher
