@@ -26,7 +26,7 @@ namespace Nyris.UI.iOS.Crop
         float _cornerLineWidth = 22.5f;
         float _lineWidth = 1;
         float _outterGapRatio = 1 / 3;
-        public float CornerButtonWidth => _cornerLineWidth * 2;
+        public float CornerButtonWidth => 60;
         public float OutterGap => CornerButtonWidth * _outterGapRatio;
         public bool IsResizable = false;
         public bool IsMovable = false;
@@ -45,13 +45,8 @@ namespace Nyris.UI.iOS.Crop
         void Setup()
         {
             CreateLines();
-            LoadImages();
         }
-
-        void LoadImages()
-        {
-        }
-
+        
         void CreateLines()
         {
             _outerLines = new List<UIView>
@@ -107,7 +102,7 @@ namespace Nyris.UI.iOS.Crop
             AddGestureRecognizer(dragGesture);
         }
 
-        UIView CreateLine(UIColor color = null)
+        private UIView CreateLine(UIColor color = null)
         {
             var line = new UIView
             {
@@ -117,11 +112,11 @@ namespace Nyris.UI.iOS.Crop
             return line;
         }
 
-        UIButton CreateButton()
+        private UIButton CreateButton()
         {
             var button = new UIButton
             {
-                BackgroundColor = UIColor.Clear,
+                BackgroundColor = UIColor.Red,
             };
             button.AddGestureRecognizer(new UIPanGestureRecognizer(MoveCropOverlay));
             AddSubview(button);
@@ -180,13 +175,14 @@ namespace Nyris.UI.iOS.Crop
                 var verticalFrame = CGRect.Empty;
                 var buttonFrame = CGRect.Empty;
                 var buttonSize = new CGSize(CornerButtonWidth, CornerButtonWidth);
+                var buttonPadding = 10f;
 
                 switch (i)
                 {
                     case 0:
                         verticalFrame = new CGRect(OutterGap, OutterGap, _cornerLineDepth, _cornerLineWidth);
                         horizontalFrame = new CGRect(OutterGap, OutterGap, _cornerLineWidth, _cornerLineDepth);
-                        buttonFrame = new CGRect(CGPoint.Empty, buttonSize);
+                        buttonFrame = new CGRect(new CGPoint(- buttonPadding, - buttonPadding), buttonSize);
                         break;
 
                     case 1:
@@ -194,7 +190,7 @@ namespace Nyris.UI.iOS.Crop
                             _cornerLineDepth, _cornerLineWidth);
                         horizontalFrame = new CGRect(Bounds.Width - _cornerLineWidth - OutterGap, OutterGap,
                             _cornerLineWidth, _cornerLineDepth);
-                        buttonFrame = new CGRect(new CGPoint(Bounds.Width - CornerButtonWidth, 0), buttonSize);
+                        buttonFrame = new CGRect(new CGPoint(Bounds.Width - CornerButtonWidth + buttonPadding, -buttonPadding), buttonSize);
                         break;
 
                     case 2:
@@ -202,7 +198,7 @@ namespace Nyris.UI.iOS.Crop
                             _cornerLineDepth, _cornerLineWidth);
                         horizontalFrame = new CGRect(OutterGap, Bounds.Height - _cornerLineDepth - OutterGap,
                             _cornerLineWidth, _cornerLineDepth);
-                        buttonFrame = new CGRect(new CGPoint(0, Bounds.Height - CornerButtonWidth), buttonSize);
+                        buttonFrame = new CGRect(new CGPoint(-buttonPadding, Bounds.Height - CornerButtonWidth + buttonPadding), buttonSize);
                         break;
 
                     case 3:
@@ -219,7 +215,7 @@ namespace Nyris.UI.iOS.Crop
                             _cornerLineDepth
                         );
                         buttonFrame = new CGRect(
-                            new CGPoint(Bounds.Width - CornerButtonWidth, Bounds.Height - CornerButtonWidth),
+                            new CGPoint(Bounds.Width - CornerButtonWidth + buttonPadding, Bounds.Height - CornerButtonWidth + buttonPadding),
                             buttonSize);
                         break;
                     default:
@@ -243,7 +239,7 @@ namespace Nyris.UI.iOS.Crop
                     var translation = gestureRecognizer.TranslationInView(this);
                     var newFrame = CGRect.Empty;
                     var button = (UIButton) gestureRecognizer.View;
-                    if (button == _cornerButtons[0])
+                    if (ReferenceEquals(button, _cornerButtons[0]))
                     {
                         newFrame = new CGRect(
                             Frame.X + translation.X,
@@ -251,7 +247,7 @@ namespace Nyris.UI.iOS.Crop
                             Frame.Width - translation.X,
                             Frame.Height - translation.Y);
                     }
-                    else if (button == _cornerButtons[1])
+                    else if (ReferenceEquals(button, _cornerButtons[1]))
                     {
                         newFrame = new CGRect(
                             Frame.X,
@@ -259,7 +255,7 @@ namespace Nyris.UI.iOS.Crop
                             Frame.Width + translation.X,
                             Frame.Height - translation.Y);
                     }
-                    else if (button == _cornerButtons[2])
+                    else if (ReferenceEquals(button, _cornerButtons[2]))
                     {
                         newFrame = new CGRect(
                             Frame.X + translation.X,
@@ -267,7 +263,7 @@ namespace Nyris.UI.iOS.Crop
                             Frame.Width - translation.X,
                             Frame.Height + translation.Y);
                     }
-                    else if (button == _cornerButtons[3])
+                    else if (ReferenceEquals(button, _cornerButtons[3]))
                     {
                         newFrame = new CGRect(
                             Frame.X,
