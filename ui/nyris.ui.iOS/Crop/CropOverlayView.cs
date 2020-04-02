@@ -116,7 +116,7 @@ namespace Nyris.UI.iOS.Crop
         {
             var button = new UIButton
             {
-                BackgroundColor = UIColor.Red,
+                BackgroundColor = UIColor.Clear,
             };
             button.AddGestureRecognizer(new UIPanGestureRecognizer(MoveCropOverlay));
             AddSubview(button);
