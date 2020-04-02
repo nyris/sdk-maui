@@ -14,10 +14,7 @@ namespace Nyris.UI.iOS
     [Register ("CameraController")]
     partial class CameraController
     {
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton FlashLightButton { get; set; }
-
+    
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIImageView ScreenshotImageView { get; set; }

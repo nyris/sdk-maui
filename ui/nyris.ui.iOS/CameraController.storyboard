@@ -52,18 +52,18 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Y0Q-aO-CoX">
                                 <rect key="frame" x="169" y="315" width="37" height="37"/>
                             </activityIndicatorView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D33-px-FXN">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D33-px-FXN">
                                 <rect key="frame" x="329" y="36" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="2041"/>
+                                    <constraint firstAttribute="height" constant="30" id="2042"/>
+                                </constraints>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <state key="normal" image="torch_off_icon.png"/>
-                                <constraints>
-                                    <constraint id="2041" firstAttribute="width" constant="30"/>
-                                    <constraint id="2042" firstAttribute="height" constant="30"/>
-                                </constraints>
+                                <state key="selected" image="torch_on_icon.png"/>
                                 <connections>
-                                    <action selector="FlashLightTaped:" destination="B6q-Ke-dIa" id="2044" eventType="touchUpInside"/>
+                                    <action selector="FlashLightTaped:" destination="B6q-Ke-dIa" eventType="touchUpInside" id="2044"/>
                                 </connections>
-                                <state key="selected" image="torch_off_icon.png"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="499">
                                 <rect key="frame" x="16" y="36" width="30" height="30"/>
@@ -131,9 +131,9 @@
                         <outlet property="CaptureLabel" destination="xeT-KT-Fbe" id="MrV-0W-m80"/>
                         <outlet property="CloseButton" destination="499" id="name-outlet-499"/>
                         <outlet property="DarkView" destination="N3E-eZ-u0F" id="8Vq-Wc-Uwz"/>
+                        <outlet property="FlashLightButton" destination="D33-px-FXN" id="name-outlet-D33-px-FXN"/>
                         <outlet property="NetworkStatusLabel" destination="2cJ-xs-Vj7" id="1ON-3G-Ije"/>
                         <outlet property="ScreenshotImageView" destination="pWT-gH-v9w" id="name-outlet-pWT-gH-v9w"/>
-                        <outlet property="FlashLightButton" destination="D33-px-FXN" id="name-outlet-D33-px-FXN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jvL-66-L57" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -144,5 +144,6 @@
     <resources>
         <image name="close_icon.png" width="12" height="21"/>
         <image name="torch_off_icon.png" width="1024" height="1024"/>
+        <image name="torch_on_icon.png" width="1024" height="1024"/>
     </resources>
 </document>

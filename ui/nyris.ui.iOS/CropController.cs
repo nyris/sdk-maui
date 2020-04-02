@@ -70,7 +70,6 @@ namespace Nyris.UI.iOS
                 return;
             }
 
-
             _captureButtonImage = _theme.CaptureButtonImage;
             _cropButtonImage = _theme.CropButtonImage;
             if (_theme.BackButtonImage != null)
@@ -79,6 +78,15 @@ namespace Nyris.UI.iOS
             }
             CloseButton.TintColor = _theme.BackButtonTint;
             CaptureLabel.TextColor = _theme.CaptureLabelColor;
+
+            if (_theme.FlashLightOnButtonImage != null)
+            {
+                FlashLightButton.SetImage(_theme.FlashLightOnButtonImage, UIControlState.Selected);
+            }
+            if (_theme.FlashLightOffButtonImage != null)
+            {
+                FlashLightButton.SetImage(_theme.FlashLightOffButtonImage, UIControlState.Normal);
+            }
         }
 
         public override void ViewDidAppear(bool animated)
@@ -269,14 +277,9 @@ namespace Nyris.UI.iOS
             DarkView.Hidden = false;
             _cropBoundingBox.Hidden = true;
             
-            // check for network first ?
-            
-            // get image bytes
             var bytes = croppedImage.AsJPEG().ToArray();
-            //_cropBoundingBox.Hidden = false;
-
             var matchingService = _nyrisApi.ImageMatching.Limit(Config.Limit);
-            OfferResponseEventArgs offerEventArgs;
+            OfferResponseEventArgs offerEventArgs = null;
             try
             {
                 if (Config.ResponseType == typeof(JsonResponse))

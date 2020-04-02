@@ -8,6 +8,8 @@ namespace Nyris.UI.iOS
         public UIImage CaptureButtonImage;
         public UIImage CropButtonImage;
         public UIImage BackButtonImage;
+        public UIImage FlashLightOnButtonImage;
+        public UIImage FlashLightOffButtonImage;
 
         public UIColor CaptureButtonTint;
         public UIColor CropButtonTint;

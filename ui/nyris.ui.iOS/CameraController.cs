@@ -34,7 +34,10 @@ namespace Nyris.UI.iOS
 	    [Outlet]
 	    protected UIKit.UIButton CloseButton { get; set; }
 
-	    [Outlet]
+		[Outlet]
+		protected UIKit.UIButton FlashLightButton { get; set; }
+
+		[Outlet]
 	    protected UIKit.UIView DarkView { get; set; }
 
 	    [Outlet]
@@ -146,7 +149,7 @@ namespace Nyris.UI.iOS
 	            {
 		            CameraManager.Setup(useDeviceOrientation: true);
 	            }
-	            catch(Exception ex) 
+	            catch(Exception) 
 	            {
 		            DispatchQueue.MainQueue.DispatchAsync(() =>
 		            {
@@ -320,9 +323,8 @@ namespace Nyris.UI.iOS
 
         partial void FlashLightTaped(UIButton sender)
         {
-			var ww = CameraManager.IsTorchActive;
 			CameraManager.ToggleTorch();
-			FlashLightButton.TintColor = CameraManager.IsTorchActive == AVCaptureTorchMode.On ? UIColor.White : UIColor.Black;
+			FlashLightButton.Selected = CameraManager.IsTorchActive == AVCaptureTorchMode.On;
 
 		}
     }
