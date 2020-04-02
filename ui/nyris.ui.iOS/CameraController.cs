@@ -35,6 +35,9 @@ namespace Nyris.UI.iOS
 	    protected UIKit.UIButton CloseButton { get; set; }
 
 		[Outlet]
+		protected UIKit.UILabel CloseLabel { get; set; }
+
+		[Outlet]
 		protected UIKit.UIButton FlashLightButton { get; set; }
 
 		[Outlet]
@@ -66,7 +69,9 @@ namespace Nyris.UI.iOS
             if(Config != null)
             {
                 CaptureLabel.Text = Config.CaptureLabelText;
-            }
+				CloseLabel.Text = Config.BackLabelText;
+
+			}
         }
 
 		public virtual void Configure(NyrisSearcherConfig config, AppearanceConfiguration theme)

@@ -28,6 +28,10 @@ namespace Nyris.UI.iOS
 
         void ReleaseDesignerOutlets ()
         {
+            if (CloseLabel != null) {
+                CloseLabel.Dispose ();
+                CloseLabel = null;
+            }
         }
     }
 }

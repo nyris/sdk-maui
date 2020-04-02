@@ -77,6 +77,7 @@ namespace Nyris.UI.iOS
                 CloseButton.SetImage(_theme.BackButtonImage, UIControlState.Normal);
             }
             CloseButton.TintColor = _theme.BackButtonTint;
+            CloseLabel.TextColor = _theme.BackButtonTint;
             CaptureLabel.TextColor = _theme.CaptureLabelColor;
 
             if (_theme.FlashLightOnButtonImage != null)

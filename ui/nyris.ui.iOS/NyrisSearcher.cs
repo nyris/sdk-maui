@@ -28,6 +28,8 @@ namespace Nyris.UI.iOS
 
         INyrisSearcher CaptureLabelText(string label);
 
+        INyrisSearcher BackLabelText(string label);
+
         INyrisSearcher Theme(AppearanceConfiguration theme);
     }
 
@@ -104,6 +106,12 @@ namespace Nyris.UI.iOS
         public INyrisSearcher AgreeButtonTitle(string title)
         {
             _config.PositiveButtonText = title;
+            return this;
+        }
+
+        public INyrisSearcher BackLabelText(string label)
+        {
+            _config.BackLabelText = label;
             return this;
         }
 
@@ -265,6 +273,5 @@ namespace Nyris.UI.iOS
             e.Screenshot = null;
 
         }
-
     }
 }

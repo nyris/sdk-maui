@@ -32,6 +32,8 @@ namespace Nyris.UI.Common
 
         public string CaptureLabelText { get; set; } = "Capture your product";
 
+        public string BackLabelText { get; set; } = "Capture your product";
+
         public string ConfigurationFailedErrorMessage { get; set; } = "Camera setup failed!";
 
         public string CameraPermissionDeniedErrorMessage { get; set; } = "Camera permission denied!";

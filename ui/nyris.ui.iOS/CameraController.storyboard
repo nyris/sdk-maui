@@ -65,6 +65,12 @@
                                     <action selector="FlashLightTaped:" destination="B6q-Ke-dIa" eventType="touchUpInside" id="2044"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Back" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2324" misplaced="YES">
+                                <rect key="frame" x="46" y="41" width="42" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="499">
                                 <rect key="frame" x="16" y="36" width="30" height="30"/>
                                 <constraints>
@@ -102,6 +108,7 @@
                             <constraint firstItem="2cJ-xs-Vj7" firstAttribute="centerY" secondItem="X6d-aY-5iW" secondAttribute="centerY" id="Fwr-nX-UH9"/>
                             <constraint firstItem="N3E-eZ-u0F" firstAttribute="width" secondItem="X6d-aY-5iW" secondAttribute="width" id="FyT-gO-wD3"/>
                             <constraint firstItem="ewh-R4-h0C" firstAttribute="top" secondItem="OeZ-9G-nLa" secondAttribute="bottom" id="GSP-Iv-cbJ"/>
+                            <constraint firstItem="2324" firstAttribute="centerY" secondItem="499" secondAttribute="centerY" id="Gii-NV-liu"/>
                             <constraint firstItem="2cJ-xs-Vj7" firstAttribute="width" secondItem="X6d-aY-5iW" secondAttribute="width" id="Gyb-8f-pUz"/>
                             <constraint firstItem="N3E-eZ-u0F" firstAttribute="centerY" secondItem="X6d-aY-5iW" secondAttribute="centerY" id="Kuw-0A-kbw"/>
                             <constraint firstItem="pWT-gH-v9w" firstAttribute="centerY" secondItem="OeZ-9G-nLa" secondAttribute="centerY" id="Pky-NP-Tee"/>
@@ -116,6 +123,7 @@
                             <constraint firstItem="pWT-gH-v9w" firstAttribute="centerX" secondItem="OeZ-9G-nLa" secondAttribute="centerX" id="d0q-0e-PGl"/>
                             <constraint firstItem="499" firstAttribute="top" secondItem="HVc-ga-hko" secondAttribute="bottom" constant="16" id="eIk-qG-ENT"/>
                             <constraint firstItem="pWT-gH-v9w" firstAttribute="width" secondItem="OeZ-9G-nLa" secondAttribute="width" id="kfQ-Xq-bBQ"/>
+                            <constraint firstItem="2324" firstAttribute="leading" secondItem="499" secondAttribute="trailing" id="lqk-Uu-VWZ"/>
                             <constraint firstItem="499" firstAttribute="leading" secondItem="X6d-aY-5iW" secondAttribute="leading" constant="16" id="mZh-wc-j7E"/>
                             <constraint firstItem="OeZ-9G-nLa" firstAttribute="top" secondItem="X6d-aY-5iW" secondAttribute="top" id="oNq-Mp-vEj"/>
                             <constraint firstItem="D33-px-FXN" firstAttribute="top" secondItem="HVc-ga-hko" secondAttribute="bottom" constant="16" id="u6L-Lu-US4"/>
@@ -134,6 +142,7 @@
                         <outlet property="FlashLightButton" destination="D33-px-FXN" id="name-outlet-D33-px-FXN"/>
                         <outlet property="NetworkStatusLabel" destination="2cJ-xs-Vj7" id="1ON-3G-Ije"/>
                         <outlet property="ScreenshotImageView" destination="pWT-gH-v9w" id="name-outlet-pWT-gH-v9w"/>
+                        <outlet property="CloseLabel" destination="2324" id="name-outlet-2324"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jvL-66-L57" userLabel="First Responder" sceneMemberID="firstResponder"/>
