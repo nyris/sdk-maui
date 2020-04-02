@@ -253,6 +253,7 @@ namespace Nyris.UI.iOS
                 _cropController.ScreenshotImage = null;
                 GC.Collect();
             }
+            _cropController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             _presenterController.PresentViewController(_cropController, true, null);
         }
 
