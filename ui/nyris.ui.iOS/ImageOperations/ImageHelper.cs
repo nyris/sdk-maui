@@ -7,19 +7,16 @@ namespace Nyris.UI.iOS.ImageOperations
     public static class ImageHelper
     {
 
-        public static UIImage ResizeWithRatio(UIImage originalImage, CGSize size)
+        public static UIImage ResizeWithRatio(UIImage originalImage, CGSize targetedSizeArea )
         {
             if (originalImage?.CGImage == null)
             {
                 return null;
             }
-
-            var imageRef = originalImage.CGImage;
-            var widthRatio = size.Width / originalImage.Size.Width;
-            var heightRatio = size.Height / originalImage.Size.Height;
-            var scaleRatio = Math.Min(widthRatio, heightRatio);
-            var destinationWidth = Math.Round(originalImage.Size.Width * scaleRatio);
-            var destinationHeight = Math.Round(originalImage.Size.Height * scaleRatio);
+            var aspectRatio = (float)originalImage.Size.Width / (float)originalImage.Size.Height;
+            var targetArea = targetedSizeArea.Width * targetedSizeArea.Height;
+            var destinationWidth    = Math.Sqrt(targetArea * aspectRatio);
+            var destinationHeight   = destinationWidth / aspectRatio;
             var resizedImageBounds = new CGRect(0, 0, destinationWidth, destinationHeight);
             UIGraphics.BeginImageContextWithOptions(resizedImageBounds.Size, false, 1);
             originalImage.Draw(resizedImageBounds);
@@ -48,12 +45,7 @@ namespace Nyris.UI.iOS.ImageOperations
 
         private static UIImage Crop(UIImage originalImage, CGRect cropFrame)
         {
-            if (originalImage?.CGImage == null)
-            {
-                return null;
-            }
-
-            var croppedCgImage = originalImage.CGImage.WithImageInRect(cropFrame);
+            var croppedCgImage = originalImage?.CGImage?.WithImageInRect(cropFrame);
             if (croppedCgImage == null)
             {
                 return null;

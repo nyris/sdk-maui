@@ -1,13 +1,9 @@
 using Foundation;
 using System;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Reflection;
 using CoreGraphics;
 using Nyris.Api;
 using Nyris.Api.Model;
 using Nyris.UI.Common;
-using ObjCRuntime;
 using UIKit;
 using Nyris.UI.iOS.Camera.Enum;
 using Nyris.UI.iOS.Crop;
@@ -62,7 +58,7 @@ namespace Nyris.UI.iOS
             }
         }
 
-        void SetupTheme()
+        private void SetupTheme()
         {
             if (_theme == null)
             {
@@ -173,7 +169,7 @@ namespace Nyris.UI.iOS
             // If we pass null directly to UIImage.FromBundle it will raise an ambiguous error
             // in ios 13 sdk there is a new overload which take image configuration.
             // the compiler can't decide which UIImage.FromBundle to call as it can't infer type of null
-            // hence decraling an explicit UITraitCollection variable and setting it to null to help the compiler.
+            // hence declaring an explicit UITraitCollection variable and setting it to null to help the compiler.
             UITraitCollection trait = null;
             _captureButtonImage = UIImage.FromBundle("capture_icon.png", bundle, trait);
             _cropButtonImage = UIImage.FromBundle("validate_icon.png", bundle, trait);
@@ -348,7 +344,7 @@ namespace Nyris.UI.iOS
                 return;
             }
 
-            var resizedCroppedImage = ImageHelper.ResizeWithRatio(croppedImage, new CGSize(512, 512));
+            var resizedCroppedImage = ImageHelper.ResizeWithRatio(croppedImage, new CGSize(1024, 1024));
             croppedImage.Dispose();
             SetFetchState(ScreenshotImage, resizedCroppedImage);
         }
