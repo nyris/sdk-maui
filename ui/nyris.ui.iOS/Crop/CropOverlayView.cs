@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CoreGraphics;
 using UIKit;
+
 
 namespace Nyris.UI.iOS.Crop
 {
     public class CropOverlayView : UIView
     {
-        private readonly nfloat _screenWidth = UIScreen.MainScreen.Bounds.Width;
-        private readonly nfloat _screenHeight = UIScreen.MainScreen.Bounds.Height;
+        private nfloat _screenWidth => UIScreen.MainScreen.Bounds.Width;
+        private nfloat _screenHeight => UIScreen.MainScreen.Bounds.Height;
 
         private List<UIView> _outerLines;
         private List<UIView> _horizontalLines;
@@ -283,8 +285,7 @@ namespace Nyris.UI.iOS.Crop
                 this.Move(gestureRecognizer);
             }
         }
-
-
+        
         void Move(UIPanGestureRecognizer gestureRecognizer)
         {
             if (gestureRecognizer.State == UIGestureRecognizerState.Began ||
@@ -293,9 +294,9 @@ namespace Nyris.UI.iOS.Crop
                 var translation = gestureRecognizer.TranslationInView(this);
                 var xMovement = gestureRecognizer.View.Center.X + translation.X;
                 var yMovement = gestureRecognizer.View.Center.Y + translation.Y;
-
-                xMovement = CanMoveHorizontally(xMovement) ? xMovement : gestureRecognizer.View.Center.X - translation.X;
-                yMovement = CanMoveVertically(yMovement) ? yMovement : gestureRecognizer.View.Center.Y - translation.Y;
+                
+                xMovement = CanMoveHorizontally(xMovement) ? xMovement : gestureRecognizer.View.Center.X;
+                yMovement = CanMoveVertically(yMovement) ? yMovement : gestureRecognizer.View.Center.Y;
 
                 gestureRecognizer.View.Center = new CGPoint(xMovement, yMovement);
                 gestureRecognizer.SetTranslation(CGPoint.Empty, this);
