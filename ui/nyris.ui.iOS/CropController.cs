@@ -58,6 +58,18 @@ namespace Nyris.UI.iOS
             }
         }
 
+        public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
+        {
+            base.TraitCollectionDidChange(previousTraitCollection);
+            // Reset crop view frame to adapt to device orientation change.
+            if (_cropBoundingBox != null)
+            {
+                var size = new CGSize( View.Frame.Width / 1.2, View.Frame.Height / 2  );
+                _cropBoundingBox.Frame = new CGRect(0, 0, size.Width, size.Height);
+                _cropBoundingBox.Center = View.Center;
+            }
+        }
+        
         private void SetupTheme()
         {
             if (_theme == null)
