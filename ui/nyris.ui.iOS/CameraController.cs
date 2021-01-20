@@ -175,9 +175,8 @@ namespace Nyris.UI.iOS
             var imageView = new UIImageView(frame: bounds)
             {
                 Image = preview,
-                ContentMode = UIViewContentMode.ScaleAspectFill
+                ContentMode = UIViewContentMode.ScaleAspectFit
             };
-            viewContainer.BackgroundColor = UIColor.Blue;
             viewContainer.AddSubview(imageView);
             viewContainer.DrawViewHierarchy(bounds, true);
             var image = UIGraphics.GetImageFromCurrentImageContext();
