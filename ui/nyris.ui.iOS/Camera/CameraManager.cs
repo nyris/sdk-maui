@@ -357,9 +357,7 @@ namespace Nyris.UI.iOS.Camera
 
         private void DeviceOrientationDidChange(NSNotification notification)
         {
-            if (_videoPreviewLayer == null || 
-                _videoPreviewLayer.Connection == null || 
-                _videoPreviewLayer.Connection.SupportsVideoOrientation == false)
+            if (_videoPreviewLayer?.Connection == null || _videoPreviewLayer.Connection.SupportsVideoOrientation == false)
             {
                 return;
             }
@@ -385,8 +383,8 @@ namespace Nyris.UI.iOS.Camera
                     updatePreviewLayer(_videoPreviewLayer.Connection, AVCaptureVideoOrientation.PortraitUpsideDown);
                     break;
                 default:
-                    updatePreviewLayer(_videoPreviewLayer.Connection, AVCaptureVideoOrientation.Portrait);
-                    break;
+	                // this can be triggered when device is face up or facedown regardless of landscape/portrait.
+	                return;
             }
         }
 
