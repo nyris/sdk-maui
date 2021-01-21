@@ -166,9 +166,10 @@ namespace Nyris.UI.iOS
             }
 
             var pixelBuffer = Runtime.GetINativeObject<CVPixelBuffer>(_videoFramePixelBuffer.Handle, false);
-            var bounds = View.Bounds;
+            var bounds = UIScreen.MainScreen.Bounds;
             UIGraphics.BeginImageContextWithOptions(bounds.Size, false, UIScreen.MainScreen.Scale);
 
+            var viewContainer = new UIView(bounds);
             var ciImage = new CIImage(pixelBuffer);
             var preview = new UIImage(ciImage: ciImage);
             var imageView = new UIImageView(frame: bounds)
@@ -176,12 +177,12 @@ namespace Nyris.UI.iOS
                 Image = preview,
                 ContentMode = UIViewContentMode.ScaleAspectFit
             };
-            View.AddSubview(imageView);
-            View.DrawViewHierarchy(bounds, true);
+            viewContainer.AddSubview(imageView);
+            viewContainer.DrawViewHierarchy(bounds, true);
             var image = UIGraphics.GetImageFromCurrentImageContext();
             UIGraphics.EndImageContext();
             imageView.RemoveFromSuperview();
-
+            
             ciImage?.Dispose();
             imageView?.Dispose();
             preview?.Dispose();
