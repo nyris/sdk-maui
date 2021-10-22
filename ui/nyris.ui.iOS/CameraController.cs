@@ -60,6 +60,7 @@ namespace Nyris.UI.iOS
             {
                 CaptureLabel.Text = Config.CaptureLabelText;
                 CloseLabel.Text = Config.BackLabelText;
+                CloseLabel.AddGestureRecognizer(new UITapGestureRecognizer( button => this.CloseTapped(null) ));
             }
         }
 
