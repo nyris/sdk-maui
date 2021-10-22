@@ -229,6 +229,20 @@ namespace Nyris.UI.iOS.Crop
             }
         }
 
+
+        public override UIView HitTest(CGPoint point, UIEvent uievent)
+        {
+
+            var tappedButton = _cornerButtons.FirstOrDefault(button => button.Frame.Contains(point));
+
+            if (tappedButton != null)
+            {
+                return tappedButton;
+            }
+
+            return base.HitTest(point, uievent);
+        }
+
         private void MoveCropOverlay(UIPanGestureRecognizer gestureRecognizer)
         {
             if (IsResizable && (gestureRecognizer.View is UIButton))
