@@ -6,10 +6,10 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.V4.Content;
-using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.Core.Content;
 using IO.Nyris.Camera;
 using IO.Nyris.Croppingview;
 using Java.Interop;
@@ -19,16 +19,13 @@ using Nyris.UI.Android.Custom;
 using Nyris.UI.Android.Models;
 using Nyris.UI.Android.Mvp;
 using Nyris.UI.Common;
-using Pub.Devrel.Easypermissions;
 using AlertDialog = Android.App.AlertDialog;
 
 namespace Nyris.UI.Android
 {
-    [Activity(Label = "NyrisSearcherActivity", Theme = "@style/NyrisSearcherTheme")]
-    internal sealed class NyrisSearcherActivity : AppCompatActivity, SearcherContract.IView,
-        EasyPermissions.IPermissionCallbacks
+    [Activity(Label = "NyrisSearcherActivity", Theme = "@style/NyrisSearcherTheme", Exported = true)]
+    internal sealed class NyrisSearcherActivity : AppCompatActivity, SearcherContract.IView
     {
-        private const int PermisionRequestCode = 1234;
         private CameraView _cameraView;
         private CircleView _circleViewBtn;
         private View _progress;
@@ -57,37 +54,35 @@ namespace Nyris.UI.Android
             _presenter?.OnAtach(this);
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
-        {
-            var grantResultsInt = grantResults.Select(permission =>
-            {
-                return permission == Permission.Granted ? 0 : -1;
-            }).ToArray();
-            EasyPermissions.OnRequestPermissionsResult(requestCode, permissions, grantResultsInt, this);
-        }
-
         protected override void OnResume()
         {
             base.OnResume();
             var isCameraPermissionGrantted = ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted;
-            var isSdCardPermissionGrantted = ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == Permission.Granted;
+            var isReadSdCardPermissionGrantted = ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == Permission.Granted;
+            var isWriteSdCardPermissionGrantted = ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == Permission.Granted;
 
-            if (isCameraPermissionGrantted && isSdCardPermissionGrantted)
+            if (isCameraPermissionGrantted && isReadSdCardPermissionGrantted && isWriteSdCardPermissionGrantted)
             {
                 _presenter?.OnResume();
             }
             else
             {
-                if (isPermissionCalledOnce) return;
-                isPermissionCalledOnce = true;
-                EasyPermissions.RequestPermissions(
-                    this,
-                    _config?.ShouldShowPermissionMessage,
-                    PermisionRequestCode,
-                    new string[] {
-                        Manifest.Permission.Camera,
-                        Manifest.Permission.ReadExternalStorage,
-                    });
+                var permissions = new List<string>();
+                if (!isCameraPermissionGrantted)
+                {
+                    permissions.Add(Manifest.Permission.Camera);
+                }
+                if (!isReadSdCardPermissionGrantted)
+                {
+                    permissions.Add(Manifest.Permission.ReadExternalStorage);
+
+                }
+                if (!isWriteSdCardPermissionGrantted)
+                {
+                    permissions.Add(Manifest.Permission.WriteExternalStorage);
+
+                }
+                _presenter.OnPermissionsDenied(permissions);
             }
         }
 

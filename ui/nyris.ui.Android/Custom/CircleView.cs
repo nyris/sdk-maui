@@ -3,10 +3,10 @@ using Android.Animation;
 using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
-using Android.Support.V4.Content;
 using Android.Util;
 using Android.Views;
 using Android.Views.Animations;
+using AndroidX.Core.Content;
 
 namespace Nyris.UI.Android.Custom
 {

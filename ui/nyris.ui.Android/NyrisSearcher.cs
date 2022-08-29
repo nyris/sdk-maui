@@ -1,13 +1,12 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
-using Android.Support.Annotation;
+using AndroidX.Annotations;
 using Newtonsoft.Json;
 using Nyris.Api.Api.RequestOptions;
 using Nyris.UI.Android.Models;
 using Nyris.UI.Common;
-using FragmentOld = Android.App.Fragment;
-using FragmentV4 = Android.Support.V4.App.Fragment;
+using FragmentX = AndroidX.Fragment.App.Fragment;
 
 namespace Nyris.UI.Android
 {
@@ -22,8 +21,6 @@ namespace Nyris.UI.Android
         INyrisSearcher ExternalStoragePermissionDeniedErrorMessage([NonNull] string message);
 
         INyrisSearcher CaptureLabelText([NonNull] string label);
-
-        INyrisSearcher ShouldShowPermissionMessage([NonNull] string message);
     }
 
     public class NyrisSearcher : INyrisSearcher
@@ -36,8 +33,7 @@ namespace Nyris.UI.Android
 
         private NyrisSearcherConfig _config;
         private Activity _fromActivity;
-        private FragmentV4 _fromFragmentV4;
-        private FragmentOld _fromFragmentOld;
+        private FragmentX _fromFragmentX;
 
         private NyrisSearcher(string apiKey, bool debug)
         {
@@ -53,14 +49,9 @@ namespace Nyris.UI.Android
             _fromActivity = activity;
         }
 
-        private NyrisSearcher([NonNull] string apiKey, [NonNull] FragmentV4 fragmentV4, bool debug) : this(apiKey, debug)
+        private NyrisSearcher([NonNull] string apiKey, [NonNull] FragmentX fragmentX, bool debug) : this(apiKey, debug)
         {
-            _fromFragmentV4 = fragmentV4;
-        }
-
-        private NyrisSearcher([NonNull]string apiKey, [NonNull] FragmentOld fragmentOld, bool debug) : this(apiKey, debug)
-        {
-            _fromFragmentOld = fragmentOld;
+            _fromFragmentX = fragmentX;
         }
 
         public static INyrisSearcher Builder(string apiKey, Activity activity, bool debug = false)
@@ -68,14 +59,9 @@ namespace Nyris.UI.Android
             return new NyrisSearcher(apiKey, activity, debug);
         }
 
-        public static INyrisSearcher Builder(string apiKey, FragmentV4 fragmentV4, bool debug = false)
+        public static INyrisSearcher Builder(string apiKey, FragmentX fragmentV4, bool debug = false)
         {
             return new NyrisSearcher(apiKey, fragmentV4, debug);
-        }
-
-        public static INyrisSearcher Builder(string apiKey, FragmentOld fragmentOld, bool debug = false)
-        {
-            return new NyrisSearcher(apiKey, fragmentOld, debug);
         }
 
         public INyrisSearcher CameraPermissionDeniedErrorMessage([NonNull] string message)
@@ -105,12 +91,6 @@ namespace Nyris.UI.Android
         public INyrisSearcher PositiveButtonText([NonNull] string text)
         {
             _config.PositiveButtonText = text;
-            return this;
-        }
-
-        public INyrisSearcher ShouldShowPermissionMessage([NonNull] string message)
-        {
-            _config.ShouldShowPermissionMessage = message;
             return this;
         }
 
@@ -226,17 +206,12 @@ namespace Nyris.UI.Android
                 intent.PutExtra(CONFIG_KEY, configJson);
                 _fromActivity.StartActivityForResult(intent, REQUEST_CODE);
             }
-            else if (_fromFragmentV4 != null)
+            else if (_fromFragmentX?.Context != null)
             {
-                var intent = new Intent(_fromFragmentV4.Context, typeof(NyrisSearcherActivity));
+                var intent = new Intent(_fromFragmentX.Context, typeof(NyrisSearcherActivity));
                 intent.PutExtra(CONFIG_KEY, configJson);
-                _fromFragmentV4.StartActivityForResult(intent, REQUEST_CODE);
-            }
-            else if (_fromFragmentOld != null)
-            {
-                var intent = new Intent(_fromFragmentOld.Context, typeof(NyrisSearcherActivity));
-                intent.PutExtra(CONFIG_KEY, configJson);
-                _fromFragmentOld.StartActivityForResult(intent, REQUEST_CODE);
+                _fromFragmentX.StartActivityForResult(intent, REQUEST_CODE);
+                _fromFragmentX = null;
             }
             else
             {
