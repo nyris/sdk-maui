@@ -42,9 +42,6 @@ namespace Nyris.UI.Common
 
         public string CameraPermissionRequestIfDeniedMessage { get; set; } = "Please authorize camera access";
 
-        public string ShouldShowPermissionMessage { get; set; } = "You need to activate camera " +
-            "permission or access to external storage to perform search.";
-
         public Type ResponseType { set; get; } = typeof(OfferResponseDto);
 
         public ExactOptions ExactOptions { get; set; }
