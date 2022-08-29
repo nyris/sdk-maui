@@ -16,7 +16,7 @@ package io.nyris.croppingview.util;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import io.nyris.croppingview.cropwindow.handle.Handle;
 
 /**

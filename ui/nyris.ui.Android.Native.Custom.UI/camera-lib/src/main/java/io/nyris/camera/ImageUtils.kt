@@ -8,7 +8,7 @@ import android.net.Uri
 import android.os.Environment
 import android.preference.PreferenceManager
 import android.provider.MediaStore
-import android.support.media.ExifInterface
+import androidx.exifinterface.media.ExifInterface
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -99,7 +99,7 @@ open class ImageUtils {
             editor.apply()
         }
 
-        private fun getParam(context: Context, key: String): String {
+        private fun getParam(context: Context, key: String): String? {
             val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
             return mPrefs.getString(key, "")
         }
@@ -117,11 +117,14 @@ open class ImageUtils {
         }
 
         fun rotateImageFromUri(context: Context, imageUri: Uri): Bitmap? {
-            val exif = ExifInterface(context.contentResolver.openInputStream(imageUri))
-            val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-            var captureBmp: Bitmap? = MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
-            captureBmp = rotateBitmap(captureBmp, orientation)
-            return captureBmp
+            context.contentResolver.openInputStream(imageUri)?.let { stream ->
+                val exif = ExifInterface(stream)
+                val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+                var captureBmp: Bitmap? = MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
+                captureBmp = rotateBitmap(captureBmp, orientation)
+                return captureBmp
+            }
+            return null
         }
 
         fun rotateBitmap(bitmap: Bitmap?, @ExifOrientation orientation: Int): Bitmap? {

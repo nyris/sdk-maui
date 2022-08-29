@@ -15,7 +15,7 @@ package io.nyris.croppingview.util;
 
 import android.content.res.Resources;
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import io.nyris.croppingview.R;
 
 /**
