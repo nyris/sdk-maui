@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>nyris.ui.Android.Camera</RootNamespace>
     <AssemblyName>nyris.ui.Android.Camera</AssemblyName>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v12.0</TargetFrameworkVersion>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidClassParser>class-parse</AndroidClassParser>
@@ -54,11 +54,7 @@
     <TransformFile Include="Transforms\Metadata.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedReferenceJar Include="Jars\timber-4.7.0.aar" />
-    <EmbeddedReferenceJar Include="Jars\kotlin-stdlib-1.2.30.jar" />
-  </ItemGroup>
-  <ItemGroup>
-    <LibraryProjectZip Include="Jars\camera-xamarin.custom-1.2.3.aar" />
+    <LibraryProjectZip Include="Jars\camera-lib-release.aar" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
 </Project>
