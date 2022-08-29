@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- You can override nyris searcher color here -->
-    <color name="nyris_color_primary">#E30000</color>
-    <color name="nyris_color_primary_dark">#001B5D</color>
-    <color name="nyris_color_accent">#E3005D</color>
+    <color name="colorPrimary">#2c3e50</color>
+    <color name="colorPrimaryDark">#1B3147</color>
+    <color name="colorAccent">#3498db</color>
 </resources>
+
