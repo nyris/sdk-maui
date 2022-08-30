@@ -1,7 +1,7 @@
 package io.nyris.camera
 
-import android.support.annotation.IntDef
-import android.support.media.ExifInterface
+import androidx.annotation.IntDef
+import androidx.exifinterface.media.ExifInterface
 
 /**
  *

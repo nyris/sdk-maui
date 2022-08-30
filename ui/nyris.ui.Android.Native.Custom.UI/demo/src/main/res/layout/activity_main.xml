@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/black"
+    tools:context=".MainActivity">
+
+    <io.nyris.camera.CameraView
+        android:id="@+id/camera"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
-        tools:context=".MainActivity">
-
-    <io.nyris.croppingview.PinViewCropper
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-</android.support.constraint.ConstraintLayout>
+        android:keepScreenOn="true"
+        android:adjustViewBounds="true"
+        app:autoFocus="true"
+        app:aspectRatio="4:3"
+        app:facing="back"
+        app:imageWidth="512"
+        app:imageHeight="512"
+        app:recognition="none"
+        app:flash="auto" />
+</androidx.constraintlayout.widget.ConstraintLayout>

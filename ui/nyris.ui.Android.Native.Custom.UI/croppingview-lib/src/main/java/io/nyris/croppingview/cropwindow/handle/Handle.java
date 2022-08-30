@@ -14,7 +14,7 @@
 package io.nyris.croppingview.cropwindow.handle;
 
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import io.nyris.croppingview.cropwindow.edge.Edge;
 
 

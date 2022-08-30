@@ -168,9 +168,11 @@ internal open class Camera2ZBar(callback: Callback?, preview: PreviewImpl, conte
     }
 
     override fun start(): Boolean {
-        listenerThread = HandlerThread("listenerThread")
-        listenerThread?.start()
-        listenerHandler = Handler(listenerThread?.looper)
+        HandlerThread("listenerThread").apply {
+            listenerThread = this
+            start()
+            listenerHandler = Handler(looper)
+        }
         return super.start()
     }
 

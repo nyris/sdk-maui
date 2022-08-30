@@ -342,12 +342,12 @@ If you specified a custom output format, you should use this call to get respons
 You can change text of the coponent by using:
 
 ```csharp
+    // You need to handle Camera and storage permissions before opening the nyris searcher
     NyrisSearcher
         .Builder("Your API Key Here", this)
         .CaptureLabelText("My Capture label.")
         .CameraPermissionDeniedErrorMessage("You can not use this componenet until you activate the camera permission!")
         .ExternalStoragePermissionDeniedErrorMessage("You can not use this componenet until you activate the access to external storage permission!")
-        .ShouldShowPermissionMessage("Should show message after second permission request")
         .DialogErrorTitle("Error Title")
         .PositiveButtonText("My OK")
         .Start();

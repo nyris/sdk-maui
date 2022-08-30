@@ -1,23 +1,26 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using AndroidX.AppCompat.App;
 using Java.Interop;
+using Nyris.UI.Android;
 using Nyris.UI.Android.Models;
 
 namespace Nyris.UI.Android.Demo
 {
-    [Activity(Label = "demo", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainActivity : Activity
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true, Exported = true)]
+    public class MainActivity : AppCompatActivity
     {
         TextView _tvResult;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.Main);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            // Set our view from the "main" layout resource
+            SetContentView(Resource.Layout.activity_main);
             _tvResult = FindViewById<TextView>(Resource.Id.tvResult);
         }
 
@@ -29,7 +32,6 @@ namespace Nyris.UI.Android.Demo
                 .CaptureLabelText("My Capture label.")
                 .CameraPermissionDeniedErrorMessage("You can not use this componenet until you activate the camera permission!")
                 .ExternalStoragePermissionDeniedErrorMessage("You can not use this componenet until you activate the access to external storage permission!")
-                .ShouldShowPermissionMessage("Should show message after second permission request")
                 .DialogErrorTitle("Error Title")
                 .PositiveButtonText("My OK")
                 .CategoryPrediction()
@@ -67,4 +69,3 @@ namespace Nyris.UI.Android.Demo
         }
     }
 }
-
