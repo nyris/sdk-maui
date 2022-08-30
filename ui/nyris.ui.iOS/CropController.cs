@@ -110,7 +110,7 @@ namespace Nyris.UI.iOS
         public override void Configure(NyrisSearcherConfig config, AppearanceConfiguration theme)
         {
             base.Configure(config, theme);
-            _nyrisApi = NyrisApi.CreateInstance(Config.ApiKey, Platform.iOS, Config.IsDebug);
+            _nyrisApi = NyrisApi.CreateInstance(Config.ApiKey, Platform.iOS, isDebug: Config.IsDebug);
             MapConfig();
         }
 

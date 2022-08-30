@@ -88,7 +88,9 @@ namespace Nyris.UI.Android
         public void OnSearchConfig([NonNull]NyrisSearcherConfig config)
         {
             _config = config;
-            _nyrisApi = NyrisApi.CreateInstance(_config.ApiKey, Platform.Android, _config.IsDebug);
+
+            var httpClientHandler = new Xamarin.Android.Net.AndroidClientHandler();
+            _nyrisApi = NyrisApi.CreateInstance(_config.ApiKey, Platform.Android, httpClientHandler, _config.IsDebug);
             MapConfig();
         }
 

@@ -13,6 +13,10 @@ namespace Nyris.Api.Utils
         private readonly string[] _types = {"html", "text", "xml", "json", "txt", "x-www-form-urlencoded"};
         private const string Id = Constants.SdkId;
 
+        public HttpLoggingAndRetryHandler(HttpClientHandler httpClientHandler) : base(httpClientHandler)
+        {
+        }
+
         private bool IsTextBasedContentType([NotNull] HttpHeaders headers)
         {
             if (!headers.TryGetValues("Content-Type", out var values))
