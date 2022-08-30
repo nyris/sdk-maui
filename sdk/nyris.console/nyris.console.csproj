@@ -67,13 +67,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\nyris.api\nyris.api.csproj">
-      <Project>{292e48e6-c9b5-4c52-997f-8d662727c623}</Project>
-      <Name>nyris.sdk</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\nyris.api\nyris.api.csproj">
+      <Project>{5AC15E4D-6BA2-45EA-9003-C897C4A061F5}</Project>
+      <Name>nyris.api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\Refit.4.5.6\build\net461\refit.targets" Condition="Exists('..\..\packages\Refit.4.5.6\build\net461\refit.targets')" />

@@ -17,14 +17,14 @@ namespace Nyris.Api.Api
         private readonly ApiHeader _apiHeader;
         private string _apiKey;
 
-        public Helper([NotNull] string apiKey, Platform platform, bool isDebug)
+        public Helper([NotNull] string apiKey, Platform platform, HttpClientHandler httpClientHandler, bool isDebug)
         {
             _apiKey = apiKey;
             _apiHeader = new ApiHeader(apiKey, platform.ToString());
 
             var httpHandler = isDebug
-                ? new HttpLoggingAndRetryHandler()
-                : new HttpRetryHandler();
+                ? new HttpLoggingAndRetryHandler(httpClientHandler)
+                : new HttpRetryHandler(httpClientHandler);
 
             var httpClient = new HttpClient(httpHandler)
             {

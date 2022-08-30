@@ -10,8 +10,8 @@ namespace Nyris.Api.Utils
     {
         private const int NumberRetry = Constants.DefaultHttpRetryCount;
 
-        public HttpRetryHandler()
-            : base(new HttpClientHandler())
+        public HttpRetryHandler(HttpClientHandler httpClientHandler)
+            : base(httpClientHandler ?? new HttpClientHandler())
         {
         }
 

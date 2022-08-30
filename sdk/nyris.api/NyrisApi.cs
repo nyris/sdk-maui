@@ -1,3 +1,4 @@
+using System.Net.Http;
 using JetBrains.Annotations;
 using Nyris.Api.Api;
 using Nyris.Api.Api.Feedback;
@@ -12,14 +13,14 @@ namespace Nyris.Api
     {
         private readonly INyrisApi _helper;
 
-        private NyrisApi([NotNull] string apiKey, Platform platform, bool isDebug)
+        private NyrisApi([NotNull] string apiKey, Platform platform, HttpClientHandler httpClientHandler, bool isDebug)
         {
-            _helper = new Helper(apiKey, platform, isDebug);
+            _helper = new Helper(apiKey, platform, httpClientHandler, isDebug);
         }
 
         [NotNull]
-        public static INyrisApi CreateInstance([NotNull] string apiKey, Platform platform, bool isDebug = false)
-            => new NyrisApi(apiKey, platform, isDebug);
+        public static INyrisApi CreateInstance([NotNull] string apiKey, Platform platform, HttpClientHandler httpClientHandler = null, bool isDebug = false)
+            => new NyrisApi(apiKey, platform, httpClientHandler, isDebug);
 
 
         public string ApiKey
