@@ -17,7 +17,7 @@ namespace Nyris.Api.Api.ObjectProposal
         /// <param name="image">The image to detect objects in.</param>
         /// <returns>An <see cref="IObservable{T}"/> of lists of detected objects.</returns>
         [NotNull]
-        IObservable<List<DetectedObjectDto>> ExtractObjects([NotNull] byte[] image);
+        IObservable<RegionsObjectDto> ExtractObjects([NotNull] byte[] image);
 
         /// <summary>
         /// Identifies objects in the specified <paramref name="image"/>.
@@ -25,7 +25,7 @@ namespace Nyris.Api.Api.ObjectProposal
         /// <param name="image">The image to detect objects in.</param>
         /// <returns>A <see cref="Task{T}"/> returning a list of detected objects.</returns>
         [NotNull]
-        Task<List<DetectedObjectDto>> ExtractObjectsAsync([NotNull] byte[] image);
+        Task<RegionsObjectDto> ExtractObjectsAsync([NotNull] byte[] image);
 
         /// <summary>
         /// Identifies objects in the specified <paramref name="image"/>.

@@ -163,7 +163,7 @@ Extract objects from an image:
 ```csharp
     nyris.ObjectProposal
         .ExtractObjects(image)
-        .Subscribe(response /* List<DetectedObjectDto>*/=>
+        .Subscribe(response /* RegionsObjectDto */=>
         {
             // Handle your response
             var objects = response;
