@@ -24,12 +24,12 @@ namespace Nyris.Api.Api.ObjectProposal
         }
 
         /// <inheritdoc cref="IObjectProposalApi.ExtractObjects"/>
-        public IObservable<List<DetectedObjectDto>> ExtractObjects(byte[] image)
-            => ExtractObjects<List<DetectedObjectDto>>(image);
+        public IObservable<RegionsObjectDto> ExtractObjects(byte[] image)
+            => ExtractObjects<RegionsObjectDto>(image);
 
         /// <inheritdoc cref="IObjectProposalApi.ExtractObjectsAsync"/>
-        public Task<List<DetectedObjectDto>> ExtractObjectsAsync(byte[] image)
-            => ExtractObjectsAsync<List<DetectedObjectDto>>(image);
+        public Task<RegionsObjectDto> ExtractObjectsAsync(byte[] image)
+            => ExtractObjectsAsync<RegionsObjectDto>(image);
 
         /// <inheritdoc cref="IObjectProposalApi.ExtractObjects{T}"/>
         public IObservable<T> ExtractObjects<T>(byte[] image)

@@ -7,7 +7,7 @@ namespace Nyris.Api.Service
 {
     internal interface IObjectProposalService
     {
-        [Post("/find/v1/regions")]
+        [Post("/find/v2/regions")]
         IObservable<T> ExtractObjects<T>([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,
             [Header("X-Api-Key")] string apiKey,
@@ -15,7 +15,7 @@ namespace Nyris.Api.Service
             [Header("Content-Length")] string contentLength,
             ByteArrayContent image);
 
-        [Post("/find/v1/regions")]
+        [Post("/find/v2/regions")]
         Task<T> ExtractObjectsAsync<T>([Header("Accept")] string accept,
             [Header("User-Agent")] string userAgent,
             [Header("X-Api-Key")] string apiKey,

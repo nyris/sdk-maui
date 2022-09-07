@@ -17,7 +17,7 @@ namespace nyris.console
             var imagePath = Path.Combine(solutionPath, "sample.jpg");
             var image = File.ReadAllBytes(imagePath);
             var apiKey = Environment.GetEnvironmentVariable("API_KEY") ?? "";
-            var nyris = NyrisApi.CreateInstance(apiKey, Platform.Generic, true);
+            var nyris = NyrisApi.CreateInstance(apiKey, Platform.Generic, isDebug: true);
 
             Console.WriteLine("Select Api mode: Reactive(1) or Async(2)");
             string key;
