@@ -36,6 +36,7 @@ namespace Nyris.UI.Android
         {
             _compositeDisposable = new CompositeDisposable();
             _view = view;
+            checkApiKey();
             _view?.SetCaptureLabel(_config.CaptureLabelText);
             _view?.StartCircleViewAnimation();
         }
@@ -92,6 +93,15 @@ namespace Nyris.UI.Android
             var httpClientHandler = new Xamarin.Android.Net.AndroidClientHandler();
             _nyrisApi = NyrisApi.CreateInstance(_config.ApiKey, Platform.Android, httpClientHandler, _config.IsDebug);
             MapConfig();
+        }
+
+        private void checkApiKey()
+        {
+            var isValid = !string.IsNullOrEmpty(_config.ApiKey) && !_config.ApiKey.Contains(" ");
+            if (!isValid)
+            {
+                OnError("Please set a correct api key");
+            }
         }
 
         public void OnCircleViewClick()

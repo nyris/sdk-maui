@@ -42,6 +42,7 @@ import io.nyris.croppingview.util.HandleUtil;
 import io.nyris.croppingview.util.PaintUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -103,9 +104,9 @@ public class PinViewCropper extends FrameLayout {
     // Mode indicating how/whether to show the guidelines; must be one of GUIDELINES_OFF, GUIDELINES_ON_TOUCH, GUIDELINES_ON.
     private int mGuidelinesMode = 1;
     // List of Extracted objects
-    private List<RectF> extractedObjects;
+    private List<RectF> extractedObjects = Collections.emptyList();
     // List of PinView
-    private List<PinView> pinViews;
+    private List<PinView> pinViews = Collections.emptyList();
     // Current Selected Object
     private RectF selectedObjectProposal;
 
@@ -214,7 +215,7 @@ public class PinViewCropper extends FrameLayout {
         for (PinView pinView : pinViews) {
             removeView(pinView);
         }
-        pinViews = null;
+        pinViews = Collections.emptyList();
     }
 
     public RectF getSelectedObjectProposal() {
