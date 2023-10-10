@@ -1,0 +1,125 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net7.0-ios</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>true</ImplicitUsings>
+        <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+        <Deterministic>false</Deterministic>
+        <AssemblyName>Nyris.Demo.iOS</AssemblyName>
+        <RootNamespace>Nyris.Demo.iOS</RootNamespace>
+        <PackageId>Nyris.Demo.iOS</PackageId>
+        <Authors>Nyris.Demo.iOS</Authors>
+        <Company>Nyris.Demo.iOS</Company>
+        <Product>Nyris.Demo.iOS</Product>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+      <CreatePackage>false</CreatePackage>
+      <DebugType>portable</DebugType>
+      <WarningLevel>4</WarningLevel>
+      <MtouchDebug>true</MtouchDebug>
+      <CodesignProvision>VS: WildCard Development</CodesignProvision>
+      <CodesignKey>Apple Development: MOSTEFAOUI Anas (QF72FG64GN)</CodesignKey>
+      <MtouchLink>SdkOnly</MtouchLink>
+      <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+      <CreatePackage>false</CreatePackage>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\sdk\api\nyris.api\nyris.api.csproj" />
+      <ProjectReference Include="..\..\sdk\ui\nyris.ui.common\nyris.ui.common.csproj" />
+      <ProjectReference Include="..\..\sdk\ui\nyris.ui.iOS\nyris.ui.iOS.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <ImageAsset Update="Assets.xcassets\crop_image_demo.imageset\validate_icon%403x.png">
+        <Link>Assets.xcassets\crop_image_demo.imageset\validate_icon%403x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\crop_image_demo.imageset\validate_icon%402x.png">
+        <Link>Assets.xcassets\crop_image_demo.imageset\validate_icon%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\capture_icon_demo.imageset\capture_icon%403x.png">
+        <Link>Assets.xcassets\capture_icon_demo.imageset\capture_icon%403x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\capture_icon_demo.imageset\capture_icon%402x.png">
+        <Link>Assets.xcassets\capture_icon_demo.imageset\capture_icon%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-57x57%401x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-57x57%401x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%402x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%401x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%401x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%402x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%401x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%401x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-72x72%401x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-72x72%401x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%401x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%401x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-83.5x83.5%402x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-83.5x83.5%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%403x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%403x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\ItunesArtwork%402x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\ItunesArtwork%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%402x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%403x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%403x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%402x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-72x72%402x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-72x72%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-60x60%403x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-60x60%403x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%401x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%401x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-60x60%402x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-60x60%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-57x57%402x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-57x57%402x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%401x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%401x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%403x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-40x40%403x.png</Link>
+      </ImageAsset>
+      <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%402x.png">
+        <Link>Assets.xcassets\AppIcon.appiconset\Icon-App-29x29%402x.png</Link>
+      </ImageAsset>
+    </ItemGroup>
+    <ItemGroup>
+      <BundleResource Condition="'$(_ResourcePrefix)' != ''" Update="Resources\capture_custom%402x.png">
+        <Link>Resources\capture_custom%402x.png</Link>
+      </BundleResource>
+      <BundleResource Condition="'$(_ResourcePrefix)' != ''" Update="Resources\capture_custom%403x.png">
+        <Link>Resources\capture_custom%403x.png</Link>
+      </BundleResource>
+      <BundleResource Condition="'$(_ResourcePrefix)' != ''" Update="Resources\validate_custom%402x.png">
+        <Link>Resources\validate_custom%402x.png</Link>
+      </BundleResource>
+      <BundleResource Condition="'$(_ResourcePrefix)' != ''" Update="Resources\crop_custom%403x.png">
+        <Link>Resources\crop_custom%403x.png</Link>
+      </BundleResource>
+    </ItemGroup>
+</Project>

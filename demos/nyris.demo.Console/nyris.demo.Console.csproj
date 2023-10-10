@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Nyris.Demo.Console</RootNamespace>
+        <PackageId>Nyris.Demo.Console</PackageId>
+        <Authors>Nyris.Demo.Console</Authors>
+        <Company>Nyris.Demo.Console</Company>
+        <Product>Nyris.Demo.Console</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\sdk\api\nyris.api\nyris.api.csproj" />
+    </ItemGroup>
+
+</Project>

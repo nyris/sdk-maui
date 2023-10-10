@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+        <TargetFramework>net7.0-android</TargetFramework>
+        <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>Nyris.UI.Android</AssemblyName>
+        <RootNamespace>Nyris.UI.Android</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\api\nyris.api\nyris.api.csproj" />
+      <ProjectReference Include="..\nyris.ui.Android.Camera\nyris.ui.Android.Camera.csproj" />
+      <ProjectReference Include="..\nyris.ui.Android.Cropping\nyris.ui.Android.Cropping.csproj" />
+      <ProjectReference Include="..\nyris.ui.common\nyris.ui.common.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.1.4" />
+        <PackageReference Include="Xamarin.AndroidX.AppCompat.AppCompatResources" Version="1.6.1.5" />
+        <PackageReference Include="Xamarin.AndroidX.ConstraintLayout" Version="2.1.4.7" />
+    </ItemGroup>
+</Project>

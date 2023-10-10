@@ -1,4 +1,4 @@
-# nyris SDK for .NET and Xamarin
+# nyris SDK for .NET, Xamarin and MAUI
 
 ![nyris.io logo](https://storage.googleapis.com/nyris-logos/title.png)
 
@@ -13,8 +13,7 @@ to use our system, including error handling, as well as reactive and asynchronou
 * Support for all nyris services,
 * Support of Reactive/Asynchronous programming paradigms,
 * Simplified error handling,
-* Type-safe HTTP client, and a
-* Unified response format.
+* Type-safe HTTP client, and a Unified response format.
 
 To the following nyris services:
 
@@ -31,23 +30,22 @@ At the minimum, the following criteria must be met:
 * Images are sent in **JPEG** format,
 * The minimum dimensions of an image are `512x512 px`, and
 * The size of an image is less than or equal to `500 KB`.
+* In Xamarin.Android or MAUI you need to make sure to handle the permissions and to include these permissions in `AndroidManifest.xml`
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    ...
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.CAMERA" />
+</manifest>
+```
 
-## SDK Solution
-
-The current solution is composed of multiple projects:
-
-* **nyris API**: The SDK for accessing nyris APIs.
-* **nyris Console Demo**: A demo console application that shows different usages of the API.
-* **nyris ui Android**: The nyris searcher components.
-* **nyris ui Camera Android**: A jar binding project for our Java [Camera view](https://github.com/nyris/Camera.Android).
-* **nyris ui Cropping Android**: A jar binding project for the Java image cropping view.
-* **nyris ui Demo Android**: An Android demo app that shows how to use nyris searcher component(s).
-* **nyris ui iOS**: The nyris searcher components for iOS.
-* **nyris ui iOS Demo**: An iOS demo app that shows how to use nyris searcher component(s).
 
 # Get Started
 * [Get Started with nyris SDK](#get-started-with-nyris-sdk)
 * [Get Started with nyris Xamarin Searcher](#get-started-with-nyris-xamarin-searcher)
+* [Get Started with nyris MAUI Searcher](#get-started-with-nyris-maui-searcher)
 
 ## Get Started with nyris SDK
 
@@ -103,34 +101,12 @@ static class Program
     //For more details about available feed attributes please check our documentation : http://docs.nyris.io/#available-feed-attributes.
     var imageByteArray = ...; /* Your byte array */
     nyris.ImageMatching
-        .OutputFormat("PROVIDED_OUTPUT_FORMAT") // Set the desired OUTPUT_FORMAT
         .Language("de") // Return only offers with language "de".
-        .Exact(opt =>
-        {
-            opt.Enabled = false; // disable exact matching
-        })
-        .Similarity(opt => //Performs similarity matching
-        {
-            opt.Threshold = 0.5f; // The lower limit of confidences to be considered good from similarity
-            opt.Limit = 10; // The upper limit for the number of results to be returned from similarity
-        })
-        .Ocr(opt => //Performs optical character recognition on the images
-        {
-            opt.Enabled = false; // disable OCR
-        })
-        .Regroup(opt =>
-        {
-            opt.Enabled = false; // This mode enables regrouping of the items
-            opt.Threshold = 0.5f; // The lower limit of confidences to be considered good from similarity
-        })
-        .Recommendations() // Enables recommendation type searches that return all discovered results regardless of their score.
-        .categoryPrediction({opt =>
-        {
-            opt.Enabled = true; // Enables the output of predicted categories.
-            opt.Threshold = 0.5F; // Sets the cutoff threshold for category predictions (range 0..1).
-            opt.Limit = 10; // Limits the number of categories to return.
-        })
         .Limt(10) // Limit returned offers
+        .Filters(opt => // Add Filters 
+        {
+            opt.AddFilter("color", new List<string> { "red", "blue" });
+        })
         .Match(imageTestBytes)
         .Subscribe(response =>
             {
@@ -141,20 +117,7 @@ static class Program
         );
 ```
 
-The response will be an object of type `OfferResponseDto` that contains list of `Offers`, `RequestId` and  `PredictedCategories`
-
-* If you specified a custom output format before, you should use this call to get response as `JSON` format :
-
-```csharp
-    nyris.ImageMatching
-        .Match<JsonResponseDto(image)
-        .Subscribe(response =>
-            {
-                var json = response.Content;
-            },
-            throwable => ...
-        );
-```
+The response will be an object of type `OfferResponseDto` that contains list of `Offers`, `RequestId`
 
 ### Extract objects from your image
 
@@ -223,23 +186,14 @@ To start using image matching component, you will need to reference the project 
 * [Load last session state](#load-last-session-state)
 
 ### Starting the component
-#### For Android
 To start the component call:
 
 ```csharp
     NyrisSearcher
-        .Builder("Your API Key Here", ActivityOrFragment)
-        .Start();
+        .Builder("Your API Key Here", ActivityOrPresenterController)
+        .Start(...);
 ```
 
-#### For iOS
-NyrisSearcher for iOS requires a ViewController that will be responsible for presenting the camera/crop controller, to start the component call:
-
-```csharp
-    NyrisSearcher
-        .Builder("Your API Key Here", presenterController)
-        .Start();
-```
 
 ### Setting image matching options
 
@@ -247,54 +201,37 @@ For more details about image matching options please check [this section](#match
 
 ```csharp
     NyrisSearcher
-    // For iOS use
-    //  .Builder("Your API Key Here", presenterController)
-        .Builder("Your API Key Here", ActivityOrFragment)
-        .Exact(opt =>
+        .Builder("Your API Key Here", ActivityOrPresenterController)
+        .Filters(opt => // Add Filters 
         {
-            Enabled = false; // disable exact matching
+            opt.AddFilter("color", new List<string> { "red", "blue" });
         })
-        .Similarity(opt => //Performs similarity matching
-        {
-            Threshold = 0.5f; // The lower limit of confidences to be considered good from similarity
-            Limit = 10; // The upper limit for the number of results to be returned from similarity
-        })
-        .Ocr(opt => //Performs optical character recognition on the images
-        {
-            Enabled = false; // disable OCR
-        })
-        .Start();
+        .Start(...);
 ```
 
 ### Handling returned results
 
 #### For Android
 ```csharp
-protected override void OnActivityResult(int requestId, Result resultCode, Intent data)
-{
-    base.OnActivityResult(requestId, resultCode, data);
-
-    if (resultCode == Result.Ok)
-    {
-        if (requestId == NyrisSearcher.REQUEST_ID)
+    NyrisSearcher
+        .Builder("Your API Key Here", ActivityOrPresenterController)
+        .Filters(opt => // Add Filters 
         {
-            try
+            opt.AddFilter("color", new List<string> { "red", "blue" });
+        })
+        .Start(result => // Handling your result
+        {
+            if (result == null)
             {
-                var offerResponse = data.GetParcelableExtra(NyrisSearcher.SEARCH_RESULT_KEY) as OfferResponse;
-                _tvResult.Text = $"Found ({offerResponse.Offers.Count}) offers, Categories : ({offerResponse.PredictedCategories.Count})";
+                _tvResult.Text =
+                    "the searcher is canceled or an exception is raised which forces the result to be null";
             }
-            catch
+            else
             {
-                var offerResponse = data.GetParcelableExtra(NyrisSearcher.SEARCH_RESULT_KEY) as JsonResponse;
-                _tvResult.Text = $"Response : {offerResponse.Content}";
+                _tvResult.Text = $"Image Path = offerResponse.TakenImagePath \n" +
+                                 $"Found ({result.Offers.Count}) offers, with request id: {result.RequestCode})";
             }
-        }
-    }
-    else
-    {
-        //do something else
-    }
-}
+        });
 ```
 
 #### For iOS
@@ -323,33 +260,23 @@ void SearchServiceOnOfferAvailable(object sender, OfferResponseEventArgs e)
 }
 ```
 
-
-### Handling JSON results
-
-If you specified a custom output format, you should use this call to get response as `JSON` format:
-
-```csharp
-    NyrisSearcher
-    // For iOS use
-    //  .Builder("Your API Key Here", presenterController)
-        .Builder("Your API Key Here", ActivityOrFragment)
-        .ResultAsJson()
-        .Start();
-```
-
 ### Customizing the text of the component
 
-You can change text of the coponent by using:
+You can change text of the component by using:
 
 ```csharp
     // You need to handle Camera and storage permissions before opening the nyris searcher
     NyrisSearcher
-        .Builder("Your API Key Here", this)
-        .CaptureLabelText("My Capture label.")
+        .Builder("Your API Key Here", ActivityOrPresenterController)
+        .AgreeButtonTitle("My OK")
+        .CancelButtonTitle("My Cancel")
         .CameraPermissionDeniedErrorMessage("You can not use this componenet until you activate the camera permission!")
         .ExternalStoragePermissionDeniedErrorMessage("You can not use this componenet until you activate the access to external storage permission!")
+        .CameraPermissionRequestIfDeniedMessage("Your message when camera permission is denied") // For iOS only
+        .ConfigurationFailedErrorMessage("Your message when configuration is failed") // For iOS only
+        .CaptureLabelText("My Capture label.")
         .DialogErrorTitle("Error Title")
-        .PositiveButtonText("My OK")
+        .BackLabelText("Your back label") // For iOS only
         .Start();
 ```
 See `NyrisSearcherConfig.cs` for full list of configuration.
@@ -389,23 +316,47 @@ To customize the color or image of different views of the Searcher controller, c
         .Theme(theme)
 ```
 
-If you want to change the back button text use :
-
-```csharp
-    NyrisSearcher
-        .Builder("Your API Key Here", this)
-        .BackLabelText("Back text")
-```
-
 ### Load last session state
 
 To load last session state of the `NyrisSearcher` you will need :
 ```csharp
     NyrisSearcher
-        .Builder("Your API Key Here", presenterController)
-        .Start(loadLastState: true);
+        .Builder("Your API Key Here", ActivityOrPresenterController)
+        .LoadLastState(true)
+        .Start(...);
 ```
 In case of an unknown error or un saved state the parameter will fallback to default mode.
+
+## Get Started with nyris MAUI Searcher
+
+Not different from Xamarin.Android SDK or Xamarin.iOS SDK, you can start using the nyris MAUI searcher by following this:
+
+```csharp
+    NyrisSearcher
+        .Builder("Your API Key Here", ActivityOrPresenterController)
+        .AgreeButtonTitle("My OK")
+        .CancelButtonTitle("My Cancel")
+        .CameraPermissionDeniedErrorMessage("You can not use this componenet until you activate the camera permission!")
+        .ExternalStoragePermissionDeniedErrorMessage("You can not use this componenet until you activate the access to external storage permission!")
+        .CameraPermissionRequestIfDeniedMessage("Your message when camera permission is denied") // For iOS only
+        .ConfigurationFailedErrorMessage("Your message when configuration is failed") // For iOS only
+        .CaptureLabelText("My Capture label.")
+        .DialogErrorTitle("Error Title")
+        .BackLabelText("Your back label") // For iOS only
+        .Language("de")
+        .Limit(10)
+        .Start(result => // Handling your result
+        {
+            if (result == null)
+            {
+                // the searcher is canceled or an exception is raised which forces the result to be null
+            }
+            else
+            {
+                // Your result
+            }
+        };
+```
 
 License
 =======

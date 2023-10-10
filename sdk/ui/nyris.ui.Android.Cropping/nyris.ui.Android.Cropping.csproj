@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net7.0-android</TargetFramework>
+        <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>Nyris.UI.Android.Cropping</AssemblyName>
+        <RootNamespace>Nyris.UI.Android.Cropping</RootNamespace>
+        <PackageId>Nyris.UI.Android.Cropping</PackageId>
+        <Authors>Nyris.UI.Android.Cropping</Authors>
+        <Company>Nyris.UI.Android.Cropping</Company>
+        <Product>Nyris.UI.Android.Cropping</Product>
+    </PropertyGroup>
+    <ItemGroup>
+      <None Remove="Jars\croppingview-lib-release.aar" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2J4-0P-g8M">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="YPt-Fz-MvA">
+            <objects>
+                <navigationController id="2J4-0P-g8M" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3Y9-if-zjn">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="vOe-ea-obE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0x7-9p-yu6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-781" y="-70"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sSb-Le-drw">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="r6z-cQ-mWO">
+                                <rect key="frame" x="99" y="672" width="195" height="126"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number of offers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oc7-Lx-oGX">
+                                        <rect key="frame" x="32.666666666666657" y="0.0" width="130" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.2041163444519043" green="0.47271108627319336" blue="0.96475440263748169" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s0D-Sa-xbo">
+                                        <rect key="frame" x="0.0" y="48" width="195" height="30"/>
+                                        <state key="normal" title="Open new Searcher session "/>
+                                        <connections>
+                                            <action selector="OpenNewSearcherSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="827"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="197">
+                                        <rect key="frame" x="10.666666666666671" y="96" width="174" height="30"/>
+                                        <state key="normal" title="Restore Searcher session"/>
+                                        <connections>
+                                            <action selector="RestoreSearcherSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="828"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ScG-MW-Bxo"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="sSb-Le-drw" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="90h-PV-cJl"/>
+                            <constraint firstItem="sSb-Le-drw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EJM-eO-LPO"/>
+                            <constraint firstItem="sSb-Le-drw" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="N1l-Jf-4OI"/>
+                            <constraint firstItem="r6z-cQ-mWO" firstAttribute="centerX" secondItem="ScG-MW-Bxo" secondAttribute="centerX" id="X7N-2T-RX4"/>
+                            <constraint firstItem="sSb-Le-drw" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="fOB-qN-Axi"/>
+                            <constraint firstItem="ScG-MW-Bxo" firstAttribute="bottom" secondItem="r6z-cQ-mWO" secondAttribute="bottom" constant="20" id="t1a-Q1-BS8"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="fYj-8V-AuN"/>
+                    <connections>
+                        <outlet property="OfferNumberLabel" destination="oc7-Lx-oGX" id="name-outlet-oc7-Lx-oGX"/>
+                        <outlet property="screenshotImageView" destination="sSb-Le-drw" id="name-outlet-sSb-Le-drw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-103" y="-70"/>
+        </scene>
+    </scenes>
+</document>

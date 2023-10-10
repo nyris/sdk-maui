@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net7.0-android;net7.0-ios</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+        <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+        <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
+        <OutputType>Exe</OutputType>
+        <RootNamespace>Nyris.Demo.MAUI</RootNamespace>
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <!-- Display name -->
+        <ApplicationTitle>nyris.demo.MAUI</ApplicationTitle>
+
+        <!-- App Identifier -->
+        <ApplicationId>io.nyris.Demo.MAUI</ApplicationId>
+        <ApplicationIdGuid>D9B7F363-7CAF-43E8-8176-50BF3BB0A058</ApplicationIdGuid>
+
+        <!-- Versions -->
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>1</ApplicationVersion>
+
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+        <AssemblyName>Nyris.Demo.MAUI</AssemblyName>
+        <PackageId>Nyris.Demo.MAUI</PackageId>
+        <Authors>Nyris.Demo.MAUI</Authors>
+        <Company>Nyris.Demo.MAUI</Company>
+        <Product>Nyris.Demo.MAUI</Product>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
+      <CreatePackage>false</CreatePackage>
+    </PropertyGroup>
+    <ItemGroup>
+        <!-- App Icon -->
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\nyris_icon.svg" Color="#E31B5D" />
+
+        <!-- Splash Screen -->
+        <MauiSplashScreen Include="Resources\Splash\nyris_splash.svg" Color="#E31B5D" BaseSize="128,128" />
+
+        <!-- Images -->
+        <MauiImage Include="Resources\Images\*" />
+        <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+
+        <!-- Custom Fonts -->
+        <MauiFont Include="Resources\Fonts\*" />
+
+        <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\sdk\api\nyris.api\nyris.api.csproj" />
+      <ProjectReference Include="..\..\sdk\ui\nyris.ui.common\nyris.ui.common.csproj" />
+      <ProjectReference Include="..\..\sdk\ui\nyris.ui.maui\nyris.ui.maui.csproj" />
+    </ItemGroup>
+
+    <!-- Workaround for https://github.com/xamarin/AndroidX/issues/742 -->
+    <ItemGroup Condition="$(TargetFramework.Contains('-android')) == true">
+        <PackageReference Include="Xamarin.AndroidX.Activity" Version="1.7.2.2" />
+        <PackageReference Include="Xamarin.AndroidX.Activity.Ktx" Version="1.7.2.2" />
+    </ItemGroup>
+
+</Project>

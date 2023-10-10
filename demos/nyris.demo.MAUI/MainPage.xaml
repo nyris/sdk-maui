@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Nyris.Demo.MAUI.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Image
+                Source="dotnet_bot.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="MAUI Nyris Searcher"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Tap the button below to start searching for objects in the image."
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Tap the button below to start searching for objects in the image."
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Button
+                Text="Start nyris Searcher"
+                SemanticProperties.Hint="Start nyris Searcher"
+                Clicked="OnSearcherStart"
+                HorizontalOptions="Center" />
+            
+            <Label
+                x:Name="ResultLabel"
+                Text="Waiting for nyris searcher results"
+                SemanticProperties.Description="Waiting for nyris searcher results"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

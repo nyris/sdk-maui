@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net7.0-android</TargetFramework>
+        <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>Nyris.UI.Android.Camera</AssemblyName>
+        <RootNamespace>Nyris.UI.Android.Camera</RootNamespace>
+        <PackageId>Nyris.UI.Android.Camera</PackageId>
+        <Authors>Nyris.UI.Android.Camera</Authors>
+        <Company>Nyris.UI.Android.Camera</Company>
+        <Product>Nyris.UI.Android.Camera</Product>
+    </PropertyGroup>
+    <ItemGroup>
+      <None Remove="Jars\camera-lib-release.aar" />
+    </ItemGroup>
+</Project>
