@@ -9,9 +9,10 @@ namespace Nyris.Api.Api.ImageMatching;
 
 internal sealed class ImageMatchingApi : ApiBase, IImageMatchingApi
 {
-    private readonly NyrisFilterOption _filters;
+    private readonly NyrisFilterOption _filtersOptions;
     private readonly IImageMatchingService _service;
     private int _limit = OptionDefaults.DefaultLimit;
+    private readonly CategoryPredictionOptions _categoryPredictionOptions;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="ImageMatchingApi" /> class.
@@ -22,7 +23,8 @@ internal sealed class ImageMatchingApi : ApiBase, IImageMatchingApi
         : base(apiHeader)
     {
         _service = service;
-        _filters = new NyrisFilterOption();
+        _filtersOptions = new NyrisFilterOption();
+        _categoryPredictionOptions = new CategoryPredictionOptions();
     }
 
     /// <inheritdoc cref="IMatchResultFormat{T}.Language" />
@@ -39,12 +41,20 @@ internal sealed class ImageMatchingApi : ApiBase, IImageMatchingApi
         return this;
     }
 
+    public IImageMatchingApi CategoryPrediction(Action<CategoryPredictionOptions>? options = null)
+    {
+        options ??= opt => { opt.Enabled = true; };
+
+        options(_categoryPredictionOptions);
+        return this;
+    }
+
     /// <inheritdoc cref="IImageMatching{T}.Filters" />
     public IImageMatchingApi Filters(Action<NyrisFilterOption> options = null)
     {
         if (options == null) options = opt => { opt.Enabled = true; };
 
-        options(_filters);
+        options(_filtersOptions);
         return this;
     }
 
@@ -52,7 +62,7 @@ internal sealed class ImageMatchingApi : ApiBase, IImageMatchingApi
     public IObservable<OfferResponseDto> Match(byte[] image, string imageName = "image.jpg", string contentType = "image/jpeg")
     {
         var xOptions = BuildRequestOptions();
-        var multipart = new ImageMatchingMultiPart(imageName, contentType, _filters, image, boundary:"nyris-xamarin-sdk-boundary");
+        var multipart = new ImageMatchingMultiPart(imageName, contentType, _filtersOptions, image, boundary:"nyris-xamarin-sdk-boundary");
         var obs1 = _service.Match(Constants.DefaultResultFormat,
             ApiHeader.UserAgent,
             ApiHeader.ApiKey,
@@ -61,14 +71,16 @@ internal sealed class ImageMatchingApi : ApiBase, IImageMatchingApi
             multipart.ToContent());
 
         var obs2 = Observable.Return(string.Empty);
-        return obs1.CombineLatest(obs2, (apiResponse, dummy) => CastToNyrisResponse(apiResponse));
+        return obs1.CombineLatest(obs2, (apiResponse, dummy) => 
+            CastToNyrisResponse(apiResponse)
+        );
     }
 
     /// <inheritdoc cref="IImageMatchingApi.MatchAsync" />
     public async Task<OfferResponseDto> MatchAsync(byte[] image, string imageName = "image.jpg", string contentType = "image/jpeg")
     {
         var xOptions = BuildRequestOptions();
-        var multipart = new ImageMatchingMultiPart(imageName, contentType, _filters, image, boundary:"nyris-xamarin-sdk-boundary");
+        var multipart = new ImageMatchingMultiPart(imageName, contentType, _filtersOptions, image, boundary:"nyris-xamarin-sdk-boundary");
 
         var apiResponse = await _service.MatchAsync(Constants.DefaultResultFormat,
             ApiHeader.UserAgent,
@@ -85,6 +97,21 @@ internal sealed class ImageMatchingApi : ApiBase, IImageMatchingApi
     {
         var xOptions = string.Empty;
         if (_limit != OptionDefaults.DefaultLimit) xOptions += $" limit={_limit}";
+        
+        if (_categoryPredictionOptions.Enabled)
+        {
+            xOptions += " +category-prediction";
+            if (_categoryPredictionOptions.Limit != OptionDefaults.UndefinedLimit)
+            {
+                xOptions += $" category-prediction.limit={_categoryPredictionOptions.Limit}";
+            }
+
+            if (_categoryPredictionOptions.Threshold != OptionDefaults.UndefinedThreshold)
+            {
+                xOptions += $" category-prediction.threshold={_categoryPredictionOptions.Threshold}";
+            }
+        }
+        
         Reset();
         return xOptions;
     }

@@ -13,6 +13,7 @@
         <Company>Nyris.Demo.Android</Company>
         <Product>Nyris.Demo.Android</Product>
         <RootNamespace>Nyris.Demo.Android</RootNamespace>
+        <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\sdk\api\nyris.api\nyris.api.csproj" />

@@ -295,6 +295,16 @@ namespace Nyris.UI.Android
                     });
                 });
             }
+
+            if (_config.CategoryPredictionOptions != null)
+            {
+                _nyrisApi.ImageMatching.CategoryPrediction(obj =>
+                {
+                    obj.Enabled = _config.CategoryPredictionOptions.Enabled;
+                    obj.Limit = _config.CategoryPredictionOptions.Limit;
+                    obj.Threshold = _config.CategoryPredictionOptions.Threshold;
+                });
+            }
         }
 
         #region Ignore

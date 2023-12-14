@@ -119,7 +119,15 @@ public class NyrisSearcher : INyrisSearcher
         return this;
     }
 
-    public INyrisSearcher Filters(Action<NyrisFilterOption> options = null)
+    public INyrisSearcher CategoryPrediction(Action<CategoryPredictionOptions>? options = null)
+    {
+        options ??= opt => { opt.Enabled = true; };
+        _config.CategoryPredictionOptions = new CategoryPredictionOptions();
+        options(_config.CategoryPredictionOptions);
+        return this;
+    }
+
+    public INyrisSearcher Filters(Action<NyrisFilterOption>? options = null)
     {            
         options ??= opt => { opt.Enabled = true; };
         _config.NyrisFilterOption = new NyrisFilterOption();

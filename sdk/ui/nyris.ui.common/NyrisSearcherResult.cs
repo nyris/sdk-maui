@@ -2,4 +2,4 @@ using Nyris.UI.Common.Models;
 
 namespace Nyris.UI.Common;
 
-public record NyrisSearcherResult(string RequestCode, List<Offer> Offers);
+public record NyrisSearcherResult(string RequestCode, List<Offer> Offers, Dictionary<string, float>? PredictedCategories);

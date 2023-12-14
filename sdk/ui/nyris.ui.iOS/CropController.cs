@@ -131,6 +131,16 @@ namespace Nyris.UI.iOS
                     });
                 });
             }
+            
+            if (Config.CategoryPredictionOptions != null)
+            {
+                _nyrisApi.ImageMatching.CategoryPrediction(obj =>
+                {
+                    obj.Enabled = Config.CategoryPredictionOptions.Enabled;
+                    obj.Limit = Config.CategoryPredictionOptions.Limit;
+                    obj.Threshold = Config.CategoryPredictionOptions.Threshold;
+                });
+            }
         }
         
         private void LoadImages()
@@ -253,7 +263,7 @@ namespace Nyris.UI.iOS
                 var responseDto = await Task.Run(() => matchingService.MatchAsync(bytes).Result);
                 InvokeOnMainThread(() =>
                 {
-                    var nyrisSearcherResult = responseDto.ToNyrisSearcherResult(bytes);
+                    var nyrisSearcherResult = responseDto.ToNyrisSearcherResult();
                     offerEventArgs = new OfferResponseEventArgs(screenshot, _cropBoundingBox.Frame, nyrisSearcherResult);
                     OnOfferAvailable(this, offerEventArgs);
                 });
