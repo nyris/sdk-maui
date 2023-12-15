@@ -8,7 +8,7 @@ public static class NyrisSearchResultExtensions
     {
         var offers = responseDto.Offers.Select(offerDto => offerDto.ToNyrisOffer()).ToList();
         var predictedCategories =
-            responseDto.PredictedCategories.ToDictionary(entry => entry.Key, entry => entry.Value);
+            responseDto.PredictedCategories?.ToDictionary(entry => entry.Key, entry => entry.Value);
         return new NyrisSearcherResult(responseDto.RequestCode, offers, predictedCategories);
     }
 }
