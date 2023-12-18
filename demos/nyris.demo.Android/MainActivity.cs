@@ -22,14 +22,14 @@ public class MainActivity : AppCompatActivity
     public void OnValidateClick(View v)
     {
         NyrisSearcher
-            .Builder("", this)
+            .Builder("", this, true)
             .CaptureLabelText("My Capture label.")
             .CameraPermissionDeniedErrorMessage("You can not use this component until you activate the camera permission!")
             .ExternalStoragePermissionDeniedErrorMessage("You can not use this component until you activate the access to external storage permission!")
             .DialogErrorTitle("Error Title")
             .AgreeButtonTitle("My OK")
             //.LoadLastState(true)
-            //.Start(loadLastState: true);
+            .CategoryPrediction()
             .Start(result =>
             {
                 if (result == null)
@@ -39,8 +39,9 @@ public class MainActivity : AppCompatActivity
                 }
                 else
                 {
-                    _tvResult.Text = $"Image Path = offerResponse.TakenImagePath \n" +
-                                     $"Found ({result.Offers.Count}) offers, with request id: {result.RequestCode})";
+                    _tvResult.Text = $"Found ({result.Offers.Count}) offers, " +
+                                     $"Predicted Categories ({result.PredictedCategories?.Count}), " +
+                                     $"with request id: {result.RequestCode})";
                 }
             });
     }

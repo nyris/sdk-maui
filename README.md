@@ -103,6 +103,12 @@ static class Program
     nyris.ImageMatching
         .Language("de") // Return only offers with language "de".
         .Limt(10) // Limit returned offers
+        .CategoryPrediction(opt =>
+        {
+            opt.Enabled = true
+            opt.Threshold = 0.6f
+            opt.Limit = 10 //Size of the returned catgories
+        }) // Get predicted categories
         .Filters(opt => // Add Filters 
         {
             opt.AddFilter("color", new List<string> { "red", "blue" });
@@ -215,6 +221,12 @@ For more details about image matching options please check [this section](#match
 ```csharp
     NyrisSearcher
         .Builder("Your API Key Here", ActivityOrPresenterController)
+        .CategoryPrediction(opt => 
+        {
+            opt.Enabled = true
+            opt.Threshold = 0.6f
+            opt.Limit = 10 //Size of the returned catgories
+        }) // Get predicted categories
         .Filters(opt => // Add Filters 
         {
             opt.AddFilter("color", new List<string> { "red", "blue" });
@@ -277,6 +289,12 @@ You can change text of the component by using:
         .CaptureLabelText("My Capture label.")
         .DialogErrorTitle("Error Title")
         .BackLabelText("Your back label") // For iOS only
+        .CategoryPrediction(opt => 
+        {
+            opt.Enabled = true
+            opt.Threshold = 0.6f
+            opt.Limit = 10 //Size of the returned catgories
+        }) // Get predicted categories
         .Start();
 ```
 See `NyrisSearcherConfig.cs` for full list of configuration.
@@ -345,6 +363,12 @@ Not different from Xamarin.Android SDK or Xamarin.iOS SDK, you can start using t
         .BackLabelText("Your back label") // For iOS only
         .Language("de")
         .Limit(10)
+        .CategoryPrediction(opt =>
+        {
+            opt.Enabled = true
+            opt.Threshold = 0.6f
+            opt.Limit = 10 //Size of the returned catgories
+        }) // Get predicted categories
         .Start(result => // Handling your result
         {
             if (result == null)

@@ -36,6 +36,14 @@ public class NyrisSearcher : INyrisSearcher<NyrisSearcher>
         return this;
     }
 
+    public NyrisSearcher CategoryPrediction(Action<CategoryPredictionOptions> options = null)
+    {
+        options ??= opt => { opt.Enabled = true; };
+        _config.CategoryPredictionOptions = new CategoryPredictionOptions();
+        options(_config.CategoryPredictionOptions);
+        return this;
+    }
+
     public NyrisSearcher Filters(Action<NyrisFilterOption> options = null)
     {
         options ??= opt => { opt.Enabled = true; };
@@ -138,7 +146,7 @@ public class NyrisSearcher : INyrisSearcher<NyrisSearcher>
             .Language(_config.Language)
             .Limit(_config.Limit)
             .LoadLastState(_config.LoadLastState)
-            // forward the filters to the native searcher on Android implementation
+            // forward the filters to the native searcher on Android/iOS implementation
             .Filters(action =>
             {
                 if (_config.NyrisFilterOption == null)
@@ -152,6 +160,18 @@ public class NyrisSearcher : INyrisSearcher<NyrisSearcher>
                 {
                     action.AddFilter(filter.Type, filter.Values);
                 });
+            })
+            // forward the filters to the native searcher on Android/iOS implementation
+            .CategoryPrediction(action =>
+            {
+                if (_config.CategoryPredictionOptions == null)
+                {
+                    action.Enabled = false;
+                    return;
+                }
+                action.Enabled = _config.CategoryPredictionOptions.Enabled;
+                action.Limit = _config.CategoryPredictionOptions.Limit;
+                action.Threshold = _config.CategoryPredictionOptions.Threshold;
             })
             .Start(callback);
     }

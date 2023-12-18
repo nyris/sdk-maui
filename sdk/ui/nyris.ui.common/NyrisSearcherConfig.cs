@@ -42,5 +42,7 @@ namespace Nyris.UI.Common
         public string CameraPermissionRequestIfDeniedMessage { get; set; } = "Please authorize camera access";
         
         public NyrisFilterOption? NyrisFilterOption { get; set; }
+        
+        public CategoryPredictionOptions? CategoryPredictionOptions { get; set; }
     }
 }

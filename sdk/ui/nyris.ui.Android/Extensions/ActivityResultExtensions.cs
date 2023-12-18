@@ -20,16 +20,21 @@ public static class ActivityResultExtensions
             if (AndroidOSVersion.SdkInt >= BuildVersionCodes.Tiramisu)
             {
                 offerResponse =
-                    data.GetParcelableExtra(NyrisSearcher.SearchResultKey, 
-                        Java.Lang.Class.FromType(typeof(OfferResponse))) as OfferResponse;
+                    (data.GetParcelableExtra(NyrisSearcher.SearchResultKey, 
+                        Java.Lang.Class.FromType(typeof(OfferResponse))) as OfferResponse)!;
             }
             else
             {
-                offerResponse = data.GetParcelableExtra(NyrisSearcher.SearchResultKey) as OfferResponse;
+                offerResponse = (data.GetParcelableExtra(NyrisSearcher.SearchResultKey) as OfferResponse)!;
             }
 
+            var offers = 
+                offerResponse.Offers.Select(x => x.ToNyrisOffer()).ToList();
+            var predictedCategories = 
+                offerResponse.PredictedCategories.ToDictionary(entry => entry.Name, entry => entry.Score);
+
             return new NyrisSearcherResult(RequestCode: offerResponse!.RequestCode,
-                Offers: offerResponse.Offers.Select(x => x.ToNyrisOffer()).ToList());
+                Offers: offers, PredictedCategories: predictedCategories);
         }
         catch (Exception e)
         {

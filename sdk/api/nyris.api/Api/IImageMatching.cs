@@ -11,6 +11,13 @@ public interface IImageMatching<out T>
     where T : class
 {
     /// <summary>
+    /// Configures category prediction.
+    /// </summary>
+    /// <param name="options">The settings.</param>
+    [NotNull]
+    T CategoryPrediction([CanBeNull] Action<CategoryPredictionOptions> options = null);
+    
+    /// <summary>
     ///     Configures API filters.
     /// </summary>
     /// <param name="options">The settings.</param>

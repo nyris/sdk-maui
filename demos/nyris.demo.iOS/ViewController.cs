@@ -75,12 +75,16 @@ public partial class ViewController : UIViewController
     partial void RestoreSearcherSession(Foundation.NSObject sender)
     {
         searchService.LoadLastState(true);
-        searchService.Start(Show);
+        searchService
+            .CategoryPrediction()
+            .Start(Show);
     }
     
     partial void OpenNewSearcherSession(Foundation.NSObject sender)
     {
-        searchService.Start(Show);
+        searchService
+            .CategoryPrediction()
+            .Start(Show);
     }
     
     public override void ViewDidAppear(bool animated)
