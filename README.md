@@ -382,6 +382,22 @@ Not different from Xamarin.Android SDK or Xamarin.iOS SDK, you can start using t
         };
 ```
 
+If you want to change the Icons and colors of the searcher UI, use the Theme method and the ThemeConfig object as follow: 
+```csharp
+    NyrisSearcher
+        .Builder("Your API Key Here", ActivityOrPresenterController)
+        .Theme(themeConfig =>
+        {
+            themeConfig.CaptureLabelColor = Colors.Red;
+            themeConfig.CropButtonImagePath = "custom_image.png";
+            themeConfig.CaptureButtonImagePath = "custom_image.png";
+        })
+        .Start( ... )
+``` 
+
+Add the images in the `Resources/Images` folder and ensure they have build action set as `EmbeddedResource`.
+Refer to `sdk/ui/nyris.ui.maui/ThemeConfig.cs` to see available options.
+
 License
 =======
 

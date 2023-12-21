@@ -8,11 +8,19 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
     }
-
+    
     private void OnSearcherStart(object sender, EventArgs e)
     {
         NyrisSearcher
             .Builder("", true)
+            .Theme(themeConfig =>
+            {
+                themeConfig.CaptureLabelColor = Colors.Red;
+                // these images are bundled with iOS version of the SDK
+                // replace with your own EmbeddedResource images
+                themeConfig.CropButtonImagePath = "validate_icon.png";
+                themeConfig.CaptureButtonImagePath = "capture_icon.png";
+            })
             .Start(result =>
             {
                 if (result == null)
