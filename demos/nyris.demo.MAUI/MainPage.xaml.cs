@@ -15,11 +15,7 @@ public partial class MainPage : ContentPage
             .Builder("", true)
             .Theme(themeConfig =>
             {
-                themeConfig.CaptureLabelColor = Colors.Red;
-                // these images are bundled with iOS version of the SDK
-                // replace with your own EmbeddedResource images
-                themeConfig.CropButtonImagePath = "validate_icon.png";
-                themeConfig.CaptureButtonImagePath = "capture_icon.png";
+                themeConfig.PrimaryTintColor = Colors.Blue;
             })
             .Start(result =>
             {
