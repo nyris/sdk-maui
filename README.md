@@ -382,21 +382,25 @@ Not different from Xamarin.Android SDK or Xamarin.iOS SDK, you can start using t
         };
 ```
 
-If you want to change the Icons and colors of the searcher UI, use the Theme method and the ThemeConfig object as follow: 
+You can use the Theme method and the ThemeConfig object to change the tinting/color of the UI: 
+* PrimaryTintColor: For searcher UI elements tinting/coloring in light mode. 
+* PrimaryDarkTintColor: For searcher UI elements tinting/coloring in light mode (unsupported in iOS). 
+* AccentTintColor: For system UI elements (back button, status etc)
+
+Here is an code example:
 ```csharp
     NyrisSearcher
         .Builder("Your API Key Here", ActivityOrPresenterController)
         .Theme(themeConfig =>
         {
-            themeConfig.CaptureLabelColor = Colors.Red;
-            themeConfig.CropButtonImagePath = "custom_image.png";
-            themeConfig.CaptureButtonImagePath = "custom_image.png";
+            themeConfig.PrimaryTintColor = Colors.Red;
         })
         .Start( ... )
 ``` 
 
-Add the images in the `Resources/Images` folder and ensure they have build action set as `EmbeddedResource`.
-Refer to `sdk/ui/nyris.ui.maui/ThemeConfig.cs` to see available options.
+If you want to change the capture and crop icon in the camera/crop view in iOS, please add an image to `Resources/Images` with the following name:
+- nyris_custom_capture_icon.png 
+- nyris_custom_crop_icon.png.png
 
 License
 =======
