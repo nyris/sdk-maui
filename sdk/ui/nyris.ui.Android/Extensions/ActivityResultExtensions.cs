@@ -34,7 +34,7 @@ public static class ActivityResultExtensions
                 offerResponse.PredictedCategories.ToDictionary(entry => entry.Name, entry => entry.Score);
 
             return new NyrisSearcherResult(RequestCode: offerResponse!.RequestCode,
-                Offers: offers, PredictedCategories: predictedCategories);
+                Offers: offers, PredictedCategories: predictedCategories, offerResponse.Screenshot);
         }
         catch (Exception e)
         {

@@ -41,6 +41,14 @@
                 FontSize="18"
                 HorizontalOptions="Center" />
 
+            <Label
+                x:Name="ResultLabel"
+                Text="Waiting for nyris searcher results"
+                SemanticProperties.Description="Screenshot from nyris searcher results"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Image WidthRequest="150" HeightRequest="200" BackgroundColor="Azure" x:Name="ScreenshotResult" Source="aImage"/>
         </VerticalStackLayout>
     </ScrollView>
 
