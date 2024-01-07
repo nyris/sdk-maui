@@ -155,7 +155,7 @@ namespace Nyris.UI.Android
                 .ObserveOn(new LooperScheduler(Looper.MainLooper))
                 .Subscribe(response =>
                 {
-                    _view?.SendResult(new OfferResponse(response)
+                    _view?.SendResult(new OfferResponse(response, image)
                     {
                         TakenImagePath = _config.LastTakenPicturePath
                     });

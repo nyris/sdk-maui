@@ -10,6 +10,8 @@ namespace Nyris.UI.Android.Models;
 public class OfferResponse : Java.Lang.Object, IParcelable
 {
     public string TakenImagePath { get; set; }
+    
+    public byte[]? Screenshot { get; set; }
 
     public string RequestCode { get; set; }
 
@@ -21,10 +23,11 @@ public class OfferResponse : Java.Lang.Object, IParcelable
     {
     }
 
-    public OfferResponse(OfferResponseDto offerResponseDto)
+    public OfferResponse(OfferResponseDto offerResponseDto, byte[]? screenshot = null)
     {
         RequestCode = offerResponseDto?.RequestCode;
-
+        Screenshot = screenshot;
+        
         Offers = offerResponseDto?.Offers.Select(offer =>
         {
             return new Offer
@@ -80,6 +83,8 @@ public class OfferResponse : Java.Lang.Object, IParcelable
         dest.WriteString(RequestCode);
         dest.WriteTypedList(Offers);
         dest.WriteTypedList(PredictedCategories);
+        dest.WriteInt(Screenshot?.Length ?? 0);
+        dest.WriteByteArray(Screenshot);
     }
 
     public int DescribeContents()
@@ -98,7 +103,7 @@ public class OfferResponse : Java.Lang.Object, IParcelable
                 Offers = new List<Offer>(),
                 PredictedCategories = new List<PredictedCategory>()
             };
-
+            
             var nOffers = source.CreateTypedArrayList(Offer.InitializeCreator());
             foreach (Offer item in nOffers)
             {
@@ -111,6 +116,14 @@ public class OfferResponse : Java.Lang.Object, IParcelable
                 searcherOfferResponse.PredictedCategories.Add(item);
             }
 
+            var bytesLength = source.ReadInt();
+            if (bytesLength > 0)
+            {   
+                var bytes =new byte[bytesLength];
+                source.ReadByteArray(bytes);
+                searcherOfferResponse.Screenshot = bytes;
+            }
+            
             return searcherOfferResponse;
         }
 
