@@ -1,5 +1,4 @@
 using Nyris.Demo.iOS;
-using Nyris.Demo.iOS;
 
 // This is the main entry point of the application.
 // If you want to use a different Application Delegate class from "AppDelegate"

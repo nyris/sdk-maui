@@ -11,10 +11,15 @@ using NativeNyrisSearcher = Nyris.UI.iOS.NyrisSearcher;
 
 namespace Nyris.UI.Maui;
 
-public class NyrisSearcher : INyrisSearcher<NyrisSearcher>
+public interface INyrisSearcher : INyrisSearcher<INyrisSearcher>
+{       
+    INyrisSearcher Theme(Action<ThemeConfig> options = null);
+}
+
+public class NyrisSearcher : INyrisSearcher
 {
     private readonly NyrisSearcherConfig _config;
-    
+    private ThemeConfig _themeConfig;
     private NyrisSearcher(string apiKey, bool debug)
     {
         _config = new NyrisSearcherConfig
@@ -24,19 +29,19 @@ public class NyrisSearcher : INyrisSearcher<NyrisSearcher>
         };
     }
 
-    public NyrisSearcher Language(string language)
+    public INyrisSearcher Language(string language)
     {
         _config.Language = language ?? throw new ArgumentException("language is null"); ;
         return this;
     }
 
-    public NyrisSearcher Limit(int limit)
+    public INyrisSearcher Limit(int limit)
     {
         _config.Limit = limit;
         return this;
     }
 
-    public NyrisSearcher CategoryPrediction(Action<CategoryPredictionOptions> options = null)
+    public INyrisSearcher CategoryPrediction(Action<CategoryPredictionOptions> options = null)
     {
         options ??= opt => { opt.Enabled = true; };
         _config.CategoryPredictionOptions = new CategoryPredictionOptions();
@@ -44,7 +49,7 @@ public class NyrisSearcher : INyrisSearcher<NyrisSearcher>
         return this;
     }
 
-    public NyrisSearcher Filters(Action<NyrisFilterOption> options = null)
+    public INyrisSearcher Filters(Action<NyrisFilterOption> options = null)
     {
         options ??= opt => { opt.Enabled = true; };
         _config.NyrisFilterOption = new NyrisFilterOption();
@@ -52,74 +57,83 @@ public class NyrisSearcher : INyrisSearcher<NyrisSearcher>
         return this;
     }
 
-    public NyrisSearcher ApiKey(string apiKey)
+    public INyrisSearcher ApiKey(string apiKey)
     {
         _config.ApiKey = apiKey;
         return this;
     }
 
-    public NyrisSearcher LoadLastState(bool loadLastState)
+    public INyrisSearcher LoadLastState(bool loadLastState)
     {
         _config.LoadLastState = loadLastState;
         return this;
     }
 
-    public NyrisSearcher CaptureLabelText(string label)
+    public INyrisSearcher CaptureLabelText(string label)
     {
         _config.CaptureLabelText = label;
         return this;
     }
 
-    public NyrisSearcher DialogErrorTitle(string title)
+    public INyrisSearcher DialogErrorTitle(string title)
     {
         _config.DialogErrorTitle = title;
         return this;
     }
 
-    public NyrisSearcher AgreeButtonTitle(string title)
+    public INyrisSearcher AgreeButtonTitle(string title)
     {
         _config.AgreeButtonTitle = title;
         return this;
     }
 
-    public NyrisSearcher CancelButtonTitle(string title)
+    public INyrisSearcher CancelButtonTitle(string title)
     {
         _config.CancelButtonTitle = title;
         return this;
     }
 
-    public NyrisSearcher CameraPermissionDeniedErrorMessage(string message)
+    public INyrisSearcher CameraPermissionDeniedErrorMessage(string message)
     {
         _config.CameraPermissionDeniedErrorMessage = message;
         return this;
     }
 
-    public NyrisSearcher ExternalStoragePermissionDeniedErrorMessage(string message)
+    public INyrisSearcher ExternalStoragePermissionDeniedErrorMessage(string message)
     {
         _config.ExternalStoragePermissionDeniedErrorMessage = message;
         return this;
     }
 
-    public NyrisSearcher CameraPermissionRequestIfDeniedMessage(string message)
+    public INyrisSearcher CameraPermissionRequestIfDeniedMessage(string message)
     {
         _config.CameraPermissionRequestIfDeniedMessage = message;
         return this;
     }
 
-    public NyrisSearcher ConfigurationFailedErrorMessage(string message)
+    public INyrisSearcher ConfigurationFailedErrorMessage(string message)
     {
         _config.ConfigurationFailedErrorMessage = message;
         return this;
     }
 
-    public NyrisSearcher BackLabelText(string label)
+    public INyrisSearcher BackLabelText(string label)
     {
         _config.BackLabelText = label;
         return this;
     }
 
-    public void Start(Action<NyrisSearcherResult> callback)
+    public INyrisSearcher Theme(Action<ThemeConfig> options = null)
     {
+        options ??= opt => { };
+        var themeConfig = new ThemeConfig();
+        options(themeConfig);
+        _themeConfig = themeConfig;
+        return this;
+    }
+    
+    public void Start(Action<NyrisSearcherResult> callback)
+    { 
 #if __ANDROID__
         if (Platform.CurrentActivity is not AppCompatActivity appCompatActivity)
         {
@@ -132,7 +146,12 @@ public class NyrisSearcher : INyrisSearcher<NyrisSearcher>
             throw new ArgumentException("UIViewController is null");
         }
         var nativeSearcher = NativeNyrisSearcher.Builder(_config.ApiKey, viewController, _config.IsDebug);
+        if (_themeConfig != null)
+        {
+            nativeSearcher.Theme(_themeConfig.ToPlatform());
+        }
 #endif
+
         nativeSearcher
             .AgreeButtonTitle(_config.AgreeButtonTitle)
             .CancelButtonTitle(_config.CancelButtonTitle)
@@ -176,7 +195,7 @@ public class NyrisSearcher : INyrisSearcher<NyrisSearcher>
             .Start(callback);
     }
     
-    public static INyrisSearcher<NyrisSearcher> Builder(string apiKey, bool debug = false)
+    public static INyrisSearcher Builder(string apiKey, bool debug = false)
     {
         return new NyrisSearcher(apiKey, debug);
     }
