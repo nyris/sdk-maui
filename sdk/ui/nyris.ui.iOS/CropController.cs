@@ -257,14 +257,13 @@ namespace Nyris.UI.iOS
             
             var bytes = croppedImage.AsJPEG().ToArray();
             var matchingService = _nyrisApi.ImageMatching.Limit(Config.Limit);
-            OfferResponseEventArgs offerEventArgs = null;
             try
             {
                 var responseDto = await Task.Run(() => matchingService.MatchAsync(bytes).Result);
                 InvokeOnMainThread(() =>
                 {
-                    var nyrisSearcherResult = responseDto.ToNyrisSearcherResult();
-                    offerEventArgs = new OfferResponseEventArgs(screenshot, _cropBoundingBox.Frame, nyrisSearcherResult);
+                    var nyrisSearcherResult = responseDto.ToNyrisSearcherResult(bytes);
+                    var offerEventArgs = new OfferResponseEventArgs(screenshot, _cropBoundingBox.Frame, nyrisSearcherResult);
                     OnOfferAvailable(this, offerEventArgs);
                 });
             }

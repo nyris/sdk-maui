@@ -24,6 +24,9 @@ public partial class MainPage : ContentPage
                 {
                     ResultLabel.Text = 
                         $"Nyris searcher found ({result.Offers.Count}) offers, with request id: {result.RequestCode})";
+                    if(result.Screenshot == null) return;
+                    var stream = new MemoryStream(result.Screenshot);
+                    ScreenshotResult.Source = ImageSource.FromStream(() => stream);
                 }
             });
     }
