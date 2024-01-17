@@ -2,6 +2,7 @@
 using Android.Graphics;
 using AndroidX.Annotations;
 using IO.Nyris.Camera;
+using JetBrains.Annotations;
 using Nyris.UI.Android.Models;
 using Nyris.UI.Common;
 
@@ -11,7 +12,7 @@ namespace Nyris.UI.Android.Mvp
     {
         internal interface IPresenter : IMvpPresenter<IView>
         {
-            void OnSearchConfig([NonNull] NyrisSearcherConfig config);
+            void OnSearchConfig([NonNull] NyrisSearcherConfig config, AndroidThemeConfig? themeConfig);
             void OnResume();
             void OnPause();
             void OnCircleViewClick();
@@ -24,6 +25,7 @@ namespace Nyris.UI.Android.Mvp
 
         internal interface IView : IMvpView<IPresenter>
         {
+            void TintViews(AndroidThemeConfig theme);
             void StartCircleViewAnimation();
             void SetCaptureLabel(string label);
             void AddCameraCallback([NonNull] ICallback callback);

@@ -10,6 +10,7 @@ namespace Nyris.UI.Android;
 
 public interface INyrisSearcher : INyrisSearcher<INyrisSearcher>
 {
+    INyrisSearcher Theme(AndroidThemeConfig? theme);
 }
 
 public class NyrisSearcher : INyrisSearcher
@@ -17,9 +18,11 @@ public class NyrisSearcher : INyrisSearcher
     internal const string SearchResultKey = "SEARCH_RESULT_KEY";
 
     internal const string ConfigKey = "CONFIG_KEY";
+    internal const string ThemeKey = "THEME_KEY";
 
     private readonly NyrisSearcherConfig _config;
     private readonly Activity _activity;
+    private AndroidThemeConfig? _theme;
 
     private NyrisSearcher([NonNull] string apiKey, [NonNull] AppCompatActivity activity, bool debug)
     {
@@ -34,6 +37,12 @@ public class NyrisSearcher : INyrisSearcher
     public static INyrisSearcher Builder(string apiKey, AppCompatActivity activity, bool debug = false)
     {
         return new NyrisSearcher(apiKey, activity, debug);
+    }
+    
+    public INyrisSearcher Theme(AndroidThemeConfig? theme)
+    {
+        _theme = theme;
+        return this;
     }
 
     public INyrisSearcher CameraPermissionDeniedErrorMessage([NonNull] string message)
@@ -133,8 +142,10 @@ public class NyrisSearcher : INyrisSearcher
     public void Start(Action<NyrisSearcherResult?> callback)
     {
         var configJson = JsonConvert.SerializeObject(_config);
+        var themeJson = _theme.ToJson();
         var intent = new Intent(_activity, typeof(NyrisSearcherActivity));
         intent.PutExtra(ConfigKey, configJson);
+        intent.PutExtra(ThemeKey, themeJson);
         ActivityForResultObserver.NyrisSearcherResultCallback = callback;
         ActivityForResultObserver.ActivityResultLauncher?.Launch(intent);
     }

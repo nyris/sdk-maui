@@ -24,7 +24,7 @@ namespace Nyris.UI.Android
     {
         private CameraView _cameraView;
         private CircleView _circleViewBtn;
-        private View _progress;
+        private ProgressBar _progress;
         private ImageCameraView _imagePreview;
         private PinViewCropper _viewCropper;
         private TextView _captureLabel;
@@ -32,6 +32,7 @@ namespace Nyris.UI.Android
 
         private ISharedPreferences _settings;
         private NyrisSearcherConfig _config;
+        private AndroidThemeConfig? _theme;
         private SearcherContract.IPresenter _presenter;
 
         private bool isPermissionCalledOnce;
@@ -44,10 +45,52 @@ namespace Nyris.UI.Android
             InitViews();
 
             CreateSearcherConfig();
+            CreateThemeConfig();
 
             _presenter = new NyrisSearcherPresenter();
-            _presenter?.OnSearchConfig(_config);
-            _presenter?.OnAtach(this);
+            _presenter.OnSearchConfig(_config, _theme);
+            _presenter.OnAtach(this);
+        }
+
+        private void InitViews()
+        {
+            _cameraView = FindViewById<CameraView>(Resource.Id.camera);
+            _circleViewBtn = FindViewById<CircleView>(Resource.Id.cvTakePic);
+            _progress = FindViewById<ProgressBar>(Resource.Id.vProgress);
+            _imagePreview = FindViewById<ImageCameraView>(Resource.Id.imPreview);
+            _viewCropper = FindViewById<PinViewCropper>(Resource.Id.pinViewCropper);
+            _captureLabel = FindViewById<TextView>(Resource.Id.tvCaptureLabel);
+            _validateBtn = FindViewById(Resource.Id.imValidate);
+        }
+        
+        public void TintViews(AndroidThemeConfig theme)
+        {
+            if (theme.PrimaryColor != null)
+            {
+                _circleViewBtn.ChangePrimaryColor(theme.PrimaryColor.Value);
+            }
+
+            if (theme.PrimaryDarkColor != null)
+            {
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+                {
+                    Window?.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                    Window?.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                    Window?.SetStatusBarColor(theme.PrimaryDarkColor.Value);
+                }
+            }
+
+            if (theme.AccentColor != null)
+            {
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+                {
+                    _progress.IndeterminateDrawable?.SetColorFilter(new PorterDuffColorFilter(theme.AccentColor.Value, PorterDuff.Mode.SrcIn));
+                }
+                else
+                {
+                    _progress.IndeterminateDrawable?.SetColorFilter(theme.AccentColor.Value, PorterDuff.Mode.Multiply);
+                }
+            }
         }
 
         protected override void OnResume()
@@ -263,17 +306,6 @@ namespace Nyris.UI.Android
             base.OnBackPressed();
         }
 
-        private void InitViews()
-        {
-            _cameraView = FindViewById<CameraView>(Resource.Id.camera);
-            _circleViewBtn = FindViewById<CircleView>(Resource.Id.cvTakePic);
-            _progress = FindViewById(Resource.Id.vProgress);
-            _imagePreview = FindViewById<ImageCameraView>(Resource.Id.imPreview);
-            _viewCropper = FindViewById<PinViewCropper>(Resource.Id.pinViewCropper);
-            _captureLabel = FindViewById<TextView>(Resource.Id.tvCaptureLabel);
-            _validateBtn = FindViewById(Resource.Id.imValidate);
-        }
-
         private void CreateSearcherConfig()
         {
             var takenImageUri = ImageUtils.Companion.GetPhotoFileUri(this, "photo.jpg");
@@ -289,6 +321,18 @@ namespace Nyris.UI.Android
                 Right = _settings.GetFloat("right", 0),
                 Bottom = _settings.GetFloat("bottom", 0)
             };
+        }
+
+        private void CreateThemeConfig()
+        {
+            var extraJson = Intent!.GetStringExtra(NyrisSearcher.ThemeKey);
+            var def = new { PrimaryColor = (int?)null, PrimaryDarkColor = (int?)null, AccentColor = (int?)null };
+            var colorInts = JsonConvert.DeserializeAnonymousType(extraJson!, def);
+            _theme = AndroidThemeConfigExt.ToTheme(
+                primaryColor: colorInts?.PrimaryColor,
+                primaryDarkColor: colorInts?.PrimaryDarkColor,
+                accentColor: colorInts?.AccentColor
+            );
         }
 
         private void SetResult(IParcelable parcelable)
@@ -308,7 +352,11 @@ namespace Nyris.UI.Android
             {
                 _presenter?.OnOkErrorClick();
             });
-            alertDialog.Show();
+            var dialog = alertDialog.Show();
+            if (_theme?.AccentColor != null)
+            {
+                dialog?.GetButton((int)DialogButtonType.Positive)?.SetTextColor(_theme.AccentColor.Value);
+            }
         }
     }
 }

@@ -303,7 +303,7 @@ See `NyrisSearcherConfig.cs` for full list of configuration.
 
 #### For Android
 To customize the color of the component you will need to override the defined colors:
-
+##### Static
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -312,6 +312,18 @@ To customize the color of the component you will need to override the defined co
     <color name="nyris_color_primary_dark">YOUR_COLOR</color>
     <color name="nyris_color_accent">YOUR_COLOR</color>
 </resources>
+```
+
+##### Dynamic 
+```C#
+NyrisSearcher
+    .Theme(new AndroidThemeConfig
+    {
+        PrimaryColor = Color.Aqua,
+        PrimaryDarkColor = Color.DarkBlue,
+        AccentColor = Color.Salmon
+    })
+    ...
 ```
 
 #### For iOS

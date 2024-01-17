@@ -146,13 +146,10 @@ public class NyrisSearcher : INyrisSearcher
             throw new ArgumentException("UIViewController is null");
         }
         var nativeSearcher = NativeNyrisSearcher.Builder(_config.ApiKey, viewController, _config.IsDebug);
-        if (_themeConfig != null)
-        {
-            nativeSearcher.Theme(_themeConfig.ToPlatform());
-        }
 #endif
 
         nativeSearcher
+            .Theme(_themeConfig?.ToPlatform())
             .AgreeButtonTitle(_config.AgreeButtonTitle)
             .CancelButtonTitle(_config.CancelButtonTitle)
             .CameraPermissionDeniedErrorMessage(_config.CameraPermissionDeniedErrorMessage)
