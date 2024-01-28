@@ -8,11 +8,15 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
     }
-
+    
     private void OnSearcherStart(object sender, EventArgs e)
     {
         NyrisSearcher
             .Builder("", true)
+            .Theme(themeConfig =>
+            {
+                themeConfig.PrimaryTintColor = Colors.Blue;
+            })
             .Start(result =>
             {
                 if (result == null)

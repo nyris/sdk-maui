@@ -60,6 +60,13 @@ internal class CircleView : View
         _circlePaint.FilterBitmap = true;
     }
 
+    public void ChangePrimaryColor(Color color)
+    {
+        _containerPaint.Color = color;
+        _circlePaint.Color = color;
+        Invalidate();
+    }
+
     public void StartAnimation(View vPosCam)
     {
         _strokeContainerCirclePx = TypedValue.ApplyDimension(ComplexUnitType.Dip, strokeContainerCircleDp, Resources.DisplayMetrics);

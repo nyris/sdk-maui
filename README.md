@@ -303,7 +303,7 @@ See `NyrisSearcherConfig.cs` for full list of configuration.
 
 #### For Android
 To customize the color of the component you will need to override the defined colors:
-
+##### Static
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -312,6 +312,18 @@ To customize the color of the component you will need to override the defined co
     <color name="nyris_color_primary_dark">YOUR_COLOR</color>
     <color name="nyris_color_accent">YOUR_COLOR</color>
 </resources>
+```
+
+##### Dynamic 
+```C#
+NyrisSearcher
+    .Theme(new AndroidThemeConfig
+    {
+        PrimaryColor = Color.Aqua,
+        PrimaryDarkColor = Color.DarkBlue,
+        AccentColor = Color.Salmon
+    })
+    ...
 ```
 
 #### For iOS
@@ -381,6 +393,26 @@ Not different from Xamarin.Android SDK or Xamarin.iOS SDK, you can start using t
             }
         };
 ```
+
+You can use the Theme method and the ThemeConfig object to change the tinting/color of the UI: 
+* PrimaryTintColor: For searcher UI elements tinting/coloring in light mode. 
+* PrimaryDarkTintColor: For searcher UI elements tinting/coloring in light mode (unsupported in iOS). 
+* AccentTintColor: For system UI elements (back button, status etc)
+
+Here is an code example:
+```csharp
+    NyrisSearcher
+        .Builder("Your API Key Here", ActivityOrPresenterController)
+        .Theme(themeConfig =>
+        {
+            themeConfig.PrimaryTintColor = Colors.Red;
+        })
+        .Start( ... )
+``` 
+
+If you want to change the capture and crop icon in the camera/crop view in iOS, please add an image to `Resources/Images` with the following name:
+- nyris_custom_capture_icon.png 
+- nyris_custom_crop_icon.png.png
 
 License
 =======

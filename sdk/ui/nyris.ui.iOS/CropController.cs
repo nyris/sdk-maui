@@ -73,14 +73,29 @@ namespace Nyris.UI.iOS
         
         private void SetupTheme()
         {
+            LoadImages();
+            
             if (_theme == null)
             {
-                LoadImages();
                 return;
             }
 
-            _captureButtonImage = _theme.CaptureButtonImage;
-            _cropButtonImage = _theme.CropButtonImage;
+            _captureButtonImage = _theme switch
+            {
+                { CaptureButtonImage: not null, CaptureButtonTint: not null, } => _theme.CaptureButtonImage.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate).ApplyTintColor(_theme.CaptureButtonTint),
+                { CaptureButtonImage: not null } => _theme.CaptureButtonImage,
+                { CaptureButtonImage: null, CaptureButtonTint: not null, } => _captureButtonImage.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate).ApplyTintColor(_theme.CaptureButtonTint),
+                _ => _captureButtonImage
+            };          
+            _cropButtonImage = _theme switch
+            {
+                { CropButtonImage: not null, CropButtonTint: not null, } => _theme.CropButtonImage.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate).ApplyTintColor(_theme.CropButtonTint),
+                { CropButtonImage: not null } => _theme.CropButtonImage,              
+                { CropButtonImage: null, CropButtonTint: not null, } => _cropButtonImage.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate).ApplyTintColor(_theme.CropButtonTint),
+
+                _ => _cropButtonImage
+            };
+
             if (_theme.BackButtonImage != null)
             {
                 CloseButton.SetImage(_theme.BackButtonImage, UIControlState.Normal);
@@ -152,8 +167,10 @@ namespace Nyris.UI.iOS
             // the compiler can't decide which UIImage.FromBundle to call as it can't infer type of null
             // hence declaring an explicit UITraitCollection variable and setting it to null to help the compiler.
             UITraitCollection trait = null;
-            _captureButtonImage = UIImage.FromBundle("capture_icon.png", bundle, trait);
-            _cropButtonImage = UIImage.FromBundle("validate_icon.png", bundle, trait);
+#pragma warning disable CS8601 // Possible null reference assignment.
+            _captureButtonImage = UIImage.FromBundle("nyris_custom_capture_icon.png", bundle, trait) ?? UIImage.FromBundle("capture_icon.png", bundle, trait);
+            _cropButtonImage = UIImage.FromBundle("nyris_custom_validate_icon.png", bundle, trait) ?? UIImage.FromBundle("validate_icon.png", bundle, trait);
+#pragma warning restore CS8601 // Possible null reference assignment.
         }
 
         private void SetCaptureState()

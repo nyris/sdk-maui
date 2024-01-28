@@ -8,6 +8,7 @@ using Android.OS;
 using Nyris.Api;
 using Android;
 using AndroidX.Annotations;
+using JetBrains.Annotations;
 using Nyris.UI.Android.Custom;
 using Nyris.UI.Android.Extensions;
 using Nyris.UI.Android.Models;
@@ -27,14 +28,19 @@ namespace Nyris.UI.Android
         private Size _imageSize;
         private PresenterStatus _presenterStatus;
         private RectF _newRectF;
+        private AndroidThemeConfig? _theme;
 
         public void OnAtach(SearcherContract.IView view)
         {
             _compositeDisposable = new CompositeDisposable();
             _view = view;
+            _view.SetCaptureLabel(_config.CaptureLabelText);
+            _view.StartCircleViewAnimation();
+            if (_theme != null)
+            {
+                _view.TintViews(_theme);
+            }
             checkApiKey();
-            _view?.SetCaptureLabel(_config.CaptureLabelText);
-            _view?.StartCircleViewAnimation();
         }
 
         public void OnDetach()
@@ -82,10 +88,10 @@ namespace Nyris.UI.Android
             }
         }
 
-        public void OnSearchConfig([NonNull]NyrisSearcherConfig config)
+        public void OnSearchConfig([NonNull]NyrisSearcherConfig config, AndroidThemeConfig? theme)
         {
             _config = config;
-
+            _theme = theme;
             var httpClientHandler = new Xamarin.Android.Net.AndroidClientHandler();
             _nyrisApi = NyrisApi.CreateInstance(_config.ApiKey, Platform.Android, httpClientHandler, _config.IsDebug);
             MapConfig();

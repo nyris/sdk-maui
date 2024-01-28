@@ -1,3 +1,4 @@
+using Android.Graphics;
 using Android.Views;
 using AndroidX.AppCompat.App;
 using Java.Interop;
@@ -30,6 +31,13 @@ public class MainActivity : AppCompatActivity
             .AgreeButtonTitle("My OK")
             //.LoadLastState(true)
             .CategoryPrediction()
+            // Enable me for dynamic theming
+            .Theme(new AndroidThemeConfig
+            {
+                PrimaryColor = Color.Aqua,
+                PrimaryDarkColor = Color.DarkBlue,
+                AccentColor = Color.Salmon
+            })
             .Start(result =>
             {
                 if (result == null)

@@ -6,7 +6,7 @@ namespace Nyris.UI.iOS;
 
 public interface INyrisSearcher : INyrisSearcher<INyrisSearcher>
 {       
-    INyrisSearcher Theme(AppearanceConfiguration theme);
+    INyrisSearcher Theme(AppearanceConfiguration? theme);
 }
 
 public class NyrisSearcher : INyrisSearcher
