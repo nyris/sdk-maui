@@ -14,14 +14,6 @@
       <ProjectReference Include="..\nyris.ui.common\nyris.ui.common.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <ImageAsset Update="images.xcassets\objects_proposal\point_icon.imageset\point_icon%403x.png">
-        <Link>images.xcassets\objects_proposal\point_icon.imageset\point_icon%403x.png</Link>
-      </ImageAsset>
-      <ImageAsset Update="images.xcassets\objects_proposal\point_icon.imageset\point_icon%402x.png">
-        <Link>images.xcassets\objects_proposal\point_icon.imageset\point_icon%402x.png</Link>
-      </ImageAsset>
-    </ItemGroup>
-    <ItemGroup>
       <BundleResource Condition="'$(_ResourcePrefix)' != ''" Update="Resources\validate_icon%403x.png">
         <Link>Resources\validate_icon%403x.png</Link>
       </BundleResource>
